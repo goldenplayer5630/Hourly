@@ -10,10 +10,14 @@ namespace Hourly.Data.Repositories
 {
     public class WorkSessionRepository : IWorkSessionRepository
     {
-        Task<WorkSession> GetById(Guid workSessionId);
-        Task<IEnumerable<WorkSession>> GetAll();
-        Task Create(WorkSession workSession);
-        Task Update(WorkSession workSession);
-        Task Delete(Guid workSessionId);
+        public async Task<WorkSession> GetById(Guid workSessionId)
+        {
+
+        }
+
+        public async Task<IEnumerable<WorkSession>> GetAll();
+        public async Task Create(WorkSession workSession);
+        public async Task Update(WorkSession workSession);
+        public async Task Delete(Guid workSessionId);
     }
 }

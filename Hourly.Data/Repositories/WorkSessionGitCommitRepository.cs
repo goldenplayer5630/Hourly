@@ -10,10 +10,10 @@ namespace Hourly.Data.Repositories
 {
     public class WorkSessionGitCommitRepository : IWorkSessionGitCommitRepository
     {
-        Task<WorkSessionGitCommit> GetById(Guid workSessionGitCommitId);
-        Task<IEnumerable<WorkSessionGitCommit>> GetAll();
-        Task Create(WorkSessionGitCommit workSessionGitCommit);
-        Task Update(WorkSessionGitCommit workSessionGitCommit);
-        Task Delete(Guid workSessionGitCommitId);
+        public async Task<WorkSessionGitCommit> GetById(Guid workSessionGitCommitId);
+        public async Task<IEnumerable<WorkSessionGitCommit>> GetAll();
+        public async Task Create(WorkSessionGitCommit workSessionGitCommit);
+        public async Task Update(WorkSessionGitCommit workSessionGitCommit);
+        public async Task Delete(Guid workSessionGitCommitId);
     }
 }

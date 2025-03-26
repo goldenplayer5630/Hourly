@@ -10,10 +10,10 @@ namespace Hourly.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        Task<User> GetById(Guid userId);
-        Task<IEnumerable<User>> GetAll();
-        Task Create(User user);
-        Task Update(User user);
-        Task Delete(Guid userId);
+        public async Task<User> GetById(Guid userId);
+        public async Task<IEnumerable<User>> GetAll();
+        public async Task Create(User user);
+        public async Task Update(User user);
+        public async Task Delete(Guid userId);
     }
 }

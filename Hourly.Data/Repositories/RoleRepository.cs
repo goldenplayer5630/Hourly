@@ -10,10 +10,10 @@ namespace Hourly.Data.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        Task<Role> GetById(Guid roleId);
-        Task<IEnumerable<Role>> GetAll();
-        Task Create(Role role);
-        Task Update(Role role);
-        Task Delete(Role roleId);
+        public async Task<Role> GetById(Guid roleId);
+        public async Task<IEnumerable<Role>> GetAll();
+        public async Task Create(Role role);
+        public async Task Update(Role role);
+        public async Task Delete(Role roleId);
     }
 }

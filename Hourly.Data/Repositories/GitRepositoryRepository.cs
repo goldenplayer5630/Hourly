@@ -10,10 +10,10 @@ namespace Hourly.Data.Repositories
 {
     public class GitRepositoryRepository : IGitRepositoryRepository
     {
-        Task<GitRepository> GetById(Guid gitRepositoryId);
-        Task<IEnumerable<GitRepository>> GetAll();
-        Task Create(GitRepository gitRepository);
-        Task Update(GitRepository gitRepository);
-        Task Delete(GitRepository gitRepositoryId);
+        public async Task<GitRepository> GetById(Guid gitRepositoryId);
+        public async Task<IEnumerable<GitRepository>> GetAll();
+        public async Task Create(GitRepository gitRepository);
+        public async Task Update(GitRepository gitRepository);
+        public async Task Delete(GitRepository gitRepositoryId);
     }
 }
