@@ -2,29 +2,33 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Hourly.Shared.Models;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+namespace Hourly.Data.Persistence.EntityConfigurations
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        builder.HasKey(x => x.Id);
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Email)
-            .IsRequired();
+            builder.Property(x => x.Email)
+                .IsRequired();
 
-        builder.HasOne(x => x.Role)
-            .WithMany(r => r.Users)
-            .HasForeignKey(x => x.RoleId);
+            builder.HasOne(x => x.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(x => x.RoleId);
 
-        builder.HasOne(x => x.Department)
-            .WithMany(d => d.Users)
-            .HasForeignKey(x => x.DepartmentId);
+            builder.HasOne(x => x.Department)
+                .WithMany(d => d.Users)
+                .HasForeignKey(x => x.DepartmentId);
 
-        builder.HasMany(x => x.WorkSessions)
-            .WithOne(ws => ws.User)
-            .HasForeignKey(ws => ws.UserId);
+            builder.HasMany(x => x.WorkSessions)
+                .WithOne(ws => ws.User)
+                .HasForeignKey(ws => ws.UserId);
 
-        builder.HasMany(x => x.GitCommits)
-            .WithOne(gc => gc.Author)
-            .HasForeignKey(gc => gc.AuthorId);
+            builder.HasMany(x => x.GitCommits)
+                .WithOne(gc => gc.Author)
+                .HasForeignKey(gc => gc.AuthorId);
+        }
     }
+
 }

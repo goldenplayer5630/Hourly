@@ -16,4 +16,12 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Hourly.Abstractions\Hourly.Abstractions.csproj" />
+      <ProjectReference Include="..\Hourly.Data\Hourly.Data.csproj" />
+      <ProjectReference Include="..\Hourly.Domain\Hourly.Domain.csproj" />
+      <ProjectReference Include="..\Hourly.Gitlab\Hourly.Gitlab.csproj" />
+      <ProjectReference Include="..\Hourly.Shared\Hourly.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

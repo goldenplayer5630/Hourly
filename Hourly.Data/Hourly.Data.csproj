@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\EntityConfigurations\" />
       <Folder Include="Repositories\" />
     </ItemGroup>
 
@@ -21,7 +20,14 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hourly.Abstractions\Hourly.Abstractions.csproj" />
+      <ProjectReference Include="..\Hourly.Shared\Hourly.Shared.csproj" />
     </ItemGroup>
 
 </Project>
