@@ -16,10 +16,30 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<Department> GetById(Guid departmentId);
-        public async Task<IEnumerable<Department>> GetAll();
-        public async Task Create(Department department);
-        public async Task Update(Department department);
-        public async Task Delete(Guid departmentId);
+        public async Task<Department> GetById(Guid departmentId)
+        {
+
+        }
+
+        public async Task<IEnumerable<Department>> GetAll()
+        {
+
+        }
+
+        public async Task Create(Department department)
+        {
+
+        }
+
+        public async Task Update(Department department)
+        {
+
+        }
+
+        public async Task Delete(Guid departmentId)
+        {
+
+        }
+
     }
 }

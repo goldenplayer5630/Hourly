@@ -17,10 +17,30 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<Role> GetById(Guid roleId);
-        public async Task<IEnumerable<Role>> GetAll();
-        public async Task Create(Role role);
-        public async Task Update(Role role);
-        public async Task Delete(Role roleId);
+        public async Task<Role> GetById(Guid roleId)
+        {
+
+        }
+
+        public async Task<IEnumerable<Role>> GetAll()
+        {
+
+        }
+
+        public async Task Create(Role role)
+        {
+
+        }
+
+        public async Task Update(Role role)
+        {
+
+        }
+
+        public async Task Delete(Role roleId)
+        {
+
+        }
+
     }
 }

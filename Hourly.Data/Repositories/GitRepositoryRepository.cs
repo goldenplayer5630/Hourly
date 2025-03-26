@@ -17,10 +17,30 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<GitRepository> GetById(Guid gitRepositoryId);
-        public async Task<IEnumerable<GitRepository>> GetAll();
-        public async Task Create(GitRepository gitRepository);
-        public async Task Update(GitRepository gitRepository);
-        public async Task Delete(GitRepository gitRepositoryId);
+        public async Task<GitRepository> GetById(Guid gitRepositoryId)
+        {
+
+        }
+
+        public async Task<IEnumerable<GitRepository>> GetAll()
+        {
+
+        }
+
+        public async Task Create(GitRepository gitRepository)
+        {
+
+        }
+
+        public async Task Update(GitRepository gitRepository)
+        {
+
+        }
+
+        public async Task Delete(GitRepository gitRepositoryId)
+        {
+
+        }
+
     }
 }

@@ -22,9 +22,24 @@ namespace Hourly.Data.Repositories
 
         }
 
-        public async Task<IEnumerable<WorkSession>> GetAll();
-        public async Task Create(WorkSession workSession);
-        public async Task Update(WorkSession workSession);
-        public async Task Delete(Guid workSessionId);
+        public async Task<IEnumerable<WorkSession>> GetAll()
+        {
+
+        }
+
+        public async Task Create(WorkSession workSession)
+        {
+
+        }
+
+        public async Task Update(WorkSession workSession)
+        {
+
+        }
+
+        public async Task Delete(Guid workSessionId)
+        {
+
+        }
     }
 }
