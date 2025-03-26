@@ -10,6 +10,13 @@ namespace Hourly.Data.Repositories
 {
     public class WorkSessionGitCommitRepository : IWorkSessionGitCommitRepository
     {
+        private readonly AppDbContext _context;
+
+        public WorkSessionGitCommitRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task<WorkSessionGitCommit> GetById(Guid workSessionGitCommitId);
         public async Task<IEnumerable<WorkSessionGitCommit>> GetAll();
         public async Task Create(WorkSessionGitCommit workSessionGitCommit);

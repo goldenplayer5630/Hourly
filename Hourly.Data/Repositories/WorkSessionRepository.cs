@@ -10,6 +10,13 @@ namespace Hourly.Data.Repositories
 {
     public class WorkSessionRepository : IWorkSessionRepository
     {
+        private readonly AppDbContext _context;
+
+        public WorkSessionRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task<WorkSession> GetById(Guid workSessionId)
         {
 
