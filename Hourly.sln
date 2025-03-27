@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hourly.Domain", "Hourly.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourly.Gitlab", "Hourly.Gitlab\Hourly.Gitlab.csproj", "{F97EB05F-9220-43FD-A4E8-5E054A0CA7FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourly.Tests", "Hourly.Tests\Hourly.Tests.csproj", "{4A85FC3B-3573-4ED5-8491-E2D6EB5A2D77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,8 +47,15 @@ Global
 		{F97EB05F-9220-43FD-A4E8-5E054A0CA7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F97EB05F-9220-43FD-A4E8-5E054A0CA7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F97EB05F-9220-43FD-A4E8-5E054A0CA7FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A85FC3B-3573-4ED5-8491-E2D6EB5A2D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A85FC3B-3573-4ED5-8491-E2D6EB5A2D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A85FC3B-3573-4ED5-8491-E2D6EB5A2D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A85FC3B-3573-4ED5-8491-E2D6EB5A2D77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5150E466-9850-4856-B502-0F1790844666}
 	EndGlobalSection
 EndGlobal

@@ -9,7 +9,7 @@ namespace Hourly.Abstractions.Repositories
 {
     public interface IWorkSessionGitCommitRepository
     {
-        Task<WorkSessionGitCommit> GetById(Guid workSessionGitCommitId);
+        Task<WorkSessionGitCommit?> GetById(Guid workSessionGitCommitId);
         Task<IEnumerable<WorkSessionGitCommit>> GetAll();
         Task Create(WorkSessionGitCommit workSessionGitCommit);
         Task Update(WorkSessionGitCommit workSessionGitCommit);

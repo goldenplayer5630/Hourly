@@ -9,7 +9,7 @@ namespace Hourly.Abstractions.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetById(Guid userId);
+        Task<User?> GetById(Guid userId);
         Task<IEnumerable<User>> GetAll();
         Task Create(User user);
         Task Update(User user);
