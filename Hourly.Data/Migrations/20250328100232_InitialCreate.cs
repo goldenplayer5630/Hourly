@@ -18,8 +18,8 @@ namespace Hourly.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ExtRepositoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Namespace = table.Column<string>(type: "text", nullable: false),
-                    WebUrl = table.Column<string>(type: "text", nullable: false)
+                    Namespace = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,7 +32,7 @@ namespace Hourly.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Permissions = table.Column<string>(type: "jsonb", nullable: false)
+                    Permissions = table.Column<string>(type: "json", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,9 +61,9 @@ namespace Hourly.Data.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    GitEmail = table.Column<string>(type: "text", nullable: false),
-                    GitUsername = table.Column<string>(type: "text", nullable: false),
-                    GitAccessToken = table.Column<string>(type: "text", nullable: false),
+                    GitEmail = table.Column<string>(type: "text", nullable: true),
+                    GitUsername = table.Column<string>(type: "text", nullable: true),
+                    GitAccessToken = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -74,8 +74,7 @@ namespace Hourly.Data.Migrations
                         name: "FK_Users_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
@@ -91,11 +90,11 @@ namespace Hourly.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RepositoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     ExtCommitId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExtCommitShortId = table.Column<string>(type: "text", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
+                    ExtCommitShortId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WebUrl = table.Column<string>(type: "text", nullable: false)
+                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,12 +119,12 @@ namespace Hourly.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TaskDescription = table.Column<string>(type: "text", nullable: false),
+                    TaskDescription = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Factor = table.Column<float>(type: "real", nullable: false),
                     WBSO = table.Column<bool>(type: "boolean", nullable: false),
-                    OtherRemarks = table.Column<string>(type: "text", nullable: false)
+                    OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {

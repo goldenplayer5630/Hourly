@@ -19,20 +19,19 @@ namespace Hourly.Shared.Models
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        public Guid RoleId { get; set; }
+        public Guid? RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
 
-        public Guid DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         [ForeignKey("DepartmentId")]
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
 
-        public string GitEmail { get; set; }
-        public string GitUsername { get; set; }
-        public string GitAccessToken { get; set; }
+        public string? GitEmail { get; set; }
+        public string? GitUsername { get; set; }
+        public string? GitAccessToken { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

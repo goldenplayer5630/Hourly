@@ -55,9 +55,6 @@ namespace Hourly.Tests.Data.Repositories
                 Id = Guid.NewGuid(),
                 Name = "Test User",
                 Email = "testuser@example.com",
-                GitEmail = "gitemail@example.com",
-                RoleId = Guid.NewGuid(),
-                DepartmentId = Guid.NewGuid(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -81,8 +78,6 @@ namespace Hourly.Tests.Data.Repositories
                 Id = Guid.NewGuid(),
                 Name = "Test User",
                 Email = "testuser@example.com",
-                RoleId = Guid.NewGuid(),
-                DepartmentId = Guid.NewGuid(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

@@ -22,6 +22,26 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasMany(x => x.WorkSessionGitCommits)
                 .WithOne(wsc => wsc.WorkSession)
                 .HasForeignKey(wsc => wsc.WorkSessionId);
+
+            builder.Property(x => x.TaskDescription)
+                .HasMaxLength(500)
+                .IsRequired(false);
+
+            builder.Property(x => x.StartTime)
+                .IsRequired();
+
+            builder.Property(x => x.EndTime)
+                .IsRequired();
+
+            builder.Property(x => x.Factor)
+                .IsRequired();
+
+            builder.Property(x => x.WBSO)
+                .IsRequired();
+
+            builder.Property(x => x.OtherRemarks)
+                .HasMaxLength(1000)
+                .IsRequired(false);
         }
     }
 }

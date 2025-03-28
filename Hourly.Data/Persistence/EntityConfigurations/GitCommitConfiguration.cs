@@ -15,6 +15,21 @@ namespace Hourly.Data.Persistence.EntityConfigurations
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.ExtCommitId)
+                .IsRequired();
+
+            builder.Property(x => x.ExtCommitShortId)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.Title)
+                .HasMaxLength(200);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired();
+
+            builder.Property(x => x.WebUrl)
+                .HasMaxLength(500);
+
             builder.HasOne(x => x.Author)
                 .WithMany(u => u.GitCommits)
                 .HasForeignKey(x => x.AuthorId);

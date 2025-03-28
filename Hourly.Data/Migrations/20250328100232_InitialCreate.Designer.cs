@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250326211536_InitialCreate")]
+    [Migration("20250328100232_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -61,18 +61,21 @@ namespace Hourly.Data.Migrations
 
                     b.Property<string>("ExtCommitShortId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<Guid>("RepositoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -98,11 +101,13 @@ namespace Hourly.Data.Migrations
 
                     b.Property<string>("Namespace")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -121,7 +126,7 @@ namespace Hourly.Data.Migrations
 
                     b.Property<string>("Permissions")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.HasKey("Id");
 
@@ -145,15 +150,12 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("GitAccessToken")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GitEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GitUsername")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -188,15 +190,15 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("OtherRemarks")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("TaskDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -260,9 +262,7 @@ namespace Hourly.Data.Migrations
                 {
                     b.HasOne("Hourly.Shared.Models.Department", "Department")
                         .WithMany("Users")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Hourly.Shared.Models.Role", "Role")
                         .WithMany("Users")

@@ -16,6 +16,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.ExtRepositoryId).IsRequired();
+            builder.Property(x => x.Namespace).HasMaxLength(255);
+            builder.Property(x => x.WebUrl).HasMaxLength(500);
 
             builder.HasMany(x => x.GitCommits)
                 .WithOne(c => c.Repository)

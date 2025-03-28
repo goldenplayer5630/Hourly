@@ -19,7 +19,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired();
 
             builder.Property(x => x.Permissions)
-                .HasColumnType("jsonb");
+                .HasColumnType("json");
 
             builder.HasMany(x => x.Users)
                 .WithOne(u => u.Role)
