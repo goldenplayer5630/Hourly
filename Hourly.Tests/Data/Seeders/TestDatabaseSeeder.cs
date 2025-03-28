@@ -39,7 +39,7 @@ namespace Hourly.Tests.Seeders
                 context.Users.Add(user);
             }
 
-
+            await context.SaveChangesAsync();
         }
     }
 }
