@@ -7,36 +7,117 @@ using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using Hourly.Data;
+using Hourly.Data.Repositories;
+using Hourly.Shared.Models;
+using Hourly.Tests.Data.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class WorkSessionRepositoryTests
+    public class WorkSessionRepositoryTests : IntergrationTestBase, IRepositoryTests
     {
-        private readonly PostgreSqlContainer _postgresContainer;
-        private AppDbContext _dbContext = null!;
+        private WorkSessionRepository _workSessionRepository;
 
-        public WorkSessionRepositoryTests()
+        public async override Task InitializeAsync()
         {
-            _postgresContainer = new PostgreSqlBuilder().Build();
+            await base.InitializeAsync();
+            _workSessionRepository = new WorkSessionRepository(_dbContext);
         }
 
-        public async Task InitializeAsync()
+        [Fact]
+        public async Task GetById_ShouldReturnEntity_WhenExists()
         {
-            await _postgresContainer.StartAsync();
+            // Arrange
+            var existing = await _dbContext.WorkSessions.FirstAsync();
 
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql(_postgresContainer.GetConnectionString())
-                .Options;
+            // Act
+            var result = await _workSessionRepository.GetById(existing.Id);
 
-            _dbContext = new AppDbContext(options);
-            await _dbContext.Database.EnsureCreatedAsync();
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(existing.Id, result.Id);
         }
 
-        public async Task DisposeAsync()
+        [Fact]
+        public async Task GetById_ShouldReturnNull_WhenNotExists()
         {
-            await _postgresContainer.StopAsync();
+            // Arrange
+            var fakeId = Guid.NewGuid();
+
+            // Act
+            var result = await _workSessionRepository.GetById(fakeId);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetAll_ShouldReturnAllEntities()
+        {
+            // Arrange
+            var count = await _dbContext.WorkSessions.CountAsync();
+
+            // Act
+            var result = await _workSessionRepository.GetAll();
+
+            // Assert
+            Assert.Equal(count, result.Count());
+        }
+
+        [Fact]
+        public async Task Create_ShouldAddEntity()
+        {
+            // Arrange
+            var entity = new WorkSession
+            {
+                Id = Guid.NewGuid(),
+                UserId = Guid.NewGuid(),
+                TaskDescription = "New Task",
+                StartTime = DateTime.UtcNow,
+                EndTime = DateTime.UtcNow.AddHours(1),
+                Factor = 1.0f,
+                WBSO = false,
+                OtherRemarks = "No remarks"
+            };
+
+            // Act
+            await _workSessionRepository.Create(entity);
+            var result = await _dbContext.WorkSessions.FindAsync(entity.Id);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(entity.TaskDescription, result.TaskDescription);
+        }
+
+        [Fact]
+        public async Task Update_ShouldUpdateEntity()
+        {
+            // Arrange
+            var existing = await _dbContext.WorkSessions.FirstAsync();
+            existing.TaskDescription = "Updated Task Description";
+
+            // Act
+            await _workSessionRepository.Update(existing);
+            var result = await _dbContext.WorkSessions.FindAsync(existing.Id);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("Updated Task Description", result.TaskDescription);
+        }
+
+        [Fact]
+        public async Task Delete_ShouldDeleteEntity()
+        {
+            // Arrange
+            var existing = await _dbContext.WorkSessions.FirstAsync();
+
+            // Act
+            await _workSessionRepository.Delete(existing.Id);
+            var result = await _dbContext.WorkSessions.FindAsync(existing.Id);
+
+            // Assert
+            Assert.Null(result);
         }
     }
 }

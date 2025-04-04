@@ -45,7 +45,7 @@ namespace Hourly.Data.Repositories
             }
         }
 
-        public async Task Delete(GitRepository gitRepositoryId)
+        public async Task Delete(Guid gitRepositoryId)
         {
             var existingGitRepository = await _context.GitRepositories.FindAsync(gitRepositoryId);
             if (existingGitRepository != null)

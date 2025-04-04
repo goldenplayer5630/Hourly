@@ -43,7 +43,7 @@ namespace Hourly.Data.Repositories
             }
         }
 
-        public async Task Delete(GitCommit gitCommitId)
+        public async Task Delete(Guid gitCommitId)
         {
             var existingGitCommit = await _context.GitCommits.FindAsync(gitCommitId);
             if (existingGitCommit != null)

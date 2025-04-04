@@ -1,36 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Testcontainers.PostgreSql;
-using Xunit;
-using Hourly.Shared.Models;
-using Hourly.Data.Repositories;
 using Hourly.Tests.Data.Utilities;
+using Hourly.Data.Repositories;
+using Hourly.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 using Hourly.Abstractions.Repositories;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class UserRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class GitCommitRepositoryTests : IntergrationTestBase, IRepositoryTests
     {
-        private IUserRepository _userRepository;
+        private IGitCommitRepository _gitCommitRepository;
 
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();
-            _userRepository = new UserRepository(_dbContext);
+            _gitCommitRepository = new GitCommitRepository(_dbContext);
         }
 
         [Fact]
         public async Task GetById_ShouldReturnEntity_WhenExists()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
+            var existing = await _dbContext.GitCommits.FirstAsync();
 
             // Act
-            var result = await _userRepository.GetById(existing.Id);
+            var result = await _gitCommitRepository.GetById(existing.Id);
 
             // Assert
             Assert.NotNull(result);
@@ -44,7 +42,7 @@ namespace Hourly.Tests.Data.Repositories
             var fakeId = Guid.NewGuid();
 
             // Act
-            var result = await _userRepository.GetById(fakeId);
+            var result = await _gitCommitRepository.GetById(fakeId);
 
             // Assert
             Assert.Null(result);
@@ -54,10 +52,10 @@ namespace Hourly.Tests.Data.Repositories
         public async Task GetAll_ShouldReturnAllEntities()
         {
             // Arrange
-            var count = await _dbContext.Users.CountAsync();
+            var count = await _dbContext.GitCommits.CountAsync();
 
             // Act
-            var result = await _userRepository.GetAll();
+            var result = await _gitCommitRepository.GetAll();
 
             // Assert
             Assert.Equal(count, result.Count());
@@ -67,49 +65,52 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
-            var entity = new User
+            var entity = new GitCommit
             {
                 Id = Guid.NewGuid(),
-                Name = "John Doe",
-                Email = "john.doe@example.com",
+                RepositoryId = Guid.NewGuid(),
+                ExtCommitId = Guid.NewGuid(),
+                ExtCommitShortId = "abc123",
+                Title = "Initial commit",
+                AuthorId = Guid.NewGuid(),
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                WebUrl = "http://example.com"
             };
 
             // Act
-            await _userRepository.Create(entity);
-            var result = await _dbContext.Users.FindAsync(entity.Id);
+            await _gitCommitRepository.Create(entity);
+            var result = await _dbContext.GitCommits.FindAsync(entity.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(entity.Name, result.Name);
+            Assert.Equal(entity.Title, result.Title);
         }
 
         [Fact]
         public async Task Update_ShouldUpdateEntity()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
-            existing.Name = "Updated Name";
+            var existing = await _dbContext.GitCommits.FirstAsync();
+            existing.Title = "Updated commit title";
 
             // Act
-            await _userRepository.Update(existing);
-            var result = await _dbContext.Users.FindAsync(existing.Id);
+            await _gitCommitRepository.Update(existing);
+            var result = await _dbContext.GitCommits.FindAsync(existing.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Updated Name", result.Name);
+            Assert.Equal("Updated commit title", result.Title);
         }
 
         [Fact]
         public async Task Delete_ShouldDeleteEntity()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
+            var existing = await _dbContext.GitCommits.FirstAsync();
 
             // Act
-            await _userRepository.Delete(existing.Id);
-            var result = await _dbContext.Users.FindAsync(existing.Id);
+            await _gitCommitRepository.Delete(existing.Id);
+            var result = await _dbContext.GitCommits.FindAsync(existing.Id);
 
             // Assert
             Assert.Null(result);

@@ -13,6 +13,6 @@ namespace Hourly.Abstractions.Repositories
         Task<IEnumerable<GitRepository>> GetAll();
         Task Create(GitRepository gitRepository);
         Task Update(GitRepository gitRepository);
-        Task Delete(GitRepository gitRepositoryId);
+        Task Delete(Guid gitRepositoryId);
     }
 }

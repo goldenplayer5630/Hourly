@@ -1,36 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hourly.Abstractions.Repositories;
+using Hourly.Data.Repositories;
+using Hourly.Tests.Data.Utilities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Testcontainers.PostgreSql;
-using Xunit;
 using Hourly.Shared.Models;
-using Hourly.Data.Repositories;
-using Hourly.Tests.Data.Utilities;
-using Hourly.Abstractions.Repositories;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class UserRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class RoleRepositoryTests : IntergrationTestBase, IRepositoryTests
     {
-        private IUserRepository _userRepository;
+        private IRoleRepository _roleRepository;
 
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();
-            _userRepository = new UserRepository(_dbContext);
+            _roleRepository = new RoleRepository(_dbContext);
         }
 
         [Fact]
         public async Task GetById_ShouldReturnEntity_WhenExists()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
+            var existing = await _dbContext.Roles.FirstAsync();
 
             // Act
-            var result = await _userRepository.GetById(existing.Id);
+            var result = await _roleRepository.GetById(existing.Id);
 
             // Assert
             Assert.NotNull(result);
@@ -44,7 +42,7 @@ namespace Hourly.Tests.Data.Repositories
             var fakeId = Guid.NewGuid();
 
             // Act
-            var result = await _userRepository.GetById(fakeId);
+            var result = await _roleRepository.GetById(fakeId);
 
             // Assert
             Assert.Null(result);
@@ -54,10 +52,10 @@ namespace Hourly.Tests.Data.Repositories
         public async Task GetAll_ShouldReturnAllEntities()
         {
             // Arrange
-            var count = await _dbContext.Users.CountAsync();
+            var count = await _dbContext.Roles.CountAsync();
 
             // Act
-            var result = await _userRepository.GetAll();
+            var result = await _roleRepository.GetAll();
 
             // Assert
             Assert.Equal(count, result.Count());
@@ -67,18 +65,16 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
-            var entity = new User
+            var entity = new Role
             {
                 Id = Guid.NewGuid(),
-                Name = "John Doe",
-                Email = "john.doe@example.com",
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                Name = "New Role",
+                Permissions = "Read, Write"
             };
 
             // Act
-            await _userRepository.Create(entity);
-            var result = await _dbContext.Users.FindAsync(entity.Id);
+            await _roleRepository.Create(entity);
+            var result = await _dbContext.Roles.FindAsync(entity.Id);
 
             // Assert
             Assert.NotNull(result);
@@ -89,27 +85,27 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Update_ShouldUpdateEntity()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
-            existing.Name = "Updated Name";
+            var existing = await _dbContext.Roles.FirstAsync();
+            existing.Name = "Updated Role Name";
 
             // Act
-            await _userRepository.Update(existing);
-            var result = await _dbContext.Users.FindAsync(existing.Id);
+            await _roleRepository.Update(existing);
+            var result = await _dbContext.Roles.FindAsync(existing.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Updated Name", result.Name);
+            Assert.Equal("Updated Role Name", result.Name);
         }
 
         [Fact]
         public async Task Delete_ShouldDeleteEntity()
         {
             // Arrange
-            var existing = await _dbContext.Users.FirstAsync();
+            var existing = await _dbContext.Roles.FirstAsync();
 
             // Act
-            await _userRepository.Delete(existing.Id);
-            var result = await _dbContext.Users.FindAsync(existing.Id);
+            await _roleRepository.Delete(existing.Id);
+            var result = await _dbContext.Roles.FindAsync(existing.Id);
 
             // Assert
             Assert.Null(result);

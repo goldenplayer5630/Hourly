@@ -44,7 +44,7 @@ namespace Hourly.Data.Repositories
             }
         }
 
-        public async Task Delete(Role roleId)
+        public async Task Delete(Guid roleId)
         {
             var role = await _context.Roles.FindAsync(roleId);
             if (role != null)

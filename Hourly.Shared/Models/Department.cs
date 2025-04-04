@@ -17,8 +17,8 @@ namespace Hourly.Shared.Models
 
         public Guid ManagerId { get; set; }
 
-        public User Manager { get; set; }
+        public User? Manager { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<User>? Users { get; set; }
     }
 }
