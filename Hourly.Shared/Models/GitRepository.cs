@@ -12,15 +12,23 @@ namespace Hourly.Shared.Models
         [Key]
         public Guid Id { get; set; }
 
-        public Guid ExtRepositoryId { get; set; }
+        [Required]
+        public string ExtRepositoryId { get; set; }
 
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Namespace { get; set; }
 
+        [Required]
         public string WebUrl { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; }
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

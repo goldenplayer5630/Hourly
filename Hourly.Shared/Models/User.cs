@@ -30,13 +30,18 @@ namespace Hourly.Shared.Models
         public Department? Department { get; set; }
 
         public string? GitEmail { get; set; }
+
         public string? GitUsername { get; set; }
+
         public string? GitAccessToken { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
 
-        public ICollection<WorkSession> WorkSessions { get; set; }
-        public ICollection<GitCommit> GitCommits { get; set; }
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

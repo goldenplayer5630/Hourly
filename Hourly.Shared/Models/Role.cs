@@ -15,8 +15,14 @@ namespace Hourly.Shared.Models
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Permissions { get; set; } // Store as JSON string
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<User> Users { get; set; } = new List<User>();
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }
