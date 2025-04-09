@@ -68,10 +68,10 @@ namespace Hourly.Tests.Data.Repositories
             var entity = new GitRepository
             {
                 Id = Guid.NewGuid(),
-                ExtRepositoryId = Guid.NewGuid(),
-                Name = "New Repository",
-                Namespace = "Namespace",
-                WebUrl = "http://example.com"
+                ExtRepositoryId = "8a7a9345eea565973918b5503d81dcd52637f3a4",
+                Name = "Hourly",
+                Namespace = "goldenplayer5630/hourly",
+                WebUrl = "https://github.com/goldenplayer5630/Hourly"
             };
 
             // Act

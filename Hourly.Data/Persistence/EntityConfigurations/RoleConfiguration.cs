@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hourly.Data.Persistence.Converters;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
@@ -19,11 +20,19 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired();
 
             builder.Property(x => x.Permissions)
-                .HasColumnType("json");
+                .IsRequired();
 
             builder.HasMany(x => x.Users)
                 .WithOne(u => u.Role)
                 .HasForeignKey(u => u.RoleId);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired()
+                .HasConversion(DateTimeConverter.UtcDateTimeConverter);
+
+            builder.Property(x => x.UpdatedAt)
+                .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
+
         }
     }
 

@@ -11,22 +11,22 @@ namespace Hourly.Shared.Models
     public class WorkSessionGitCommit
     {
         [Key]
-        public Guid WorkSessionId { get; set; }
+        public Guid WorkSessionId { get; init; }
 
         [Key]
-        public Guid GitCommitId { get; set; }
+        public Guid GitCommitId { get; init; }
 
         [Required]
         [ForeignKey("WorkSessionId")]
-        public WorkSession WorkSession { get; set; }
+        public WorkSession WorkSession { get; init; }
 
         [Required]
         [ForeignKey("GitCommitId")]
-        public GitCommit GitCommit { get; set; }
+        public GitCommit GitCommit { get; init; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; init; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; init; }
     }
 }

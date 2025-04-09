@@ -6,20 +6,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Hourly.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GitRepositories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExtRepositoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExtRepositoryId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Namespace = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
+                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,24 +48,13 @@ namespace Hourly.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Permissions = table.Column<string>(type: "json", nullable: false)
+                    Permissions = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Departments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,13 +64,13 @@ namespace Hourly.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: true),
+                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: true),
                     GitEmail = table.Column<string>(type: "text", nullable: true),
                     GitUsername = table.Column<string>(type: "text", nullable: true),
                     GitAccessToken = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,8 +84,7 @@ namespace Hourly.Data.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -89,12 +93,14 @@ namespace Hourly.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RepositoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExtCommitId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExtCommitId = table.Column<string>(type: "text", nullable: false),
                     ExtCommitShortId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: true),
                     AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -124,7 +130,9 @@ namespace Hourly.Data.Migrations
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Factor = table.Column<float>(type: "real", nullable: false),
                     WBSO = table.Column<bool>(type: "boolean", nullable: false),
-                    OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true)
+                    OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,7 +150,9 @@ namespace Hourly.Data.Migrations
                 columns: table => new
                 {
                     WorkSessionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    GitCommitId = table.Column<Guid>(type: "uuid", nullable: false)
+                    GitCommitId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -160,11 +170,6 @@ namespace Hourly.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Departments_ManagerId",
-                table: "Departments",
-                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GitCommits_AuthorId",
@@ -195,23 +200,11 @@ namespace Hourly.Data.Migrations
                 name: "IX_WorkSessions_UserId",
                 table: "WorkSessions",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Departments_Users_ManagerId",
-                table: "Departments",
-                column: "ManagerId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Departments_Users_ManagerId",
-                table: "Departments");
-
             migrationBuilder.DropTable(
                 name: "WorkSessionGitCommits");
 

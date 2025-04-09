@@ -69,10 +69,11 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
+            var existingUser = await _dbContext.Users.FirstAsync();
             var entity = new WorkSession
             {
                 Id = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
+                UserId = existingUser.Id,
                 TaskDescription = "New Task",
                 StartTime = DateTime.UtcNow,
                 EndTime = DateTime.UtcNow.AddHours(1),

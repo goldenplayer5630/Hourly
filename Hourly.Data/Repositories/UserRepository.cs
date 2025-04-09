@@ -36,7 +36,7 @@ namespace Hourly.Data.Repositories
 
         public async Task Update(User user)
         {
-            var existingUser = await _context.Users.FindAsync(user);
+            var existingUser = await _context.Users.FindAsync(user.Id);
             if (existingUser != null)
             {
                 _context.Entry(existingUser).CurrentValues.SetValues(user);

@@ -17,7 +17,7 @@ namespace Hourly.Tests.Data.Utilities.Factories
             foreach (Guid authorId in authorIds)
             {
                 var authorFaker = new Faker<GitCommit>()
-                    .RuleFor(c => c.Id, Guid.NewGuid())
+                    .RuleFor(c => c.Id, f => Guid.NewGuid())
                     .RuleFor(c => c.AuthorId, authorId)
                     .RuleFor(c => c.RepositoryId, f => f.PickRandom(repositoryIds))
                     .RuleFor(c => c.ExtCommitId, f => f.Random.AlphaNumeric(40))
@@ -25,8 +25,8 @@ namespace Hourly.Tests.Data.Utilities.Factories
                     .RuleFor(c => c.Title, f => f.Lorem.Sentence(5, 7))
                     .RuleFor(c => c.Comment, f => f.Lorem.Paragraph())
                     .RuleFor(c => c.WebUrl, f => f.Internet.Url())
-                    .RuleFor(d => d.CreatedAt, f => f.Date.Past())
-                    .RuleFor(d => d.UpdatedAt, f => f.Date.Recent());
+                    .RuleFor(u => u.CreatedAt, f => f.Date.Past().ToUniversalTime())
+                    .RuleFor(u => u.UpdatedAt, f => f.Date.Recent().ToUniversalTime());
                 GitCommits.AddRange(authorFaker.Generate(10));
             }
 

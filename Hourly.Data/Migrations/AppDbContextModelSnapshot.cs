@@ -27,16 +27,17 @@ namespace Hourly.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("ManagerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Departments");
                 });
@@ -50,11 +51,15 @@ namespace Hourly.Data.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ExtCommitId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ExtCommitId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ExtCommitShortId")
                         .IsRequired()
@@ -68,6 +73,9 @@ namespace Hourly.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
@@ -89,8 +97,12 @@ namespace Hourly.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ExtRepositoryId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExtRepositoryId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -100,6 +112,9 @@ namespace Hourly.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
@@ -117,13 +132,19 @@ namespace Hourly.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Permissions")
                         .IsRequired()
-                        .HasColumnType("json");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -139,7 +160,7 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
@@ -159,10 +180,10 @@ namespace Hourly.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<Guid?>("RoleId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -180,6 +201,9 @@ namespace Hourly.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -196,6 +220,9 @@ namespace Hourly.Data.Migrations
                     b.Property<string>("TaskDescription")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -218,22 +245,17 @@ namespace Hourly.Data.Migrations
                     b.Property<Guid>("GitCommitId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("WorkSessionId", "GitCommitId");
 
                     b.HasIndex("GitCommitId");
 
                     b.ToTable("WorkSessionGitCommits");
-                });
-
-            modelBuilder.Entity("Hourly.Shared.Models.Department", b =>
-                {
-                    b.HasOne("Hourly.Shared.Models.User", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("Hourly.Shared.Models.GitCommit", b =>
@@ -263,9 +285,7 @@ namespace Hourly.Data.Migrations
 
                     b.HasOne("Hourly.Shared.Models.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 

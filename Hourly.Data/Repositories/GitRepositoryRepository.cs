@@ -37,7 +37,7 @@ namespace Hourly.Data.Repositories
 
         public async Task Update(GitRepository gitRepository)
         {
-            var existingGitRepository = await _context.Roles.FindAsync(gitRepository);
+            var existingGitRepository = await _context.Roles.FindAsync(gitRepository.Id);
             if (existingGitRepository != null)
             {
                 _context.Entry(existingGitRepository).CurrentValues.SetValues(gitRepository);

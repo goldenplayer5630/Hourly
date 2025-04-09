@@ -36,7 +36,7 @@ namespace Hourly.Data.Repositories
 
         public async Task Update(Role role)
         {
-            var existingRole = await _context.Roles.FindAsync(role);
+            var existingRole = await _context.Roles.FindAsync(role.Id);
             if (existingRole != null)
             {
                 _context.Entry(existingRole).CurrentValues.SetValues(role);

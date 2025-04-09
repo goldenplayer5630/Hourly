@@ -11,21 +11,16 @@ namespace Hourly.Shared.Models
     public class Department
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         public string Name { get; set; }
 
-        public Guid ManagerId { get; set; }
-
-        [ForeignKey("ManagerId")]
-        public User? Manager { get; set; }
-
         public ICollection<User> Users { get; set; } = new List<User>();
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; init; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; init; }
     }
 }

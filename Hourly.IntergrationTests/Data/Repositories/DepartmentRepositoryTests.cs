@@ -67,8 +67,7 @@ namespace Hourly.Tests.Data.Repositories
             // Arrange
             var entity = new Department { 
                 Id = Guid.NewGuid(), 
-                Name = "Finance", 
-                ManagerId = Guid.NewGuid() 
+                Name = "Finance",
             };
 
             // Act
@@ -90,7 +89,7 @@ namespace Hourly.Tests.Data.Repositories
             // Act
 
             await _departmentRepository.Update(existing);
-            var result = await _dbContext.Departments.FindAsync(existing);
+            var result = await _dbContext.Departments.FindAsync(existing.Id);
 
             // Assert
             Assert.NotNull(result);

@@ -69,8 +69,8 @@ namespace Hourly.Tests.Data.Repositories
             {
                 Id = Guid.NewGuid(),
                 RepositoryId = Guid.NewGuid(),
-                ExtCommitId = Guid.NewGuid(),
-                ExtCommitShortId = "abc123",
+                ExtCommitId = "258958b9da4fe91f52c62c32eddade9cb8ee4828",
+                ExtCommitShortId = "258958b",
                 Title = "Initial commit",
                 AuthorId = Guid.NewGuid(),
                 CreatedAt = DateTime.UtcNow,
@@ -91,7 +91,8 @@ namespace Hourly.Tests.Data.Repositories
         {
             // Arrange
             var existing = await _dbContext.GitCommits.FirstAsync();
-            existing.Title = "Updated commit title";
+            var newUser = await _dbContext.Users.FirstAsync();
+            existing.AuthorId = newUser.Id;
 
             // Act
             await _gitCommitRepository.Update(existing);
@@ -99,7 +100,7 @@ namespace Hourly.Tests.Data.Repositories
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Updated commit title", result.Title);
+            Assert.Equal(newUser.Id, result.AuthorId);
         }
 
         [Fact]

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hourly.Data.Persistence.Converters;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
@@ -18,14 +19,17 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.Name)
                 .IsRequired();
 
-            builder.HasOne(x => x.Manager)
-                .WithMany()
-                .HasForeignKey(x => x.ManagerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasMany(x => x.Users)
                 .WithOne(u => u.Department)
                 .HasForeignKey(u => u.DepartmentId);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired()
+                .HasConversion(DateTimeConverter.UtcDateTimeConverter);
+
+            builder.Property(x => x.UpdatedAt)
+                .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
+
         }
     }
 }

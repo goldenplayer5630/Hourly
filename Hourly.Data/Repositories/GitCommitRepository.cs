@@ -35,7 +35,7 @@ namespace Hourly.Data.Repositories
 
         public async Task Update(GitCommit gitCommit)
         {
-            var existingGitCommit = await _context.GitCommits.FindAsync(gitCommit);
+            var existingGitCommit = await _context.GitCommits.FindAsync(gitCommit.Id);
             if (existingGitCommit != null)
             {
                 _context.Entry(existingGitCommit).CurrentValues.SetValues(gitCommit);

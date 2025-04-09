@@ -34,7 +34,7 @@ namespace Hourly.Data.Repositories
 
         public async Task Update(Department department)
         {
-            var existingDepartment = await _context.Departments.FindAsync(department);
+            var existingDepartment = await _context.Departments.FindAsync(department.Id);
             if (existingDepartment != null)
             {
                 _context.Entry(existingDepartment).CurrentValues.SetValues(department);

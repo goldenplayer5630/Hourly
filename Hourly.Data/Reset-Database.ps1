@@ -4,13 +4,7 @@ dotnet ef database drop --force --yes
 
 # Step 2: Remove all existing migrations one by one
 Write-Host "Removing all existing migrations..."
-while (Test-Path "./Migrations") {
-    try {
-        dotnet ef migrations remove --force
-    } catch {
-        break
-    }
-}
+dotnet ef migrations remove --force
 
 # Step 3: Ensure the Migrations folder is gone (in case anything remains)
 if (Test-Path "./Migrations") {

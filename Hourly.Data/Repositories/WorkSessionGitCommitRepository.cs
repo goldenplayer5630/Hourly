@@ -18,12 +18,12 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<WorkSessionGitCommit?> GetById(Guid workSessionGitCommitId)
+        public async Task<WorkSessionGitCommit?> GetById(Guid workSessionId, Guid gitCommitId)
         {
             return await _context.WorkSessionGitCommits
                 .Include(wsgc => wsgc.WorkSession)
                 .Include(wsgc => wsgc.GitCommit)
-                .FirstOrDefaultAsync(wsgc => wsgc.WorkSessionId == workSessionGitCommitId);
+                .FirstOrDefaultAsync(wsgc => wsgc.WorkSessionId == workSessionId && wsgc.GitCommitId == gitCommitId);
         }
 
         public async Task<IEnumerable<WorkSessionGitCommit>> GetAll()
@@ -50,9 +50,9 @@ namespace Hourly.Data.Repositories
             }
         }
 
-        public async Task Delete(Guid workSessionGitCommitId)
+        public async Task Delete(Guid workSessionId, Guid gitCommitId)
         {
-            var existingWorkSessionGitCommit = await _context.WorkSessionGitCommits.FindAsync(workSessionGitCommitId);
+            var existingWorkSessionGitCommit = await _context.WorkSessionGitCommits.FindAsync(workSessionId, gitCommitId);
             if (existingWorkSessionGitCommit != null)
             {
                 _context.WorkSessionGitCommits.Remove(existingWorkSessionGitCommit);

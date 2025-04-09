@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Hourly.Shared.Models;
+using Hourly.Data.Persistence.Converters;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
@@ -25,12 +26,6 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.GitAccessToken)
                 .IsRequired(false);
 
-            builder.Property(x => x.CreatedAt)
-                .IsRequired();
-
-            builder.Property(x => x.UpdatedAt)
-                .IsRequired();
-
             builder.HasOne(x => x.Role)
                 .WithMany(r => r.Users)
                 .IsRequired(false)
@@ -48,6 +43,14 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasMany(x => x.GitCommits)
                 .WithOne(gc => gc.Author)
                 .HasForeignKey(gc => gc.AuthorId);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired()
+                .HasConversion(DateTimeConverter.UtcDateTimeConverter);
+
+            builder.Property(x => x.UpdatedAt)
+                .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
+
         }
     }
 

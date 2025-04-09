@@ -10,7 +10,7 @@ namespace Hourly.Shared.Models
     public class GitRepository
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         public string ExtRepositoryId { get; set; }
@@ -27,8 +27,8 @@ namespace Hourly.Shared.Models
         public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; init; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; init; }
     }
 }
