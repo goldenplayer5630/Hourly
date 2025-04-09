@@ -1,10 +1,4 @@
-﻿using Hourly.Shared.Models;
-using Hourly.Tests.Data.Utilities.Factories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hourly.Tests.Data.Utilities.Factories;
 
 namespace Hourly.Tests.Data.Utilities
 {

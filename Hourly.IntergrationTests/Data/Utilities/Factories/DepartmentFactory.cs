@@ -1,10 +1,5 @@
-﻿using Hourly.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bogus;
+﻿using Bogus;
+using Hourly.Shared.Models;
 
 namespace Hourly.Tests.Data.Utilities.Factories
 {

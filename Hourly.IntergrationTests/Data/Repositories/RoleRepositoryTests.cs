@@ -1,13 +1,8 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Data.Repositories;
+using Hourly.Shared.Models;
 using Hourly.Tests.Data.Utilities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hourly.Shared.Models;
 
 namespace Hourly.Tests.Data.Repositories
 {

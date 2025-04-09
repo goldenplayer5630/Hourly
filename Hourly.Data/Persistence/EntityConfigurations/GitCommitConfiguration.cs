@@ -1,12 +1,7 @@
-﻿using Hourly.Shared.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Hourly.Data.Persistence.Converters;
+using Hourly.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hourly.Data.Persistence.Converters;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {

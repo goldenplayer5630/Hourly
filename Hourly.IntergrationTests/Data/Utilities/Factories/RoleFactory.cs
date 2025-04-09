@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bogus;
+﻿using Bogus;
 using Hourly.Shared.Models;
 
 namespace Hourly.Tests.Data.Utilities.Factories
@@ -12,7 +7,7 @@ namespace Hourly.Tests.Data.Utilities.Factories
     {
         public static List<Role> CreateRoles()
         {
-            var roles = new[] { "Admin", "User", "Guest", "Overflow1", "Overflow2"};
+            var roles = new[] { "Admin", "User", "Guest", "Overflow1", "Overflow2" };
 
             var count = roles.Length;
 

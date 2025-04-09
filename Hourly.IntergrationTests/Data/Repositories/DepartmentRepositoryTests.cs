@@ -1,13 +1,8 @@
-﻿using Hourly.Tests.Data.Utilities;
+﻿using Hourly.Abstractions.Repositories;
 using Hourly.Data.Repositories;
 using Hourly.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hourly.Tests.Data.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Hourly.Abstractions.Repositories;
 
 namespace Hourly.Tests.Data.Repositories
 {
@@ -65,8 +60,9 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
-            var entity = new Department { 
-                Id = Guid.NewGuid(), 
+            var entity = new Department
+            {
+                Id = Guid.NewGuid(),
                 Name = "Finance",
             };
 

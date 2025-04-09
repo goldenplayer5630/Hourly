@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
-using Hourly.Data;
-using Hourly.Data.Repositories;
+﻿using Hourly.Data.Repositories;
 using Hourly.Shared.Models;
 using Hourly.Tests.Data.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Testcontainers.PostgreSql;
 
 namespace Hourly.Tests.Data.Repositories
 {
