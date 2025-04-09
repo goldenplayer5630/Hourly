@@ -1,6 +1,6 @@
 # Reset-Database.ps1
 Write-Host "Dropping the existing database..."
-dotnet ef database drop --force --yes
+dotnet ef database drop --force
 
 # Step 2: Remove all existing migrations one by one
 Write-Host "Removing all existing migrations..."

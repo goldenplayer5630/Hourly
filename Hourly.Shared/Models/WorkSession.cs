@@ -30,7 +30,7 @@ namespace Hourly.Shared.Models
 
         public string? OtherRemarks { get; set; }
 
-        public ICollection<WorkSessionGitCommit> WorkSessionGitCommits { get; set; } = new List<WorkSessionGitCommit>();
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
         public DateTime CreatedAt { get; init; }

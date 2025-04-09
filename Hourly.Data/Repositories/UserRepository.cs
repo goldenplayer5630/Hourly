@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Data.Repositories;
 using Hourly.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 

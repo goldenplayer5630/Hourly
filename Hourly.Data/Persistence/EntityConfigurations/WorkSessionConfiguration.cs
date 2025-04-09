@@ -15,9 +15,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .WithMany(u => u.WorkSessions)
                 .HasForeignKey(x => x.UserId);
 
-            builder.HasMany(x => x.WorkSessionGitCommits)
-                .WithOne(wsc => wsc.WorkSession)
-                .HasForeignKey(wsc => wsc.WorkSessionId);
+            builder.HasMany(x => x.GitCommits)
+                .WithMany(x => x.WorkSessions)
+                .UsingEntity(j => j.ToTable("GitCommitWorkSessions"));
 
             builder.Property(x => x.TaskDescription)
                 .HasMaxLength(500)

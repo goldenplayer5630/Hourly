@@ -1,7 +1,7 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Data.Repositories;
 using Hourly.Data.Repositories;
+using Hourly.IntergrationTests.Utilities;
 using Hourly.Shared.Models;
-using Hourly.Tests.Data.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Tests.Data.Repositories

@@ -34,9 +34,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .WithMany(r => r.GitCommits)
                 .HasForeignKey(x => x.RepositoryId);
 
-            builder.HasMany(x => x.WorkSessionGitCommits)
-                .WithOne(wsc => wsc.GitCommit)
-                .HasForeignKey(wsc => wsc.GitCommitId);
+            builder.HasMany(x => x.WorkSessions)
+                .WithMany(x => x.GitCommits)
+                .UsingEntity(j => j.ToTable("GitCommitWorkSessions"));
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()

@@ -1,0 +1,13 @@
+﻿using Hourly.Shared.Models;
+
+namespace Hourly.Abstractions.Data.Repositories
+{
+    public interface IUserRepository
+    {
+        Task<User?> GetById(Guid userId);
+        Task<IEnumerable<User>> GetAll();
+        Task Create(User user);
+        Task Update(User user);
+        Task Delete(Guid userId);
+    }
+}

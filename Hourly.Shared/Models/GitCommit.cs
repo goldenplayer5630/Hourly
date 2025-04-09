@@ -36,7 +36,7 @@ namespace Hourly.Shared.Models
         [Required]
         public string WebUrl { get; init; }
 
-        public ICollection<WorkSessionGitCommit> WorkSessionGitCommits { get; set; } = new List<WorkSessionGitCommit>();
+        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
 
         [Required]
         public DateTime CreatedAt { get; init; }
