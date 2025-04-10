@@ -28,14 +28,17 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task Create(Department department)
+        public async Task<Department> Create(Department department)
         {
-            await _repository.Create(department);
+            department.Id = Guid.NewGuid();
+            department.CreatedAt = DateTime.UtcNow;
+            return await _repository.Create(department);
         }
 
-        public async Task Update(Department department)
+        public async Task<Department> Update(Department department)
         {
-            await _repository.Update(department);
+            department.UpdatedAt = DateTime.UtcNow;
+            return await _repository.Update(department);
         }
 
         public async Task Delete(Guid departmentId)

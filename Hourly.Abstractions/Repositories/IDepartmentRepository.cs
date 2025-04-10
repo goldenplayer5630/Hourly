@@ -6,8 +6,8 @@ namespace Hourly.Abstractions.Repositories
     {
         Task<Department?> GetById(Guid departmentId);
         Task<IEnumerable<Department>> GetAll();
-        Task Create(Department department);
-        Task Update(Department department);
+        Task<Department> Create(Department department);
+        Task<Department> Update(Department department);
         Task Delete(Guid departmentId);
     }
 }

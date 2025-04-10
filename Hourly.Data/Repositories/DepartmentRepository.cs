@@ -1,4 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,14 @@ namespace Hourly.Data.Repositories
 
         public async Task<Department?> GetById(Guid departmentId)
         {
-            return await _context.Departments.FindAsync(departmentId);
+            var ressult = await _context.Departments.FindAsync(departmentId);
+
+            if (ressult == null)
+            {
+                throw new EntityNotFoundException("Department not found!");
+            }
+
+            return ressult;
         }
 
         public async Task<IEnumerable<Department>> GetAll()
@@ -22,29 +30,39 @@ namespace Hourly.Data.Repositories
             return await _context.Departments.ToListAsync();
         }
 
-        public async Task Create(Department department)
+        public async Task<Department> Create(Department department)
         {
             await _context.Departments.AddAsync(department);
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
+
         }
 
-        public async Task Update(Department department)
+        public async Task<Department> Update(Department department)
         {
             var existingDepartment = await _context.Departments.FindAsync(department.Id);
-            if (existingDepartment != null)
+            if (existingDepartment == null)
             {
-                _context.Entry(existingDepartment).CurrentValues.SetValues(department);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Department not found!");
             }
+
+            _context.Entry(existingDepartment).CurrentValues.SetValues(department);
+            var result = await _context.SaveChangesAsync();
+
+            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
         }
 
         public async Task Delete(Guid departmentId)
         {
             var existingDepartment = await _context.Departments.FindAsync(departmentId);
-            if (existingDepartment != null)
+
+            if (existingDepartment == null)
             {
-                _context.Departments.Remove(existingDepartment);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Department not found!");
             }
+
+            _context.Departments.Remove(existingDepartment);
+            await _context.SaveChangesAsync();
         }
     }
 }

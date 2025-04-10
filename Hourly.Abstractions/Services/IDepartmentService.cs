@@ -9,8 +9,8 @@ namespace Hourly.Abstractions.Services
     {
         Task<IEnumerable<Department>> GetAll();
         Task<Department?> GetById(Guid id);
-        Task Create(Department department);
-        Task Update(Department department);
+        Task<Department> Create(Department department);
+        Task<Department> Update(Department department);
         Task Delete(Guid id);
     }
 }
