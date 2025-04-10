@@ -34,9 +34,6 @@ namespace Hourly.IntergrationTests.Utilities
 
             // Saving data to testdatabase
             await context.SaveChangesAsync();
-
-
-            var workSessionGitCommits = await context.WorkSessions.ToListAsync();
         }
     }
 }

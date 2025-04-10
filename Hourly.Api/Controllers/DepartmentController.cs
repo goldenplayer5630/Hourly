@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Hourly.Shared.Models;
-using Hourly.Abstractions.Domain.Services;
+using Hourly.Shared.Entities;
+using Hourly.Abstractions.Services;
 
 namespace Hourly.Api.Controllers
 {
@@ -34,17 +34,18 @@ namespace Hourly.Api.Controllers
             return Ok(department);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateDepartment([FromBody] Department department)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> CreateDepartment([FromBody] Department department)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    var createdDepartment = await _departmentService.Create(department);
-        //    return CreatedAtAction(nameof(GetDepartmentById), new { id = createdDepartment.Id }, createdDepartment);
-        //}
+            await _departmentService.Create(department);
+            return Created();
+            //return CreatedAtAction(nameof(GetDepartmentById), new { id = createdDepartment.Id }, createdDepartment);
+        }
 
         //[HttpPut("{id}")]
         //public async Task<IActionResult> UpdateDepartment(Guid id, [FromBody] Department department)

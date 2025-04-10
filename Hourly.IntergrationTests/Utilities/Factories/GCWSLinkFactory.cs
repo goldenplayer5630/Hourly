@@ -1,4 +1,4 @@
-﻿using Hourly.Shared.Models;
+﻿using Hourly.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

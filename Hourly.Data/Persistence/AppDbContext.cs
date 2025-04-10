@@ -1,4 +1,4 @@
-﻿using Hourly.Shared.Models;
+﻿using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext

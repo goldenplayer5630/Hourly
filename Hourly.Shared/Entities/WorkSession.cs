@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hourly.Shared.Models
+namespace Hourly.Shared.Entities
 {
     public class WorkSession
     {

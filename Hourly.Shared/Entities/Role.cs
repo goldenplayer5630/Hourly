@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hourly.Shared.Models
+namespace Hourly.Shared.Entities
 {
-    public class Department
+    public class Role
     {
         [Key]
         public Guid Id { get; init; }
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Permissions { get; set; } // Store as JSON string
 
         public ICollection<User> Users { get; set; } = new List<User>();
 

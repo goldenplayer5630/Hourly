@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Data.Repositories;
-using Hourly.Shared.Models;
+﻿using Hourly.Abstractions.Repositories;
+using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Data.Repositories

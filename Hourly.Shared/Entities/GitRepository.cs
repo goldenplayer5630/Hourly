@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hourly.Shared.Models
+namespace Hourly.Shared.Entities
 {
     public class GitRepository
     {

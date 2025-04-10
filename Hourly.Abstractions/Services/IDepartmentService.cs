@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hourly.Shared.Models;
+using Hourly.Shared.Entities;
 
-namespace Hourly.Abstractions.Domain.Services
+namespace Hourly.Abstractions.Services
 {
     public interface IDepartmentService
     {

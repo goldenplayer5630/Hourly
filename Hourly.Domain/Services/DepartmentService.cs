@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Hourly.Abstractions.Data.Repositories;
-using Hourly.Abstractions.Domain.Services;
-using Hourly.Shared.Models;
+using Hourly.Abstractions.Repositories;
+using Hourly.Abstractions.Services;
+using Hourly.Shared.Entities;
 
 namespace Hourly.Domain.Services
 {

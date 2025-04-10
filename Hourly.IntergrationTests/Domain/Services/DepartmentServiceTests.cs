@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bogus;
-using Hourly.Abstractions.Domain.Services;
 using Hourly.Domain.Services;
 using Hourly.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Hourly.IntergrationTests.Utilities;
+using Hourly.Abstractions.Services;
 
 namespace Hourly.IntergrationTests.Domain.Services
 {

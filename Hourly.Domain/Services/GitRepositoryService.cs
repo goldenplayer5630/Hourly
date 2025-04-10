@@ -1,6 +1,6 @@
-﻿using Hourly.Abstractions.Data.Repositories;
-using Hourly.Abstractions.Domain.Services;
-using Hourly.Shared.Models;
+﻿using Hourly.Abstractions.Repositories;
+using Hourly.Abstractions.Services;
+using Hourly.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

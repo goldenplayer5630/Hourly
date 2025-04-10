@@ -1,6 +1,6 @@
-﻿using Hourly.Shared.Models;
+﻿using Hourly.Shared.Entities;
 
-namespace Hourly.Abstractions.Data.Repositories
+namespace Hourly.Abstractions.Repositories
 {
     public interface IRoleRepository
     {
