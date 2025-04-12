@@ -11,8 +11,7 @@ namespace Hourly.Abstractions.Services
     {
         Task<IEnumerable<GitCommit>> GetAll();
         Task<GitCommit?> GetById(Guid id);
-        Task Create(GitCommit gitCommit);
-        Task Update(GitCommit gitCommit);
+        Task<GitCommit> Create(GitCommit gitCommit);
         Task Delete(Guid id);
     }
 }

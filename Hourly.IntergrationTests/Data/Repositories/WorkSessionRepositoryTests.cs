@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class WorkSessionRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class WorkSessionRepositoryTests : IntergrationTestBase
     {
         private WorkSessionRepository _workSessionRepository;
 

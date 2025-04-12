@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hourly.Shared.Entities;
-using Riok.Mapperly.Abstractions;
-using Hourly.Abstractions.Contracts.Responses.Department;
-using Hourly.Abstractions.Contracts.Requests.Department;
+using Hourly.Abstractions.Contracts.Responses.DepartmentResponse;
+using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
 
 namespace Hourly.Abstractions.Mappers
 {

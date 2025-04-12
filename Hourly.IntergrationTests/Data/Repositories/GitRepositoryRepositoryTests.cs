@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class GitRepositoryRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class GitRepositoryRepositoryTests : IntergrationTestBase
     {
         private IGitRepositoryRepository _gitRepositoryRepository;
 

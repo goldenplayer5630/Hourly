@@ -28,14 +28,11 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task Create(GitCommit gitCommit)
+        public async Task<GitCommit> Create(GitCommit gitCommit)
         {
-            await _repository.Create(gitCommit);
-        }
-
-        public async Task Update(GitCommit gitCommit)
-        {
-            await _repository.Update(gitCommit);
+            gitCommit.Id = Guid.NewGuid();
+            gitCommit.CreatedAt = DateTime.UtcNow;
+            return await _repository.Create(gitCommit);
         }
 
         public async Task Delete(Guid gitCommitId)

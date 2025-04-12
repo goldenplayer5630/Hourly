@@ -35,6 +35,16 @@ namespace Hourly.Domain.Services
             return await _repository.Create(department);
         }
 
+        public async Task<Department> AddUser(Guid departmentId, Guid userId)
+        {
+            return await _repository.AddUser(departmentId, userId);
+        }
+
+        public async Task<Department> RemoveUser(Guid departmentId, Guid userId)
+        {
+            return await _repository.RemoveUser(departmentId, userId);
+        }
+
         public async Task<Department> Update(Department department)
         {
             department.UpdatedAt = DateTime.UtcNow;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hourly.Shared.Entities;
 using Hourly.Abstractions.Services;
 using Hourly.Abstractions.Mappers;
-using Hourly.Abstractions.Contracts.Requests.Department;
+using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
 using Hourly.Abstractions.Exceptions;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -17,7 +17,7 @@ namespace Hourly.Api.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<DepartmentController> _logger;
 
-        public DepartmentController(IDepartmentService departmentService, Logger<DepartmentController> logger)
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger)
         {
             _departmentService = departmentService;
             _logger = logger;
@@ -39,12 +39,12 @@ namespace Hourly.Api.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDepartmentById(Guid id)
+        [HttpGet("{departmentId}")]
+        public async Task<IActionResult> GetDepartmentById(Guid departmentId)
         {
             try
             {
-                var result = await _departmentService.GetById(id);
+                var result = await _departmentService.GetById(departmentId);
                 return Ok(result);
             } 
             catch (EntityNotFoundException ex)
@@ -89,15 +89,61 @@ namespace Hourly.Api.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDepartment(Guid id, [FromBody] UpdateDepartmentRequest request)
+        [HttpPost("{departmentId}/AddUser/{userId}")]
+        public async Task<IActionResult> AddUser(Guid departmentId, Guid userId)
+        {
+            try
+            {
+                var result = await _departmentService.AddUser(departmentId, userId);
+                return Ok(result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while adding a user to a department.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPost("{departmentId}/RemoveUser/{userId}")]
+        public async Task<IActionResult> RemoveUser(Guid departmentId, Guid userId)
+        {
+            try
+            {
+                var result = await _departmentService.RemoveUser(departmentId, userId);
+                return Ok(result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while removing a user from a department.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPut("{departmentId}")]
+        public async Task<IActionResult> UpdateDepartment(Guid departmentId, [FromBody] UpdateDepartmentRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var department = request.ToDepartment(id);
+            var department = request.ToDepartment(departmentId);
 
             try
             {
@@ -119,12 +165,12 @@ namespace Hourly.Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDepartment(Guid id)
+        [HttpDelete("{departmentId}")]
+        public async Task<IActionResult> DeleteDepartment(Guid departmentId)
         {
             try
             {
-                await _departmentService.Delete(id);
+                await _departmentService.Delete(departmentId);
                 return Ok();
             }
             catch (EntityNotFoundException ex)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class GitCommitRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class GitCommitRepositoryTests : IntergrationTestBase
     {
         private IGitCommitRepository _gitCommitRepository;
 
@@ -79,23 +79,6 @@ namespace Hourly.Tests.Data.Repositories
             // Assert
             Assert.NotNull(result);
             Assert.Equal(entity.Title, result.Title);
-        }
-
-        [Fact]
-        public async Task Update_ShouldUpdateEntity()
-        {
-            // Arrange
-            var existing = await _dbContext.GitCommits.FirstAsync();
-            var newUser = await _dbContext.Users.FirstAsync();
-            existing.AuthorId = newUser.Id;
-
-            // Act
-            await _gitCommitRepository.Update(existing);
-            var result = await _dbContext.GitCommits.FindAsync(existing.Id);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(newUser.Id, result.AuthorId);
         }
 
         [Fact]

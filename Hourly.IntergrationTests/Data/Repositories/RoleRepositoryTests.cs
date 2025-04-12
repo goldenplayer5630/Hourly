@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Tests.Data.Repositories
 {
-    public class RoleRepositoryTests : IntergrationTestBase, IRepositoryTests
+    public class RoleRepositoryTests : IntergrationTestBase
     {
         private IRoleRepository _roleRepository;
 

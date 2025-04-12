@@ -38,6 +38,46 @@ namespace Hourly.Data.Repositories
 
         }
 
+        public async Task<Department> AddUser(Guid departmentId, Guid userId)
+        {
+            var department = await _context.Departments.FindAsync(departmentId);
+
+            if (department == null)
+            {
+                throw new EntityNotFoundException("Department not found!");
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("User not found!");
+            }
+
+            department.Users.Add(user);
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
+        }
+
+        public async Task<Department> RemoveUser(Guid departmentId, Guid userId)
+        {
+            var department = await _context.Departments.FindAsync(departmentId);
+            if (department == null)
+            {
+                throw new EntityNotFoundException("Department not found!");
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("User not found!");
+            }
+
+            department.Users.Remove(user);
+            var result = await _context.SaveChangesAsync();
+
+            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
+        }
+
         public async Task<Department> Update(Department department)
         {
             var existingDepartment = await _context.Departments.FindAsync(department.Id);

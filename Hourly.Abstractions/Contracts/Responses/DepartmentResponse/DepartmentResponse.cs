@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hourly.Abstractions.Contracts.Responses.Department
+namespace Hourly.Abstractions.Contracts.Responses.DepartmentResponse
 {
     public class DepartmentResponse
     {
