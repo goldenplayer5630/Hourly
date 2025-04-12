@@ -10,9 +10,9 @@ namespace Hourly.Abstractions.Services
     public interface IRoleService
     {
         Task<IEnumerable<Role>> GetAll();
-        Task<Role?> GetById(Guid id);
+        Task<Role?> GetById(Guid roleId);
         Task Create(Role role);
         Task Update(Role role);
-        Task Delete(Guid id);
+        Task Delete(Guid roleId);
     }
 }

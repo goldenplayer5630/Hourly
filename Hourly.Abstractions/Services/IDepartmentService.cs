@@ -7,12 +7,12 @@ namespace Hourly.Abstractions.Services
 {
     public interface IDepartmentService
     {
-        Task<IEnumerable<Department>> GetAll();
-        Task<Department?> GetById(Guid departmentId);
-        Task<Department> Create(Department department);
-        Task<Department> AddUser(Guid departmentId, Guid userId);
-        Task<Department> RemoveUser(Guid departmentId, Guid userId);
-        Task<Department> Update(Department department);
+        Task<IEnumerable<entity>> GetAll();
+        Task<entity?> GetById(Guid departmentId);
+        Task<entity> Create(entity department);
+        Task<entity> AddUser(Guid departmentId, Guid userId);
+        Task<entity> RemoveUser(Guid departmentId, Guid userId);
+        Task<entity> Update(entity department);
         Task Delete(Guid departmentId);
     }
 }

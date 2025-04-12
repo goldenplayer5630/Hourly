@@ -10,9 +10,9 @@ namespace Hourly.Abstractions.Services
     public interface IWorkSessionService
     {
         Task<IEnumerable<WorkSession>> GetAll();
-        Task<WorkSession?> GetById(Guid id);
+        Task<WorkSession?> GetById(Guid workSessionId);
         Task Create(WorkSession workSession);
         Task Update(WorkSession workSession);
-        Task Delete(Guid id);
+        Task Delete(Guid workSessionId);
     }
 }

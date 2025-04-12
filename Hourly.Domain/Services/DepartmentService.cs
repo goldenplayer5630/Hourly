@@ -18,34 +18,34 @@ namespace Hourly.Domain.Services
             _repository = repository;
         }
 
-        public async Task<Department?> GetById(Guid departmentId)
+        public async Task<entity?> GetById(Guid departmentId)
         {
             return await _repository.GetById(departmentId);
         }
 
-        public async Task<IEnumerable<Department>> GetAll()
+        public async Task<IEnumerable<entity>> GetAll()
         {
             return await _repository.GetAll();
         }
 
-        public async Task<Department> Create(Department department)
+        public async Task<entity> Create(entity department)
         {
             department.Id = Guid.NewGuid();
             department.CreatedAt = DateTime.UtcNow;
             return await _repository.Create(department);
         }
 
-        public async Task<Department> AddUser(Guid departmentId, Guid userId)
+        public async Task<entity> AddUser(Guid departmentId, Guid userId)
         {
             return await _repository.AddUser(departmentId, userId);
         }
 
-        public async Task<Department> RemoveUser(Guid departmentId, Guid userId)
+        public async Task<entity> RemoveUser(Guid departmentId, Guid userId)
         {
             return await _repository.RemoveUser(departmentId, userId);
         }
 
-        public async Task<Department> Update(Department department)
+        public async Task<entity> Update(entity department)
         {
             department.UpdatedAt = DateTime.UtcNow;
             return await _repository.Update(department);

@@ -11,8 +11,9 @@ namespace Hourly.Abstractions.Services
     {
         Task<IEnumerable<GitRepository>> GetAll();
         Task<GitRepository?> GetById(Guid id);
-        Task Create(GitRepository gitRepository);
-        Task Update(GitRepository gitRepository);
+        Task<GitRepository> Create(GitRepository gitRepository);
+        Task<GitRepository> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId);
+        Task<GitRepository> Update(GitRepository gitRepository);
         Task Delete(Guid id);
     }
 }

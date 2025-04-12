@@ -1,6 +1,7 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using Hourly.Abstractions.Exceptions;
 
 namespace Hourly.Data.Repositories
 {
@@ -23,20 +24,42 @@ namespace Hourly.Data.Repositories
             return await _context.GitRepositories.ToListAsync();
         }
 
-        public async Task Create(GitRepository gitRepository)
+        public async Task<GitRepository> Create(GitRepository gitRepository)
         {
             await _context.GitRepositories.AddAsync(gitRepository);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task Update(GitRepository gitRepository)
+        public async Task<GitRepository> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId)
+        {
+            var gitRepository = await _context.GitRepositories.FindAsync(gitRepositoryId);
+            if (gitRepository == null)
+            {
+                throw new EntityNotFoundException("Git repository not found!");
+            }
+
+            var gitCommit = await _context.GitCommits.FindAsync(gitCommitId);
+            if (gitCommit == null)
+            {
+                throw new EntityNotFoundException("GIT Commit not found!");
+            }
+            gitRepository.GitCommits.Add(gitCommit);
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
+        }
+
+        public async Task<GitRepository> Update(GitRepository gitRepository)
         {
             var existingGitRepository = await _context.Roles.FindAsync(gitRepository.Id);
-            if (existingGitRepository != null)
+            if (existingGitRepository == null)
             {
-                _context.Entry(existingGitRepository).CurrentValues.SetValues(gitRepository);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Git repository not found!");
             }
+
+            _context.Entry(existingGitRepository).CurrentValues.SetValues(gitRepository);
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
         }
 
         public async Task Delete(Guid gitRepositoryId)

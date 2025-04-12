@@ -11,7 +11,7 @@ namespace Hourly.Abstractions.Mappers
 {
     public static partial class DepartmentMapper
     {
-        public static DepartmentResponse ToResponse(this Department department)
+        public static DepartmentResponse ToResponse(this entity department)
         {
             return new DepartmentResponse
             {
@@ -23,17 +23,17 @@ namespace Hourly.Abstractions.Mappers
             };
         }
 
-        public static Department ToDepartment(this CreateDepartmentRequest request)
+        public static entity ToDepartment(this CreateDepartmentRequest request)
         {
-            return new Department
+            return new entity
             {
                 Name = request.Name
             };
         }
 
-        public static Department ToDepartment(this UpdateDepartmentRequest request, Guid id)
+        public static entity ToDepartment(this UpdateDepartmentRequest request, Guid id)
         {
-            return new Department
+            return new entity
             {
                 Id = id,
                 Name = request.Name

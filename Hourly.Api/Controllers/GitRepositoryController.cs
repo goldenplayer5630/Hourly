@@ -1,12 +1,164 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
+using Hourly.Abstractions.Mappers;
+using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Services;
+using Hourly.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class GitRepositoryController : Controller
     {
-        public IActionResult Index()
+        private readonly IGitRepositoryService _gitRepositoryService;
+        private readonly ILogger<GitRepositoryController> _logger;
+
+        public GitRepositoryController(IGitRepositoryService gitRepositoryService, ILogger<GitRepositoryController> logger)
         {
-            return View();
+            _gitRepositoryService = gitRepositoryService;
+            _logger = logger;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllGitRepositories()
+        {
+            try
+            {
+                var gitRepositories = await _gitRepositoryService.GetAll();
+                return Ok(gitRepositories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving gitRepositorys.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+
+        }
+
+        [HttpGet("{gitRepositoryId}")]
+        public async Task<IActionResult> GetGitRepositoryById(Guid gitRepositoryId)
+        {
+            try
+            {
+                var result = await _gitRepositoryService.GetById(gitRepositoryId);
+                return Ok(result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGitRepository([FromBody] CreateGitRepositoryRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var gitRepository = request.ToGitRepository();
+
+            try
+            {
+                var created = await _gitRepositoryService.Create(gitRepository);
+                return CreatedAtAction(nameof(GetGitRepositoryById), new { id = created.Id }, created.ToResponse());
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details for diagnostics
+                _logger.LogError(ex, "An unexpected error occurred while updating a gitRepository.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPost("{gitRepositoryId}/AddGitCommit/{gitCommitId}")]
+        public async Task<IActionResult> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId)
+        {
+            try
+            {
+                var result = await _gitRepositoryService.AddGitCommit(gitRepositoryId, gitCommitId);
+                return Ok(result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while adding a gitCommit to a gitRepository.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPut("{gitRepositoryId}")]
+        public async Task<IActionResult> UpdateGitRepository(Guid gitRepositoryId, [FromBody] UpdateGitRepositoryRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var gitRepository = request.ToGitRepository(gitRepositoryId);
+
+            try
+            {
+                var updated = await _gitRepositoryService.Update(gitRepository);
+                return Ok(updated);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while updating a gitRepository.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpDelete("{gitRepositoryId}")]
+        public async Task<IActionResult> DeleteGitRepository(Guid gitRepositoryId)
+        {
+            try
+            {
+                await _gitRepositoryService.Delete(gitRepositoryId);
+                return Ok();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while deleting a gitRepository.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
     }
 }

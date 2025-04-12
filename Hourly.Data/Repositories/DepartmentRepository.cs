@@ -13,7 +13,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<Department?> GetById(Guid departmentId)
+        public async Task<entity?> GetById(Guid departmentId)
         {
             var ressult = await _context.Departments.FindAsync(departmentId);
 
@@ -25,12 +25,12 @@ namespace Hourly.Data.Repositories
             return ressult;
         }
 
-        public async Task<IEnumerable<Department>> GetAll()
+        public async Task<IEnumerable<entity>> GetAll()
         {
             return await _context.Departments.ToListAsync();
         }
 
-        public async Task<Department> Create(Department department)
+        public async Task<entity> Create(entity department)
         {
             await _context.Departments.AddAsync(department);
             var result = await _context.SaveChangesAsync();
@@ -38,7 +38,7 @@ namespace Hourly.Data.Repositories
 
         }
 
-        public async Task<Department> AddUser(Guid departmentId, Guid userId)
+        public async Task<entity> AddUser(Guid departmentId, Guid userId)
         {
             var department = await _context.Departments.FindAsync(departmentId);
 
@@ -58,7 +58,7 @@ namespace Hourly.Data.Repositories
             return (result > 0 ? department : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<Department> RemoveUser(Guid departmentId, Guid userId)
+        public async Task<entity> RemoveUser(Guid departmentId, Guid userId)
         {
             var department = await _context.Departments.FindAsync(departmentId);
             if (department == null)
@@ -78,7 +78,7 @@ namespace Hourly.Data.Repositories
             return (result > 0 ? department : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<Department> Update(Department department)
+        public async Task<entity> Update(entity department)
         {
             var existingDepartment = await _context.Departments.FindAsync(department.Id);
             if (existingDepartment == null)
