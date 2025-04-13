@@ -1,5 +1,5 @@
 ﻿using Hourly.Abstractions.Contracts.Requests.GitCommitRequests;
-using Hourly.Abstractions.Contracts.Responses.GitCommitResponse;
+using Hourly.Abstractions.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,14 +17,31 @@ namespace Hourly.Abstractions.Mappers
             {
                 Id = entity.Id,
                 RepositoryId = entity.RepositoryId,
+                Repository = entity.Repository.ToSummaryResponse(),
+                ExtCommitId = entity.ExtCommitId,
+                ExtCommitShortId = entity.ExtCommitShortId,
+                Title = entity.Title,
+                Comment = entity.Comment,
+                AuthorId = entity.AuthorId,
+                Author = entity.Author.ToSummaryResponse(),
+                WebUrl = entity.WebUrl,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
+
+        public static GitCommitSummaryResponse ToSummaryResponse(this GitCommit entity)
+        {
+            return new GitCommitSummaryResponse
+            {
+                Id = entity.Id,
+                RepositoryId = entity.RepositoryId,
                 ExtCommitId = entity.ExtCommitId,
                 ExtCommitShortId = entity.ExtCommitShortId,
                 Title = entity.Title,
                 Comment = entity.Comment,
                 AuthorId = entity.AuthorId,
                 WebUrl = entity.WebUrl,
-                CreatedAt = entity.CreatedAt,
-                UpdatedAt = entity.UpdatedAt
             };
         }
 
@@ -32,7 +49,6 @@ namespace Hourly.Abstractions.Mappers
         {
             return new GitCommit
             {
-                RepositoryId = response.RepositoryId,
                 ExtCommitId = response.ExtCommitId,
                 ExtCommitShortId = response.ExtCommitShortId,
                 Title = response.Title,

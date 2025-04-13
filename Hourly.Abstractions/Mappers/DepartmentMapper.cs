@@ -4,36 +4,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hourly.Shared.Entities;
-using Hourly.Abstractions.Contracts.Responses.DepartmentResponse;
+using Hourly.Abstractions.Contracts.Responses.DepartmentResponses;
 using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
 
 namespace Hourly.Abstractions.Mappers
 {
     public static partial class DepartmentMapper
     {
-        public static DepartmentResponse ToResponse(this entity department)
+        public static DepartmentResponse ToResponse(this Department department)
         {
             return new DepartmentResponse
             {
                 Id = department.Id,
                 Name = department.Name,
-                Users = department.Users,
+                Users = department.Users.Select(user => user.ToSummaryResponse()).ToList(),
                 CreatedAt = department.CreatedAt,
                 UpdatedAt = department.UpdatedAt
             };
         }
 
-        public static entity ToDepartment(this CreateDepartmentRequest request)
+        public static DepartmentSummaryResponse ToSummaryResponse(this Department department)
         {
-            return new entity
+            return new DepartmentSummaryResponse
+            {
+                Id = department.Id,
+                Name = department.Name,
+                CreatedAt = department.CreatedAt,
+                UpdatedAt = department.UpdatedAt
+            };
+        }
+
+        public static Department ToDepartment(this CreateDepartmentRequest request)
+        {
+            return new Department
             {
                 Name = request.Name
             };
         }
 
-        public static entity ToDepartment(this UpdateDepartmentRequest request, Guid id)
+        public static Department ToDepartment(this UpdateDepartmentRequest request, Guid id)
         {
-            return new entity
+            return new Department
             {
                 Id = id,
                 Name = request.Name

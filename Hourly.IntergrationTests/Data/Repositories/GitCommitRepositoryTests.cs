@@ -60,10 +60,12 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
+            var existingRepository = await _dbContext.GitRepositories.FirstAsync();
+            var existingUser = await _dbContext.Users.FirstAsync();
+
             var entity = new GitCommit
             {
                 Id = Guid.NewGuid(),
-                RepositoryId = Guid.NewGuid(),
                 ExtCommitId = "258958b9da4fe91f52c62c32eddade9cb8ee4828",
                 ExtCommitShortId = "258958b",
                 Title = "Initial commit",
@@ -71,6 +73,9 @@ namespace Hourly.Tests.Data.Repositories
                 CreatedAt = DateTime.UtcNow,
                 WebUrl = "http://example.com"
             };
+
+            entity.AssignToRepository(existingRepository);
+            entity.AssignToAuthor(existingUser);
 
             // Act
             await _gitCommitRepository.Create(entity);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Hourly.Abstractions.Contracts.Responses.GitRepositoryResponse;
+using Hourly.Abstractions.Contracts.Responses.GitRepositoryResponses;
 using Hourly.Shared.Entities;
 using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
 
@@ -21,9 +21,21 @@ namespace Hourly.Abstractions.Mappers
                 Name = entity.Name,
                 Namespace = entity.Namespace,
                 WebUrl = entity.WebUrl,
-                GitCommits = entity.GitCommits,
+                GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
+            };
+        }
+
+        public static GitRepositorySummaryResponse ToSummaryResponse(this GitRepository entity)
+        {
+            return new GitRepositorySummaryResponse
+            {
+                Id = entity.Id,
+                ExtRepositoryId = entity.ExtRepositoryId,
+                Name = entity.Name,
+                Namespace = entity.Namespace,
+                WebUrl = entity.WebUrl,
             };
         }
 

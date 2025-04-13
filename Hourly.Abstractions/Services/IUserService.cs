@@ -10,9 +10,11 @@ namespace Hourly.Abstractions.Services
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAll();
-        Task<User?> GetById(Guid userId);
-        Task Create(User user);
-        Task Update(User user);
+        Task<User> GetById(Guid userId);
+        Task<User> Create(User user);
+        Task<User> AddDepartment(Guid userId, Guid departmentId);
+        Task<User> RemoveDepartment(Guid userId);
+        Task<User> Update(User user);
         Task Delete(Guid userId);
     }
 }

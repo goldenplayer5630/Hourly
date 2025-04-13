@@ -31,27 +31,9 @@ namespace Hourly.Data.Repositories
             return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<GitRepository> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId)
-        {
-            var gitRepository = await _context.GitRepositories.FindAsync(gitRepositoryId);
-            if (gitRepository == null)
-            {
-                throw new EntityNotFoundException("Git repository not found!");
-            }
-
-            var gitCommit = await _context.GitCommits.FindAsync(gitCommitId);
-            if (gitCommit == null)
-            {
-                throw new EntityNotFoundException("GIT Commit not found!");
-            }
-            gitRepository.GitCommits.Add(gitCommit);
-            var result = await _context.SaveChangesAsync();
-            return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
-        }
-
         public async Task<GitRepository> Update(GitRepository gitRepository)
         {
-            var existingGitRepository = await _context.Roles.FindAsync(gitRepository.Id);
+            var existingGitRepository = await _context.GitRepositories.FindAsync(gitRepository.Id);
             if (existingGitRepository == null)
             {
                 throw new EntityNotFoundException("Git repository not found!");
@@ -65,11 +47,17 @@ namespace Hourly.Data.Repositories
         public async Task Delete(Guid gitRepositoryId)
         {
             var existingGitRepository = await _context.GitRepositories.FindAsync(gitRepositoryId);
-            if (existingGitRepository != null)
+            if (existingGitRepository == null)
             {
-                _context.GitRepositories.Remove(existingGitRepository);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Git repository not found!");
             }
+
+            _context.GitRepositories.Remove(existingGitRepository);
+            await _context.SaveChangesAsync();
+        }
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

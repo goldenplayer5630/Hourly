@@ -1,6 +1,8 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using Hourly.Abstractions.Exceptions;
+using System.Data;
 
 namespace Hourly.Data.Repositories
 {
@@ -15,38 +17,56 @@ namespace Hourly.Data.Repositories
 
         public async Task<User?> GetById(Guid userId)
         {
-            return await _context.Users.FindAsync(userId);
+            return await _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .ToListAsync();
         }
 
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
             await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? user : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task Update(User user)
+        public async Task<User> Update(User user)
         {
             var existingUser = await _context.Users.FindAsync(user.Id);
-            if (existingUser != null)
+            if (existingUser == null)
             {
-                _context.Entry(existingUser).CurrentValues.SetValues(user);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("User not found!");
             }
+
+            _context.Entry(existingUser).CurrentValues.SetValues(user);
+            var result = await _context.SaveChangesAsync();
+
+            return (result > 0 ? user : null) ?? throw new InvalidOperationException();
         }
 
         public async Task Delete(Guid userId)
         {
-            var user = await _context.Users.FindAsync(userId);
-            if (user != null)
+            var existingUser = await _context.Users.FindAsync(userId);
+            if (existingUser == null)
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("User not found!");
             }
+
+            _context.Users.Remove(existingUser);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

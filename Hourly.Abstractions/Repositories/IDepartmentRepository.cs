@@ -4,12 +4,11 @@ namespace Hourly.Abstractions.Repositories
 {
     public interface IDepartmentRepository
     {
-        Task<entity?> GetById(Guid departmentId);
-        Task<IEnumerable<entity>> GetAll();
-        Task<entity> Create(entity department);
-        Task<entity> AddUser(Guid departmentId, Guid userId);
-        Task<entity> RemoveUser(Guid departmentId, Guid userId);
-        Task<entity> Update(entity department);
+        Task<Department?> GetById(Guid departmentId);
+        Task<IEnumerable<Department>> GetAll();
+        Task<Department> Create(Department department);
+        Task<Department> Update(Department department);
         Task Delete(Guid departmentId);
+        Task SaveChanges();
     }
 }

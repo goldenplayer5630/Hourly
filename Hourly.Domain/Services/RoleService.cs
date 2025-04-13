@@ -1,4 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
 using System;
@@ -18,9 +19,10 @@ namespace Hourly.Domain.Services
             _repository = repository;
         }
 
-        public async Task<Role?> GetById(Guid roleId)
+        public async Task<Role> GetById(Guid roleId)
         {
-            return await _repository.GetById(roleId);
+            return await _repository.GetById(roleId)
+                ?? throw new EntityNotFoundException("Role not found!");
         }
 
         public async Task<IEnumerable<Role>> GetAll()
@@ -28,14 +30,17 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task Create(Role role)
+        public async Task<Role> Create(Role role)
         {
-            await _repository.Create(role);
+            role.Id = Guid.NewGuid();
+            role.CreatedAt = DateTime.UtcNow;
+            return await _repository.Create(role);
         }
 
-        public async Task Update(Role role)
+        public async Task<Role> Update(Role role)
         {
-            await _repository.Update(role);
+            role.UpdatedAt = DateTime.UtcNow;
+            return await _repository.Update(role);
         }
 
         public async Task Delete(Guid roleId)

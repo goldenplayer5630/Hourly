@@ -6,8 +6,9 @@ namespace Hourly.Abstractions.Repositories
     {
         Task<Role?> GetById(Guid roleId);
         Task<IEnumerable<Role>> GetAll();
-        Task Create(Role role);
-        Task Update(Role role);
+        Task<Role> Create(Role role);
+        Task<Role> Update(Role role);
         Task Delete(Guid roleId);
+        Task SaveChanges();
     }
 }

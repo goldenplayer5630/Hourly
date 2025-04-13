@@ -6,10 +6,10 @@ namespace Hourly.Shared.Entities
     public class WorkSession
     {
         [Key]
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
 
         [Required]
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
 
         [ForeignKey("UserId")]
         public User? User { get; set; }
@@ -33,8 +33,8 @@ namespace Hourly.Shared.Entities
         public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
-        public DateTime CreatedAt { get; init; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

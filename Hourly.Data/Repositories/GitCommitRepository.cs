@@ -16,14 +16,7 @@ namespace Hourly.Data.Repositories
 
         public async Task<GitCommit?> GetById(Guid gitCommitId)
         {
-            var result = await _context.GitCommits.FindAsync(gitCommitId);
-
-            if (result == null)
-            {
-                throw new EntityNotFoundException("Git commit not found!");
-            }
-
-            return result;
+            return await _context.GitCommits.FindAsync(gitCommitId);
         }
 
         public async Task<IEnumerable<GitCommit>> GetAll()
@@ -48,6 +41,11 @@ namespace Hourly.Data.Repositories
             }
 
             _context.GitCommits.Remove(existingGitCommit);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
             await _context.SaveChangesAsync();
         }
     }

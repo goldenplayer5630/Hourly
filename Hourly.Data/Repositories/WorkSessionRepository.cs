@@ -1,6 +1,7 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using Hourly.Abstractions.Exceptions;
 
 namespace Hourly.Data.Repositories
 {
@@ -15,44 +16,49 @@ namespace Hourly.Data.Repositories
 
         public async Task<WorkSession?> GetById(Guid workSessionId)
         {
-            return await _context.WorkSessions
-                .Include(ws => ws.User)
-                .Include(ws => ws.GitCommits)
-                .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
+            return await _context.WorkSessions.FindAsync(workSessionId);
         }
 
         public async Task<IEnumerable<WorkSession>> GetAll()
         {
-            return await _context.WorkSessions
-                .Include(ws => ws.User)
-                .Include(ws => ws.GitCommits)
-                .ToListAsync();
+            return await _context.WorkSessions.ToListAsync();
         }
 
-        public async Task Create(WorkSession workSession)
+        public async Task<WorkSession> Create(WorkSession workSession)
         {
             await _context.WorkSessions.AddAsync(workSession);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? workSession : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task Update(WorkSession workSession)
+        public async Task<WorkSession> Update(WorkSession workSession)
         {
             var existingWorkSession = await _context.WorkSessions.FindAsync(workSession.Id);
-            if (existingWorkSession != null)
+            if (existingWorkSession == null)
             {
-                _context.Entry(existingWorkSession).CurrentValues.SetValues(workSession);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Work session not found!");
             }
+
+            _context.Entry(existingWorkSession).CurrentValues.SetValues(workSession);
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? workSession : null) ?? throw new InvalidOperationException();
         }
 
         public async Task Delete(Guid workSessionId)
         {
             var workSession = await _context.WorkSessions.FindAsync(workSessionId);
-            if (workSession != null)
+            if (workSession == null)
             {
-                _context.WorkSessions.Remove(workSession);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Work session not found!");
             }
+
+            _context.WorkSessions.Remove(workSession);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

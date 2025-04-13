@@ -6,7 +6,7 @@ namespace Hourly.Shared.Entities
     public class User
     {
         [Key]
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -14,15 +14,16 @@ namespace Hourly.Shared.Entities
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        public Guid? RoleId { get; set; }
+        [Required]
+        public Guid RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public Role? Role { get; set; }
+        public Role Role { get; private set; }
 
-        public Guid? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; private set; }
 
         [ForeignKey("DepartmentId")]
-        public entity? Department { get; set; }
+        public Department? Department { get; private set; }
 
         public string? GitEmail { get; set; }
 
@@ -35,8 +36,41 @@ namespace Hourly.Shared.Entities
         public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
-        public DateTime CreatedAt { get; init; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+
+        public void AssignToDepartment(Department department)
+        {
+            if (DepartmentId == department.Id)
+            {
+                throw new ValidationException("User is already assigned to this department.");
+            }
+
+            DepartmentId = department.Id;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void RemoveFromDepartment()
+        {
+            if (DepartmentId == null)
+            {
+                throw new ValidationException("User is not assigned to any department.");
+            }
+
+            DepartmentId = null;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AssignRole(Role role)
+        {
+            if (RoleId == role.Id)
+            {
+                throw new ValidationException("User already has this role.");
+            }
+
+            RoleId = role.Id;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

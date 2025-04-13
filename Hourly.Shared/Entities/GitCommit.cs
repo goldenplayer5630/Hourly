@@ -9,11 +9,11 @@ namespace Hourly.Shared.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public Guid RepositoryId { get; set; }
+        public Guid RepositoryId { get; internal set; }
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository Repository { get; set; }
+        public GitRepository Repository { get; internal set; }
 
         [Required]
         public string ExtCommitId { get; set; }
@@ -42,5 +42,26 @@ namespace Hourly.Shared.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        public void AssignToRepository(GitRepository repository)
+        {
+            if (RepositoryId == repository.Id)
+            {
+                throw new ValidationException("Commit is already part of this repository.");
+            }
+
+            RepositoryId = repository.Id;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AssignToAuthor(User author)
+        {
+            if (AuthorId == author.Id)
+            {
+                throw new ValidationException("Commit is already assigned to this author.");
+            }
+            AuthorId = author.Id;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

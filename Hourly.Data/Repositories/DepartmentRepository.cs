@@ -13,72 +13,24 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<entity?> GetById(Guid departmentId)
+        public async Task<Department?> GetById(Guid departmentId)
         {
-            var ressult = await _context.Departments.FindAsync(departmentId);
-
-            if (ressult == null)
-            {
-                throw new EntityNotFoundException("Department not found!");
-            }
-
-            return ressult;
+            return await _context.Departments.FindAsync(departmentId);
         }
 
-        public async Task<IEnumerable<entity>> GetAll()
+        public async Task<IEnumerable<Department>> GetAll()
         {
             return await _context.Departments.ToListAsync();
         }
 
-        public async Task<entity> Create(entity department)
+        public async Task<Department> Create(Department department)
         {
             await _context.Departments.AddAsync(department);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? department : null) ?? throw new InvalidOperationException();
-
         }
 
-        public async Task<entity> AddUser(Guid departmentId, Guid userId)
-        {
-            var department = await _context.Departments.FindAsync(departmentId);
-
-            if (department == null)
-            {
-                throw new EntityNotFoundException("Department not found!");
-            }
-
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                throw new EntityNotFoundException("User not found!");
-            }
-
-            department.Users.Add(user);
-            var result = await _context.SaveChangesAsync();
-            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
-        }
-
-        public async Task<entity> RemoveUser(Guid departmentId, Guid userId)
-        {
-            var department = await _context.Departments.FindAsync(departmentId);
-            if (department == null)
-            {
-                throw new EntityNotFoundException("Department not found!");
-            }
-
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                throw new EntityNotFoundException("User not found!");
-            }
-
-            department.Users.Remove(user);
-            var result = await _context.SaveChangesAsync();
-
-            return (result > 0 ? department : null) ?? throw new InvalidOperationException();
-        }
-
-        public async Task<entity> Update(entity department)
+        public async Task<Department> Update(Department department)
         {
             var existingDepartment = await _context.Departments.FindAsync(department.Id);
             if (existingDepartment == null)
@@ -102,6 +54,11 @@ namespace Hourly.Data.Repositories
             }
 
             _context.Departments.Remove(existingDepartment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
             await _context.SaveChangesAsync();
         }
     }

@@ -29,7 +29,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var departments = await _departmentService.GetAll();
-                return Ok(departments);
+                return Ok(departments.Select(d => d.ToResponse()).ToList());
             }
             catch (Exception ex)
             {
@@ -85,52 +85,6 @@ namespace Hourly.Api.Controllers
             {
                 // Log the exception details for diagnostics
                 _logger.LogError(ex, "An unexpected error occurred while updating a department.");
-                return StatusCode(500, "An unexpected error occurred.");
-            }
-        }
-
-        [HttpPost("{departmentId}/AddUser/{userId}")]
-        public async Task<IActionResult> AddUser(Guid departmentId, Guid userId)
-        {
-            try
-            {
-                var result = await _departmentService.AddUser(departmentId, userId);
-                return Ok(result);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unexpected error occurred while adding a user to a department.");
-                return StatusCode(500, "An unexpected error occurred.");
-            }
-        }
-
-        [HttpPost("{departmentId}/RemoveUser/{userId}")]
-        public async Task<IActionResult> RemoveUser(Guid departmentId, Guid userId)
-        {
-            try
-            {
-                var result = await _departmentService.RemoveUser(departmentId, userId);
-                return Ok(result);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unexpected error occurred while removing a user from a department.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }

@@ -86,29 +86,6 @@ namespace Hourly.Api.Controllers
             }
         }
 
-        [HttpPost("{gitRepositoryId}/AddGitCommit/{gitCommitId}")]
-        public async Task<IActionResult> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId)
-        {
-            try
-            {
-                var result = await _gitRepositoryService.AddGitCommit(gitRepositoryId, gitCommitId);
-                return Ok(result);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unexpected error occurred while adding a gitCommit to a gitRepository.");
-                return StatusCode(500, "An unexpected error occurred.");
-            }
-        }
-
         [HttpPut("{gitRepositoryId}")]
         public async Task<IActionResult> UpdateGitRepository(Guid gitRepositoryId, [FromBody] UpdateGitRepositoryRequest request)
         {

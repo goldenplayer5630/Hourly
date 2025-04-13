@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hourly.Abstractions.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
@@ -18,9 +19,10 @@ namespace Hourly.Domain.Services
             _repository = repository;
         }
 
-        public async Task<WorkSession?> GetById(Guid workSessionId)
+        public async Task<WorkSession> GetById(Guid workSessionId)
         {
-            return await _repository.GetById(workSessionId);
+            return await _repository.GetById(workSessionId)
+                ?? throw new EntityNotFoundException("WorkSession not found!");
         }
 
         public async Task<IEnumerable<WorkSession>> GetAll()
@@ -28,14 +30,17 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task Create(WorkSession workSession)
+        public async Task<WorkSession> Create(WorkSession workSession)
         {
-            await _repository.Create(workSession);
+            workSession.Id = Guid.NewGuid();
+            workSession.CreatedAt = DateTime.UtcNow;
+            return await _repository.Create(workSession);
         }
 
-        public async Task Update(WorkSession workSession)
+        public async Task<WorkSession> Update(WorkSession workSession)
         {
-            await _repository.Update(workSession);
+            workSession.UpdatedAt = DateTime.UtcNow;
+            return await _repository.Update(workSession);
         }
 
         public async Task Delete(Guid workSessionId)

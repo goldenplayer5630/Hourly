@@ -6,8 +6,9 @@ namespace Hourly.Abstractions.Repositories
     {
         Task<WorkSession?> GetById(Guid workSessionId);
         Task<IEnumerable<WorkSession>> GetAll();
-        Task Create(WorkSession workSession);
-        Task Update(WorkSession workSession);
+        Task<WorkSession> Create(WorkSession workSession);
+        Task<WorkSession> Update(WorkSession workSession);
         Task Delete(Guid workSessionId);
+        Task SaveChanges();
     }
 }

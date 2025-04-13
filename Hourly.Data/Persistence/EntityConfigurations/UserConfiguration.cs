@@ -28,7 +28,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.HasOne(x => x.Role)
                 .WithMany(r => r.Users)
-                .IsRequired(false)
+                .IsRequired()
                 .HasForeignKey(x => x.RoleId);
 
             builder.HasOne(x => x.Department)

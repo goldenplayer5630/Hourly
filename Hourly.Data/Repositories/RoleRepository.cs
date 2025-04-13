@@ -1,6 +1,7 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using Hourly.Abstractions.Exceptions;
 
 namespace Hourly.Data.Repositories
 {
@@ -23,30 +24,41 @@ namespace Hourly.Data.Repositories
             return await _context.Roles.ToListAsync();
         }
 
-        public async Task Create(Role role)
+        public async Task<Role> Create(Role role)
         {
             await _context.Roles.AddAsync(role);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return (result > 0 ? role : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task Update(Role role)
+        public async Task<Role> Update(Role role)
         {
             var existingRole = await _context.Roles.FindAsync(role.Id);
-            if (existingRole != null)
+            if (existingRole == null)
             {
-                _context.Entry(existingRole).CurrentValues.SetValues(role);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Role not found!");
             }
+
+            _context.Entry(existingRole).CurrentValues.SetValues(role);
+            var result = await _context.SaveChangesAsync();
+
+            return (result > 0 ? role : null) ?? throw new InvalidOperationException();
         }
 
         public async Task Delete(Guid roleId)
         {
-            var role = await _context.Roles.FindAsync(roleId);
-            if (role != null)
+            var existingRole = await _context.Roles.FindAsync(roleId);
+            if (existingRole == null)
             {
-                _context.Roles.Remove(role);
-                await _context.SaveChangesAsync();
+                throw new EntityNotFoundException("Role not found!");
             }
+            _context.Roles.Remove(existingRole);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
 
     }

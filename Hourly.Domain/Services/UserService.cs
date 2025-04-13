@@ -1,4 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
 using System;
@@ -12,15 +13,20 @@ namespace Hourly.Domain.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository)
         {
             _repository = repository;
+            _departmentRepository = departmentRepository;
+            _roleRepository = roleRepository;
         }
 
-        public async Task<User?> GetById(Guid userId)
+        public async Task<User> GetById(Guid userId)
         {
-            return await _repository.GetById(userId);
+            return await _repository.GetById(userId)
+                ?? throw new EntityNotFoundException("User not found!");
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -28,14 +34,49 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
-            await _repository.Create(user);
+            user.Id = Guid.NewGuid();
+            user.CreatedAt = DateTime.UtcNow;
+            
+            var role = await _roleRepository.GetById(user.RoleId)
+                ?? throw new EntityNotFoundException("Role not found!");
+
+            user.AssignRole(role);
+
+            return await _repository.Create(user);
         }
 
-        public async Task Update(User user)
+        public async Task<User> AddDepartment(Guid userId, Guid departmentId)
         {
-            await _repository.Update(user);
+            var user = await _repository.GetById(userId)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            var department = await _departmentRepository.GetById(departmentId)
+                ?? throw new Exception("Department not found!");
+
+            user.AssignToDepartment(department);
+
+            await _repository.SaveChanges();
+
+            return user;
+        }
+
+        public async Task<User> RemoveDepartment(Guid userId)
+        {
+            var user = await _repository.GetById(userId)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            user.RemoveFromDepartment();
+
+            await _repository.SaveChanges();
+
+            return user;
+        }
+
+        public async Task<User> Update(User user)
+        {
+            return await _repository.Update(user);
         }
 
         public async Task Delete(Guid userId)

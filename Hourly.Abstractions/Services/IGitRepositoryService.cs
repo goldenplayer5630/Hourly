@@ -10,9 +10,8 @@ namespace Hourly.Abstractions.Services
     public interface IGitRepositoryService
     {
         Task<IEnumerable<GitRepository>> GetAll();
-        Task<GitRepository?> GetById(Guid id);
+        Task<GitRepository> GetById(Guid id);
         Task<GitRepository> Create(GitRepository gitRepository);
-        Task<GitRepository> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId);
         Task<GitRepository> Update(GitRepository gitRepository);
         Task Delete(Guid id);
     }

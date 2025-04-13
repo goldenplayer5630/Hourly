@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hourly.Abstractions.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
@@ -18,34 +19,25 @@ namespace Hourly.Domain.Services
             _repository = repository;
         }
 
-        public async Task<entity?> GetById(Guid departmentId)
+        public async Task<Department> GetById(Guid departmentId)
         {
-            return await _repository.GetById(departmentId);
+            return await _repository.GetById(departmentId)
+                ?? throw new EntityNotFoundException("Department not found!");
         }
 
-        public async Task<IEnumerable<entity>> GetAll()
+        public async Task<IEnumerable<Department>> GetAll()
         {
             return await _repository.GetAll();
         }
 
-        public async Task<entity> Create(entity department)
+        public async Task<Department> Create(Department department)
         {
             department.Id = Guid.NewGuid();
             department.CreatedAt = DateTime.UtcNow;
             return await _repository.Create(department);
         }
 
-        public async Task<entity> AddUser(Guid departmentId, Guid userId)
-        {
-            return await _repository.AddUser(departmentId, userId);
-        }
-
-        public async Task<entity> RemoveUser(Guid departmentId, Guid userId)
-        {
-            return await _repository.RemoveUser(departmentId, userId);
-        }
-
-        public async Task<entity> Update(entity department)
+        public async Task<Department> Update(Department department)
         {
             department.UpdatedAt = DateTime.UtcNow;
             return await _repository.Update(department);

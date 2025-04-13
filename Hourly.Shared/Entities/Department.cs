@@ -2,7 +2,7 @@
 
 namespace Hourly.Shared.Entities
 {
-    public class entity
+    public class Department
     {
         [Key]
         public Guid Id { get; set; }

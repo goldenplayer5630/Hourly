@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bogus;
-using Hourly.Domain.Services;
+﻿using Hourly.Domain.Services;
 using Hourly.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Hourly.IntergrationTests.Utilities;
 using Hourly.Abstractions.Services;
+using Hourly.Abstractions.Exceptions;
 
 namespace Hourly.IntergrationTests.Domain.Services
 {
@@ -35,14 +30,16 @@ namespace Hourly.IntergrationTests.Domain.Services
         }
 
         [Fact]
-        public async Task GetById_ShouldReturnNull_WhenNotExists()
+        public async Task GetById_ShouldThrowException_WhenNotExists()
         {
             // Arrange
             var fakeId = Guid.NewGuid();
-            // Act
-            var result = await _departmentService.GetById(fakeId);
-            // Assert
-            Assert.Null(result);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            {
+                await _departmentService.GetById(fakeId);
+            });
         }
     }
 }

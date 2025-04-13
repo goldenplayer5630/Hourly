@@ -1,6 +1,7 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
+using Hourly.Abstractions.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,10 @@ namespace Hourly.Domain.Services
             _repository = repository;
         }
 
-        public async Task<GitRepository?> GetById(Guid gitRepositoryId)
+        public async Task<GitRepository> GetById(Guid gitRepositoryId)
         {
-            return await _repository.GetById(gitRepositoryId);
+            return await _repository.GetById(gitRepositoryId)
+                ?? throw new EntityNotFoundException("GitRepository not found!");
         }
 
         public async Task<IEnumerable<GitRepository>> GetAll()
@@ -30,16 +32,14 @@ namespace Hourly.Domain.Services
 
         public async Task<GitRepository> Create(GitRepository gitRepository)
         {
+            gitRepository.Id = Guid.NewGuid();
+            gitRepository.CreatedAt = DateTime.UtcNow;
             return await _repository.Create(gitRepository);
-        }
-
-        public async Task<GitRepository> AddGitCommit(Guid gitRepositoryId, Guid gitCommitId)
-        {
-            return await _repository.AddGitCommit(gitRepositoryId, gitCommitId);
         }
 
         public async Task<GitRepository> Update(GitRepository gitRepository)
         {
+            gitRepository.UpdatedAt = DateTime.UtcNow;
             return await _repository.Update(gitRepository);
         }
 

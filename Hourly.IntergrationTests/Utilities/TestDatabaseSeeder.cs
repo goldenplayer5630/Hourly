@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.IntergrationTests.Utilities
 {
-    internal class TestDatabaseSeeder
+    public static class TestDatabaseSeeder
     {
         public static async Task SeedAsync(AppDbContext context)
         {

@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<entity> Departments { get; set; }
+    public DbSet<Department> Departments { get; set; }
     public DbSet<WorkSession> WorkSessions { get; set; }
     public DbSet<GitRepository> GitRepositories { get; set; }
     public DbSet<GitCommit> GitCommits { get; set; }

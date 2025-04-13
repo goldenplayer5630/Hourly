@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
-    public class DepartmentConfiguration : IEntityTypeConfiguration<entity>
+    public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     {
-        public void Configure(EntityTypeBuilder<entity> builder)
+        public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.HasKey(x => x.Id);
 

@@ -60,7 +60,7 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
-            var entity = new entity
+            var entity = new Department
             {
                 Id = Guid.NewGuid(),
                 Name = "Finance",

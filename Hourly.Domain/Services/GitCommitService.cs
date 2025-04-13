@@ -1,4 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
 using System;
@@ -12,15 +13,20 @@ namespace Hourly.Domain.Services
     public class GitCommitService : IGitCommitService
     {
         private readonly IGitCommitRepository _repository;
+        private readonly IGitRepositoryRepository _gitRepositoryRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GitCommitService(IGitCommitRepository repository)
+        public GitCommitService(IGitCommitRepository repository, IGitRepositoryRepository gitRepositoryRepository, IUserRepository userRepository)
         {
             _repository = repository;
+            _gitRepositoryRepository = gitRepositoryRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<GitCommit?> GetById(Guid gitCommitId)
+        public async Task<GitCommit> GetById(Guid gitCommitId)
         {
-            return await _repository.GetById(gitCommitId);
+            return await _repository.GetById(gitCommitId)
+                ?? throw new EntityNotFoundException("GitCommit not found!");
         }
 
         public async Task<IEnumerable<GitCommit>> GetAll()
@@ -32,6 +38,16 @@ namespace Hourly.Domain.Services
         {
             gitCommit.Id = Guid.NewGuid();
             gitCommit.CreatedAt = DateTime.UtcNow;
+
+            var gitRepository = await _gitRepositoryRepository.GetById(gitCommit.RepositoryId)
+                ?? throw new EntityNotFoundException("GitRepository not found!");
+
+            var author = await _userRepository.GetById(gitCommit.AuthorId)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            gitCommit.AssignToRepository(gitRepository);
+            gitCommit.AssignToAuthor(author);
+
             return await _repository.Create(gitCommit);
         }
 

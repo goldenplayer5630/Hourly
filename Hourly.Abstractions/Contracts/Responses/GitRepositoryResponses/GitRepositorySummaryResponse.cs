@@ -1,4 +1,4 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Contracts.Responses.GitCommitResponses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hourly.Abstractions.Contracts.Responses.GitRepositoryResponse
+namespace Hourly.Abstractions.Contracts.Responses.GitRepositoryResponses
 {
-    public class GitRepositoryResponse
+    public class GitRepositorySummaryResponse
     {
         [Key]
         public Guid Id { get; set; }
@@ -24,8 +24,6 @@ namespace Hourly.Abstractions.Contracts.Responses.GitRepositoryResponse
 
         [Required]
         public string WebUrl { get; set; }
-
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

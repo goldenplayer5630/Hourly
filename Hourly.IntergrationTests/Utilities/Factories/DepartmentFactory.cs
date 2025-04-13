@@ -5,9 +5,9 @@ namespace Hourly.IntergrationTests.Utilities.Factories
 {
     internal class DepartmentFactory
     {
-        public static List<entity> CreateDepartments(int count)
+        public static List<Department> CreateDepartments(int count)
         {
-            var departmentFaker = new Faker<entity>()
+            var departmentFaker = new Faker<Department>()
                 .RuleFor(d => d.Id, f => Guid.NewGuid())
                 .RuleFor(d => d.Name, f => f.Commerce.Department())
                 .RuleFor(u => u.CreatedAt, f => f.Date.Past().ToUniversalTime())

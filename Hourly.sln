@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourly.IntergrationTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourly.UnitTests", "Hourly.UnitTests\Hourly.UnitTests.csproj", "{4CCA44B5-1633-4731-9E98-936FAF7B9BD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourly.DatabaseSeeder", "Hourly.DatabaseSeeder\Hourly.DatabaseSeeder.csproj", "{0D93AACB-2737-4DB8-8F60-9BDDABE07DFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{4CCA44B5-1633-4731-9E98-936FAF7B9BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CCA44B5-1633-4731-9E98-936FAF7B9BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CCA44B5-1633-4731-9E98-936FAF7B9BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D93AACB-2737-4DB8-8F60-9BDDABE07DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D93AACB-2737-4DB8-8F60-9BDDABE07DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D93AACB-2737-4DB8-8F60-9BDDABE07DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D93AACB-2737-4DB8-8F60-9BDDABE07DFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
