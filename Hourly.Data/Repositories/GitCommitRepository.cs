@@ -20,6 +20,7 @@ namespace Hourly.Data.Repositories
                 .Include(gc => gc.WorkSessions)
                 .Include(gc => gc.Repository)
                 .Include(gc => gc.Author)
+                .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(gc => gc.Id == gitCommitId);
         }
 

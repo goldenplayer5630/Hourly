@@ -17,6 +17,7 @@ namespace Hourly.Data.Repositories
         {
             return await _context.Departments
                 .Include(d => d.Users)
+                .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(d => d.Id == departmentId);
         }
 
@@ -24,6 +25,7 @@ namespace Hourly.Data.Repositories
         {
             return await _context.Departments
             .Include(d => d.Users)
+            .ThenInclude(u => u.Role)
             .ToListAsync();
         }
 

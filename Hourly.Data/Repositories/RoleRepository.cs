@@ -18,6 +18,7 @@ namespace Hourly.Data.Repositories
         {
             return await _context.Roles
                 .Include(r => r.Users)
+                .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(r => r.Id == roleId);
         }
 
