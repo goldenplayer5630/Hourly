@@ -26,7 +26,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var workSessions = await _workSessionService.GetAll();
-                return Ok(workSessions);
+                return Ok(workSessions.Select(ws => ws.ToResponse()).ToList();
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _workSessionService.GetById(workSessionId);
-                return Ok(result);
+                return Ok(result.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {
@@ -99,7 +99,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var updated = await _workSessionService.Update(workSession);
-                return Ok(updated);
+                return Ok(updated.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {

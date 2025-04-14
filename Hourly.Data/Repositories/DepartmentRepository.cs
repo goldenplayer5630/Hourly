@@ -15,12 +15,16 @@ namespace Hourly.Data.Repositories
 
         public async Task<Department?> GetById(Guid departmentId)
         {
-            return await _context.Departments.FindAsync(departmentId);
+            return await _context.Departments
+                .Include(d => d.Users)
+                .FirstOrDefaultAsync(d => d.Id == departmentId);
         }
 
         public async Task<IEnumerable<Department>> GetAll()
         {
-            return await _context.Departments.ToListAsync();
+            return await _context.Departments
+            .Include(d => d.Users)
+            .ToListAsync();
         }
 
         public async Task<Department> Create(Department department)

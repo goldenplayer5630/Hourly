@@ -26,7 +26,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitRepositories = await _gitRepositoryService.GetAll();
-                return Ok(gitRepositories);
+                return Ok(gitRepositories.Select(gr => gr.ToResponse()).ToList());
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _gitRepositoryService.GetById(gitRepositoryId);
-                return Ok(result);
+                return Ok(result.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {
@@ -98,7 +98,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var updated = await _gitRepositoryService.Update(gitRepository);
-                return Ok(updated);
+                return Ok(updated.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {

@@ -25,7 +25,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitCommits = await _gitCommitService.GetAll();
-                return Ok(gitCommits);
+                return Ok(gitCommits.Select(gc => gc.ToResponse()).ToList());
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _gitCommitService.GetById(gitCommitId);
-                return Ok(result);
+                return Ok(result.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {

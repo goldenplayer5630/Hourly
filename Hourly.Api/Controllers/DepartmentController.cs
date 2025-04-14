@@ -45,7 +45,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _departmentService.GetById(departmentId);
-                return Ok(result);
+                return Ok(result.ToResponse());
             } 
             catch (EntityNotFoundException ex)
             {
@@ -102,7 +102,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var updated = await _departmentService.Update(department);
-                return Ok(updated);
+                return Ok(updated.ToResponse());
             }
             catch (EntityNotFoundException ex)
             {

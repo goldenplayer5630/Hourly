@@ -29,7 +29,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var users = await _userService.GetAll();
-                var response = users.Select(user => user.ToResponse());
+                var response = users.Select(user => user.ToResponse()).ToList();
                 return Ok(response);
             }
             catch (Exception ex)
