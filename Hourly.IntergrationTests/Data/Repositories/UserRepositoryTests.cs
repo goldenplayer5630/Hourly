@@ -60,11 +60,14 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
+
+            var existingRole = await _dbContext.Roles.FirstAsync();
             var entity = new User
             {
                 Id = Guid.NewGuid(),
                 Name = "John Doe",
                 Email = "john.doe@example.com",
+                RoleId = existingRole.Id,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
