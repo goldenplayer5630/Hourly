@@ -1,6 +1,6 @@
-﻿using Hourly.Shared.Exceptions;
-using Hourly.Abstractions.Repositories;
+﻿using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
+using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.Data.Repositories

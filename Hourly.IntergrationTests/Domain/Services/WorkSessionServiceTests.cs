@@ -1,12 +1,7 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Data.Repositories;
-using Hourly.IntergrationTests.Utilities;
 using Hourly.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hourly.IntergrationTests.Utilities;
 
 namespace Hourly.IntergrationTests.Domain.Services
 {

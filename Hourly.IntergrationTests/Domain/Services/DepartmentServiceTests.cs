@@ -1,8 +1,8 @@
-﻿using Hourly.Shared.Exceptions;
-using Hourly.Abstractions.Services;
+﻿using Hourly.Abstractions.Services;
 using Hourly.Data.Repositories;
 using Hourly.Domain.Services;
 using Hourly.IntergrationTests.Utilities;
+using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.IntergrationTests.Domain.Services

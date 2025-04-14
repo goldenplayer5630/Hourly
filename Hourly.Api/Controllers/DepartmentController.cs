@@ -1,7 +1,7 @@
-﻿using Hourly.Shared.Contracts.Requests.DepartmentRequests;
+﻿using Hourly.Abstractions.Services;
+using Hourly.Shared.Contracts.Requests.DepartmentRequests;
 using Hourly.Shared.Exceptions;
 using Hourly.Shared.Mappers;
-using Hourly.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
