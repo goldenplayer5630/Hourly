@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +19,7 @@ namespace Hourly.Data.Repositories
             return await _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Include(u => u.GitCommits)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
@@ -26,7 +27,6 @@ namespace Hourly.Data.Repositories
         {
             return await _context.Users
                 .Include(u => u.Role)
-                .Include(u => u.Department)
                 .ToListAsync();
         }
 

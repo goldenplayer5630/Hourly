@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Services;
 using Hourly.Data.Repositories;
 using Hourly.Domain.Services;

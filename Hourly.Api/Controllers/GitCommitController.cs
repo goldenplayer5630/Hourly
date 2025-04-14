@@ -1,6 +1,6 @@
-﻿using Hourly.Abstractions.Contracts.Requests.GitCommitRequests;
-using Hourly.Abstractions.Exceptions;
-using Hourly.Abstractions.Mappers;
+﻿using Hourly.Shared.Contracts.Requests.GitCommitRequests;
+using Hourly.Shared.Exceptions;
+using Hourly.Shared.Mappers;
 using Hourly.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,14 +25,13 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitCommits = await _gitCommitService.GetAll();
-                return Ok(gitCommits.Select(gc => gc.ToResponse()).ToList());
+                return Ok(gitCommits.Select(gc => gc.ToSummaryResponse()).ToList());
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while retrieving gitCommits.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
-
         }
 
         [HttpGet("{gitCommitId}")]
@@ -48,6 +47,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -77,6 +80,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // Log the exception details for diagnostics
@@ -98,6 +105,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }

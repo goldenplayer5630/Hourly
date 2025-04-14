@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;

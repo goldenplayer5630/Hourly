@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hourly.Shared.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Shared.Entities
@@ -47,7 +48,7 @@ namespace Hourly.Shared.Entities
         {
             if (RepositoryId == repository.Id)
             {
-                throw new ValidationException("Commit is already part of this repository.");
+                throw new DomainValidationException("Commit is already part of this repository.");
             }
 
             RepositoryId = repository.Id;
@@ -58,7 +59,7 @@ namespace Hourly.Shared.Entities
         {
             if (AuthorId == author.Id)
             {
-                throw new ValidationException("Commit is already assigned to this author.");
+                throw new DomainValidationException("Commit is already assigned to this author.");
             }
             AuthorId = author.Id;
             UpdatedAt = DateTime.UtcNow;

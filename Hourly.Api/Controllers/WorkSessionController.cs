@@ -1,6 +1,6 @@
-﻿using Hourly.Abstractions.Contracts.Requests.WorkSessionRequests;
-using Hourly.Abstractions.Exceptions;
-using Hourly.Abstractions.Mappers;
+﻿using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
+using Hourly.Shared.Exceptions;
+using Hourly.Shared.Mappers;
 using Hourly.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +25,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var workSessions = await _workSessionService.GetAll();
-                return Ok(workSessions.Select(ws => ws.ToResponse()).ToList();
+                return Ok(workSessions.Select(ws => ws.ToSummaryResponse()).ToList());
             }
             catch (Exception ex)
             {
@@ -48,6 +48,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -77,10 +81,68 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // Log the exception details for diagnostics
                 _logger.LogError(ex, "An unexpected error occurred while updating a workSession.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPost("{workSessionId}/AddGitCommit/{gitCommitId}")]
+        public async Task<IActionResult> AddGitCommit(Guid workSessionId, Guid gitCommitId)
+        {
+            try
+            {
+                var workSession = await _workSessionService.AddGitcommit(workSessionId, gitCommitId);
+                return Ok(workSession.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while adding a git commit to a work session.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPost("{workSessionId}/RemoveGitCommit/{gitCommitId}")]
+        public async Task<IActionResult> RemoveGitCommit(Guid workSessionId, Guid gitCommitId)
+        {
+            try
+            {
+                var workSession = await _workSessionService.RemoveGitCommit(workSessionId, gitCommitId);
+                return Ok(workSession.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while removing a git commit from a work session.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
@@ -108,6 +170,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while updating a workSession.");
@@ -128,6 +194,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }

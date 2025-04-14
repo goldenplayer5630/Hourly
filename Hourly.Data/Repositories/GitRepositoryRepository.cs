@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +16,16 @@ namespace Hourly.Data.Repositories
 
         public async Task<GitRepository?> GetById(Guid gitRepositoryId)
         {
-            return await _context.GitRepositories.FindAsync(gitRepositoryId);
+            return await _context.GitRepositories
+                .Include(gr => gr.GitCommits)
+                .FirstOrDefaultAsync(gr => gr.Id == gitRepositoryId);
         }
 
         public async Task<IEnumerable<GitRepository>> GetAll()
         {
-            return await _context.GitRepositories.ToListAsync();
+            return await _context.GitRepositories
+                .Include(gr => gr.GitCommits)
+                .ToListAsync();
         }
 
         public async Task<GitRepository> Create(GitRepository gitRepository)

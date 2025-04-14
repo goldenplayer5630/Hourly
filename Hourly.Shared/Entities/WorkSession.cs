@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hourly.Shared.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Shared.Entities
@@ -36,5 +37,24 @@ namespace Hourly.Shared.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        public void AddGitCommit(GitCommit gitCommit)
+        {
+            if (GitCommits.Any(gc => gc.Id == gitCommit.Id))
+            {
+                throw new DomainValidationException("Git commit is already associated with this work session.");
+            }
+
+            GitCommits.Add(gitCommit);
+        }
+
+        public void RemoveGitCommit(GitCommit gitCommit)
+        {
+            if (!GitCommits.Any(gc => gc.Id == gitCommit.Id))
+            {
+                throw new DomainValidationException("Git commit is not associated with this work session.");
+            }
+            GitCommits.Remove(gitCommit);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
@@ -8,10 +8,12 @@ namespace Hourly.Domain.Services
     public class WorkSessionService : IWorkSessionService
     {
         private readonly IWorkSessionRepository _repository;
+        private readonly IGitCommitRepository _gitCommitRepository;
 
-        public WorkSessionService(IWorkSessionRepository repository)
+        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository)
         {
             _repository = repository;
+            _gitCommitRepository = gitCommitRepository;
         }
 
         public async Task<WorkSession> GetById(Guid workSessionId)
@@ -36,6 +38,36 @@ namespace Hourly.Domain.Services
         {
             workSession.UpdatedAt = DateTime.UtcNow;
             return await _repository.Update(workSession);
+        }
+
+        public async Task<WorkSession> AddGitcommit(Guid workSessionId, Guid gitCommitId)
+        {
+            var workSession = await _repository.GetById(workSessionId)
+                ?? throw new EntityNotFoundException("WorkSession not found!");
+
+            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
+                ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
+
+            workSession.AddGitCommit(gitCommit);
+
+            await _repository.SaveChanges();
+
+            return workSession;
+        }
+
+        public async Task<WorkSession> RemoveGitCommit(Guid workSessionId, Guid gitCommitId)
+        {
+            var workSession = await _repository.GetById(workSessionId)
+                ?? throw new EntityNotFoundException("WorkSession not found!");
+
+            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
+                ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
+
+            workSession.RemoveGitCommit(gitCommit);
+
+            await _repository.SaveChanges();
+
+            return workSession;
         }
 
         public async Task Delete(Guid workSessionId)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hourly.Shared.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Shared.Entities
@@ -44,7 +45,7 @@ namespace Hourly.Shared.Entities
         {
             if (DepartmentId == department.Id)
             {
-                throw new ValidationException("User is already assigned to this department.");
+                throw new DomainValidationException("User is already assigned to this department.");
             }
 
             DepartmentId = department.Id;
@@ -55,7 +56,7 @@ namespace Hourly.Shared.Entities
         {
             if (DepartmentId == null)
             {
-                throw new ValidationException("User is not assigned to any department.");
+                throw new DomainValidationException("User is not assigned to any department.");
             }
 
             DepartmentId = null;
@@ -66,7 +67,7 @@ namespace Hourly.Shared.Entities
         {
             if (RoleId == role.Id)
             {
-                throw new ValidationException("User already has this role.");
+                throw new DomainValidationException("User already has this role.");
             }
 
             RoleId = role.Id;

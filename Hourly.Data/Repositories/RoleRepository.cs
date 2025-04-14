@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,9 @@ namespace Hourly.Data.Repositories
 
         public async Task<Role?> GetById(Guid roleId)
         {
-            return await _context.Roles.FindAsync(roleId);
+            return await _context.Roles
+                .Include(r => r.Users)
+                .FirstOrDefaultAsync(r => r.Id == roleId);
         }
 
         public async Task<IEnumerable<Role>> GetAll()

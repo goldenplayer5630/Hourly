@@ -1,4 +1,4 @@
-﻿using Hourly.Abstractions.Exceptions;
+﻿using Hourly.Shared.Exceptions;
 using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,11 @@ namespace Hourly.Data.Repositories
 
         public async Task<WorkSession?> GetById(Guid workSessionId)
         {
-            return await _context.WorkSessions.FindAsync(workSessionId);
+            return await _context.WorkSessions
+                .Include(ws => ws.GitCommits)
+                .Include(ws => ws.User)
+                .ThenInclude(u => u.Role)
+                .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }
 
         public async Task<IEnumerable<WorkSession>> GetAll()

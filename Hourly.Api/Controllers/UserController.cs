@@ -1,6 +1,6 @@
-﻿using Hourly.Abstractions.Contracts.Requests.UserRequests;
-using Hourly.Abstractions.Exceptions;
-using Hourly.Abstractions.Mappers;
+﻿using Hourly.Shared.Contracts.Requests.UserRequests;
+using Hourly.Shared.Exceptions;
+using Hourly.Shared.Mappers;
 using Hourly.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +22,12 @@ namespace Hourly.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllGitRepositories()
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
                 var users = await _userService.GetAll();
-                var response = users.Select(user => user.ToResponse()).ToList();
+                var response = users.Select(user => user.ToSummaryResponse()).ToList();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -50,6 +50,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -78,6 +82,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // Log the exception details for diagnostics
@@ -91,7 +99,7 @@ namespace Hourly.Api.Controllers
         {
             try
             {
-                var result = await _userService.AddDepartment(departmentId, userId);
+                var result = await _userService.AddDepartment(userId, departmentId);
                 return Ok(result.ToResponse());
             }
             catch (EntityNotFoundException ex)
@@ -99,6 +107,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -122,6 +134,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -154,6 +170,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while updating a user.");
@@ -174,6 +194,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }

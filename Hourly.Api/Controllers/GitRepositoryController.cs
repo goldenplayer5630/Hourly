@@ -1,6 +1,6 @@
-﻿using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
-using Hourly.Abstractions.Exceptions;
-using Hourly.Abstractions.Mappers;
+﻿using Hourly.Shared.Contracts.Requests.GitRepositoryRequests;
+using Hourly.Shared.Exceptions;
+using Hourly.Shared.Mappers;
 using Hourly.Abstractions.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +51,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
@@ -74,6 +78,10 @@ namespace Hourly.Api.Controllers
                 return CreatedAtAction(nameof(GetGitRepositoryById), new { id = created.Id }, created.ToResponse());
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -107,6 +115,10 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while updating a gitRepository.");
@@ -127,6 +139,10 @@ namespace Hourly.Api.Controllers
                 return NotFound(ex.Message);
             }
             catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
             {
                 return BadRequest(ex.Message);
             }
