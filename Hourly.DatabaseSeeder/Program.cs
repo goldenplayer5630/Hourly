@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Hourly.IntergrationTests.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Hourly.IntergrationTests.Utilities;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>

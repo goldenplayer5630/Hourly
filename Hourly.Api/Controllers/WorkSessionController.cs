@@ -2,7 +2,6 @@
 using Hourly.Abstractions.Exceptions;
 using Hourly.Abstractions.Mappers;
 using Hourly.Abstractions.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers

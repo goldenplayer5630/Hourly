@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Hourly.Shared.Entities;
-using Hourly.Abstractions.Services;
-using Hourly.Abstractions.Mappers;
-using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
+﻿using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
 using Hourly.Abstractions.Exceptions;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Hourly.Abstractions.Mappers;
+using Hourly.Abstractions.Services;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Hourly.Api.Controllers
@@ -46,7 +43,7 @@ namespace Hourly.Api.Controllers
             {
                 var result = await _departmentService.GetById(departmentId);
                 return Ok(result.ToResponse());
-            } 
+            }
             catch (EntityNotFoundException ex)
             {
                 return NotFound(ex.Message);

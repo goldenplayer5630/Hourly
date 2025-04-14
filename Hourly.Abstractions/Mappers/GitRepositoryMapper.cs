@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
 using Hourly.Abstractions.Contracts.Responses.GitRepositoryResponses;
 using Hourly.Shared.Entities;
-using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
 
 
 namespace Hourly.Abstractions.Mappers

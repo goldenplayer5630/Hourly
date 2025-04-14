@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hourly.Abstractions.Contracts.Responses.RoleResponses;
+﻿using Hourly.Abstractions.Contracts.Responses.RoleResponses;
 using Hourly.Shared.Entities;
 
 namespace Hourly.Abstractions.Mappers

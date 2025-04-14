@@ -1,10 +1,4 @@
-﻿using Hourly.Abstractions.Contracts.Responses.UserResponses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Hourly.Abstractions.Contracts.Responses.RoleResponses
 {

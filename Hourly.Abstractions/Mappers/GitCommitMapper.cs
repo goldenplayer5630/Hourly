@@ -1,11 +1,6 @@
 ﻿using Hourly.Abstractions.Contracts.Requests.GitCommitRequests;
 using Hourly.Abstractions.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hourly.Abstractions.Mappers
 {

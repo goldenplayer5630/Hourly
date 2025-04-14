@@ -2,11 +2,6 @@
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hourly.Domain.Services
 {
@@ -38,7 +33,7 @@ namespace Hourly.Domain.Services
         {
             user.Id = Guid.NewGuid();
             user.CreatedAt = DateTime.UtcNow;
-            
+
             var role = await _roleRepository.GetById(user.RoleId)
                 ?? throw new EntityNotFoundException("Role not found!");
 

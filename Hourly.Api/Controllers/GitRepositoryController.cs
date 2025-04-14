@@ -1,8 +1,7 @@
 ﻿using Hourly.Abstractions.Contracts.Requests.GitRepositoryRequests;
-using Hourly.Abstractions.Mappers;
 using Hourly.Abstractions.Exceptions;
+using Hourly.Abstractions.Mappers;
 using Hourly.Abstractions.Services;
-using Hourly.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers

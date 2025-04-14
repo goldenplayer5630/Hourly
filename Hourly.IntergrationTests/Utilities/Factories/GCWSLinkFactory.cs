@@ -1,15 +1,10 @@
 ﻿using Hourly.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hourly.IntergrationTests.Utilities.Factories
 {
     internal static class GCWSLinkFactory
     {
-        public static void LinkCommitsToWorkSessions(List<WorkSession> workSessions, List<GitCommit> gitCommits,int maxCommitsPerSession = 5)
+        public static void LinkCommitsToWorkSessions(List<WorkSession> workSessions, List<GitCommit> gitCommits, int maxCommitsPerSession = 5)
         {
             var rand = new Random();
 

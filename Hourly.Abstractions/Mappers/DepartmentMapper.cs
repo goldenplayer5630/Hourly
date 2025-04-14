@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
 using Hourly.Abstractions.Contracts.Responses.DepartmentResponses;
-using Hourly.Abstractions.Contracts.Requests.DepartmentRequests;
+using Hourly.Shared.Entities;
 
 namespace Hourly.Abstractions.Mappers
 {

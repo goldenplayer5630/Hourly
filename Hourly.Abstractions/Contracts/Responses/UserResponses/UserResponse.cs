@@ -1,16 +1,9 @@
-﻿using Hourly.Shared.Entities;
-using Hourly.Abstractions.Contracts.Responses.DepartmentResponses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hourly.Abstractions.Contracts.Responses.DepartmentResponses;
+using Hourly.Abstractions.Contracts.Responses.GitCommitResponses;
 using Hourly.Abstractions.Contracts.Responses.RoleResponses;
 using Hourly.Abstractions.Contracts.Responses.WorkSessionResponses;
-using Hourly.Abstractions.Contracts.Responses.GitCommitResponses;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Abstractions.Contracts.Responses.UserResponses
 {

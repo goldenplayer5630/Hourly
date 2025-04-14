@@ -1,6 +1,5 @@
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
-using Hourly.Data.Persistence;
 using Hourly.Data.Repositories;
 using Hourly.Domain.Services;
 using Microsoft.EntityFrameworkCore;

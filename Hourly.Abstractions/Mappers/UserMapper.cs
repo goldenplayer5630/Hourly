@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hourly.Abstractions.Contracts.Requests.UserRequests;
+﻿using Hourly.Abstractions.Contracts.Requests.UserRequests;
 using Hourly.Abstractions.Contracts.Responses.UserResponses;
 using Hourly.Shared.Entities;
 

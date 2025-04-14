@@ -1,5 +1,4 @@
 ﻿using Hourly.IntergrationTests.Utilities.Factories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hourly.IntergrationTests.Utilities
 {
