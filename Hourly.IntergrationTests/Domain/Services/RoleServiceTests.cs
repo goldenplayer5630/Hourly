@@ -14,7 +14,11 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class RoleServiceTests : IntergrationTestBase
     {
-        private IRoleService _roleService;
+        private IRoleService? _roleService;
+
+        public RoleServiceTests(PostgresTestContainerFixture fixture) : base(fixture)
+        {
+        }
 
         public async override Task InitializeAsync()
         {

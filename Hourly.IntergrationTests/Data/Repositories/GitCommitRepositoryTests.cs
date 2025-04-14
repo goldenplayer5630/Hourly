@@ -8,7 +8,11 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class GitCommitRepositoryTests : IntergrationTestBase
     {
-        private IGitCommitRepository _gitCommitRepository;
+        private IGitCommitRepository? _gitCommitRepository;
+
+        public GitCommitRepositoryTests(PostgresTestContainerFixture fixture) : base(fixture)
+        {
+        }
 
         public async override Task InitializeAsync()
         {

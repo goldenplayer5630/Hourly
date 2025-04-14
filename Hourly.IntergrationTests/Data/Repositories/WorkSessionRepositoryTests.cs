@@ -7,8 +7,11 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class WorkSessionRepositoryTests : IntergrationTestBase
     {
-        private WorkSessionRepository _workSessionRepository;
+        private WorkSessionRepository? _workSessionRepository;
 
+        public WorkSessionRepositoryTests(PostgresTestContainerFixture fixture) : base(fixture)
+        {
+        }
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();

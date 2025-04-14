@@ -12,7 +12,11 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class UserServiceTests : IntergrationTestBase
     {
-        private IUserService _userService;
+        private IUserService? _userService;
+
+        public UserServiceTests(PostgresTestContainerFixture fixture) : base(fixture)
+        {
+        }
 
         public async override Task InitializeAsync()
         {
