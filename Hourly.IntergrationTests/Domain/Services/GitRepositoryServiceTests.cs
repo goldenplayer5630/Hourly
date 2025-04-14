@@ -16,11 +16,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class GitRepositoryServiceTests : IntergrationTestBase
     {
-        private IGitRepositoryService? _gitRepositoryService;
-
-        public GitRepositoryServiceTests(PostgresTestContainerFixture fixture) : base(fixture)
-        {
-        }
+        private IGitRepositoryService _gitRepositoryService;
 
         public async override Task InitializeAsync()
         {

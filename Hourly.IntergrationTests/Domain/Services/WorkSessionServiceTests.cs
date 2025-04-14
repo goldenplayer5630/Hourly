@@ -12,11 +12,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class WorkSessionServiceTests : IntergrationTestBase
     {
-        private IWorkSessionService? _workSessionService;
-
-        public WorkSessionServiceTests(PostgresTestContainerFixture fixture) : base(fixture)
-        {
-        }
+        private IWorkSessionService _workSessionService;
 
         public async override Task InitializeAsync()
         {

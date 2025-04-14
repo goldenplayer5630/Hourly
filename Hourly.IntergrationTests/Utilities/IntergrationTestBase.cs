@@ -3,28 +3,26 @@ using Testcontainers.PostgreSql;
 
 namespace Hourly.IntergrationTests.Utilities
 {
-    public abstract class IntergrationTestBase : IAsyncLifetime, IClassFixture<PostgresTestContainerFixture>
+    public abstract class IntergrationTestBase : IAsyncLifetime
     {
         protected AppDbContext _dbContext = null!;
-        protected readonly PostgresTestContainerFixture _fixture;
+        private readonly PostgreSqlContainer _postgresContainer;
 
-        public IntergrationTestBase(PostgresTestContainerFixture fixture)
+        public IntergrationTestBase()
         {
-            _fixture = fixture;
+            _postgresContainer = new PostgreSqlBuilder().Build();
         }
 
         public virtual async Task InitializeAsync()
         {
+            await _postgresContainer.StartAsync();
+
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql(_fixture.ConnectionString)
+                .UseNpgsql(_postgresContainer.GetConnectionString())
                 .Options;
 
             _dbContext = new AppDbContext(options);
 
-            // Delete existing data if necessary
-            await _dbContext.Database.EnsureDeletedAsync();
-
-            // Create the database
             await _dbContext.Database.MigrateAsync();
 
             await TestDatabaseSeeder.SeedAsync(_dbContext);
@@ -33,6 +31,7 @@ namespace Hourly.IntergrationTests.Utilities
         public async Task DisposeAsync()
         {
             await _dbContext.DisposeAsync();
+            await _postgresContainer.StopAsync();
         }
     }
 }

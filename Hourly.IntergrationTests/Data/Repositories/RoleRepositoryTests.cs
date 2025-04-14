@@ -8,11 +8,7 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class RoleRepositoryTests : IntergrationTestBase
     {
-        private IRoleRepository? _roleRepository;
-
-        public RoleRepositoryTests(PostgresTestContainerFixture fixture) : base(fixture)
-        {
-        }
+        private IRoleRepository _roleRepository;
 
         public async override Task InitializeAsync()
         {
