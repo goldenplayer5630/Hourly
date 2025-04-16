@@ -6,7 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add CORS policy
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// Add CORS policy ??
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
@@ -16,12 +20,6 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
-
 
 // Register repositories
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -36,7 +34,7 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IGitCommitService, GitCommitService>();
 builder.Services.AddScoped<IGitRepositoryService, GitRepositoryService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>(); // NOTE: this line is duplicated above
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWorkSessionService, WorkSessionService>();
 
@@ -51,6 +49,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Enable CORS before endpoints ??
+app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
