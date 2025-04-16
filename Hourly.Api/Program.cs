@@ -6,9 +6,22 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React dev server origin
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
+
 
 // Register repositories
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
