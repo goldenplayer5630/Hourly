@@ -28,9 +28,21 @@ namespace Hourly.Api.Controllers
                 var departments = await _departmentService.GetAll();
                 return Ok(departments.Select(d => d.ToResponse()).ToList());
             }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while retrieving departments.");
+                _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
 

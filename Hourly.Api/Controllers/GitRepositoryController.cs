@@ -27,9 +27,21 @@ namespace Hourly.Api.Controllers
                 var gitRepositories = await _gitRepositoryService.GetAll();
                 return Ok(gitRepositories.Select(gr => gr.ToResponse()).ToList());
             }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while retrieving gitRepositorys.");
+                _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
 

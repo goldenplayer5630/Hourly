@@ -28,6 +28,22 @@ namespace Hourly.Data.Repositories
             return await _context.WorkSessions.ToListAsync();
         }
 
+        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month)
+        {
+            var query = _context.WorkSessions.AsQueryable();
+
+            if (userId.HasValue)
+                query = query.Where(ws => ws.UserId == userId.Value);
+
+            if (year.HasValue)
+                query = query.Where(ws => ws.StartTime.Year == year.Value);
+
+            if (month.HasValue)
+                query = query.Where(ws => ws.StartTime.Month == month.Value);
+
+            return await query.ToListAsync();
+        }
+
         public async Task<WorkSession> Create(WorkSession workSession)
         {
             await _context.WorkSessions.AddAsync(workSession);

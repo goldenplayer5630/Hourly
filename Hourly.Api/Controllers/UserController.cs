@@ -30,9 +30,21 @@ namespace Hourly.Api.Controllers
                 var response = users.Select(user => user.ToSummaryResponse()).ToList();
                 return Ok(response);
             }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while retrieving users.");
+                _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }

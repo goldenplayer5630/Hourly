@@ -27,12 +27,50 @@ namespace Hourly.Api.Controllers
                 var workSessions = await _workSessionService.GetAll();
                 return Ok(workSessions.Select(ws => ws.ToSummaryResponse()).ToList());
             }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while retrieving workSessions.");
+                _logger.LogError(ex, "An unexpected error occurred while retrieving work sessions by month.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
+        }
 
+        [HttpGet("Filter")]
+        public async Task<IActionResult> FilterWorkSessions([FromQuery] Guid? userId, [FromQuery] int? year, [FromQuery] int? month)
+        {
+            try
+            {
+                var results = await _workSessionService.Filter(userId, year, month);
+                return Ok(results.Select(ws => ws.ToResponse()));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving work sessions by month.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
 
         [HttpGet("{workSessionId}")]
