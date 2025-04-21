@@ -27,9 +27,9 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month)
+        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month, bool? wbso)
         {
-            return await _repository.Filter(userId, year, month);
+            return await _repository.Filter(userId, year, month, wbso);
         }
 
         public async Task<WorkSession> Create(WorkSession workSession)
