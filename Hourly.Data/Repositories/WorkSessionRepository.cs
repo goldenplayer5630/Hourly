@@ -28,7 +28,7 @@ namespace Hourly.Data.Repositories
             return await _context.WorkSessions.ToListAsync();
         }
 
-        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month)
+        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month, bool? wbso)
         {
             var query = _context.WorkSessions.AsQueryable();
 
@@ -40,6 +40,9 @@ namespace Hourly.Data.Repositories
 
             if (month.HasValue)
                 query = query.Where(ws => ws.StartTime.Month == month.Value);
+
+            if (wbso.HasValue)
+                query = query.Where(ws => ws.WBSO == wbso.Value);
 
             return await query.ToListAsync();
         }

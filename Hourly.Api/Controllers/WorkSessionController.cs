@@ -47,11 +47,11 @@ namespace Hourly.Api.Controllers
         }
 
         [HttpGet("Filter")]
-        public async Task<IActionResult> FilterWorkSessions([FromQuery] Guid? userId, [FromQuery] int? year, [FromQuery] int? month)
+        public async Task<IActionResult> FilterWorkSessions([FromQuery] Guid? userId, [FromQuery] int? year, [FromQuery] int? month, bool? wbso)
         {
             try
             {
-                var results = await _workSessionService.Filter(userId, year, month);
+                var results = await _workSessionService.Filter(userId, year, month, wbso);
                 return Ok(results.Select(ws => ws.ToResponse()));
             }
             catch (EntityNotFoundException ex)
