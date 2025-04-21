@@ -22,6 +22,9 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         [Required]
         public float Factor { get; set; }
 
+        [Required]
+        public float Duration { get; set; }
+
         public bool WBSO { get; set; }
 
         public string? OtherRemarks { get; set; }

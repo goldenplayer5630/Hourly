@@ -27,6 +27,11 @@ namespace Hourly.Shared.Entities
         [Required]
         public float Factor { get; set; }
 
+        public float Duration
+        {
+            get { return (float)((EndTime - StartTime).TotalHours) * Factor; } // Fix for CS0029
+        }
+
         public bool WBSO { get; set; }
 
         public string? OtherRemarks { get; set; }
