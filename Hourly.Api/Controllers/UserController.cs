@@ -88,7 +88,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var created = await _userService.Create(user);
-                return CreatedAtAction(nameof(GetUserById), new { id = created.Id }, created.ToResponse());
+                return CreatedAtAction(nameof(GetUserById), new { userId = created.Id }, created.ToResponse());
             }
             catch (ValidationException ex)
             {

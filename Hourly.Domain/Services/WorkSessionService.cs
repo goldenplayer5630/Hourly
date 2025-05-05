@@ -9,11 +9,13 @@ namespace Hourly.Domain.Services
     {
         private readonly IWorkSessionRepository _repository;
         private readonly IGitCommitRepository _gitCommitRepository;
+        private readonly IUserRepository _userRepository;
 
-        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository)
+        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _gitCommitRepository = gitCommitRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<WorkSession> GetById(Guid workSessionId)
@@ -36,6 +38,10 @@ namespace Hourly.Domain.Services
         {
             workSession.Id = Guid.NewGuid();
             workSession.CreatedAt = DateTime.UtcNow;
+
+            var user = await _userRepository.GetById(workSession.UserId)
+                ?? throw new EntityNotFoundException("User not found!");
+
             return await _repository.Create(workSession);
         }
 

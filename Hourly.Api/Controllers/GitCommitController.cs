@@ -86,7 +86,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var created = await _gitCommitService.Create(gitCommit);
-                return CreatedAtAction(nameof(GetGitCommitById), new { id = created.Id }, created.ToResponse());
+                return CreatedAtAction(nameof(GetGitCommitById), new { gitCommitId = created.Id }, created.ToResponse());
             }
             catch (ValidationException ex)
             {

@@ -84,7 +84,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var created = await _departmentService.Create(department);
-                return CreatedAtAction(nameof(GetDepartmentById), new { id = created.Id }, created.ToResponse());
+                return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = created.Id }, created.ToResponse());
             }
             catch (ValidationException ex)
             {

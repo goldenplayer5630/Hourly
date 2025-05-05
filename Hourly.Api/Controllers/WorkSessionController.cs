@@ -104,16 +104,18 @@ namespace Hourly.Api.Controllers
         public async Task<IActionResult> CreateWorkSession([FromBody] CreateWorkSessionRequest request)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var workSession = request.ToWorkSession();
 
             try
             {
                 var created = await _workSessionService.Create(workSession);
-                return CreatedAtAction(nameof(GetWorkSessionById), new { id = created.Id }, created.ToResponse());
+
+                return CreatedAtAction(
+                    nameof(GetWorkSessionById),       // must match method name exactly
+                    new { workSessionId = created.Id },          // must match [HttpGet("{id}")]
+                    created.ToResponse());            // payload returned in body
             }
             catch (ValidationException ex)
             {
@@ -125,11 +127,11 @@ namespace Hourly.Api.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception details for diagnostics
-                _logger.LogError(ex, "An unexpected error occurred while updating a workSession.");
+                _logger.LogError(ex, "An unexpected error occurred while creating a workSession.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
+
 
         [HttpPost("{workSessionId}/AddGitCommit/{gitCommitId}")]
         public async Task<IActionResult> AddGitCommit(Guid workSessionId, Guid gitCommitId)

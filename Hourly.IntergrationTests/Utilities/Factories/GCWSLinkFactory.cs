@@ -18,7 +18,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     // Only add if not already linked
                     if (!session.GitCommits.Contains(commit))
                     {
-                        session.GitCommits.Add(commit);
+                        session.AddGitCommit(commit);
                     }
                 }
             }

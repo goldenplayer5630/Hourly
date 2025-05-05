@@ -6,6 +6,8 @@ namespace Hourly.Shared.Entities
 {
     public class WorkSession
     {
+        private List<GitCommit> _gitCommits = new List<GitCommit>();
+
         [Key]
         public Guid Id { get; set; }
 
@@ -13,7 +15,7 @@ namespace Hourly.Shared.Entities
         public Guid UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public User? User { get; private set; }
 
         [Required]
         public string TaskDescription { get; set; }
@@ -36,7 +38,7 @@ namespace Hourly.Shared.Entities
 
         public string? OtherRemarks { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits;
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -50,7 +52,7 @@ namespace Hourly.Shared.Entities
                 throw new DomainValidationException("Git commit is already associated with this work session.");
             }
 
-            GitCommits.Add(gitCommit);
+            _gitCommits.Add(gitCommit);
         }
 
         public void RemoveGitCommit(GitCommit gitCommit)
@@ -59,7 +61,7 @@ namespace Hourly.Shared.Entities
             {
                 throw new DomainValidationException("Git commit is not associated with this work session.");
             }
-            GitCommits.Remove(gitCommit);
+            _gitCommits.Remove(gitCommit);
         }
     }
 }
