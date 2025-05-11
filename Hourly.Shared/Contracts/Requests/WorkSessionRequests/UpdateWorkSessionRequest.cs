@@ -22,5 +22,7 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
         public bool WBSO { get; set; }
 
         public string? OtherRemarks { get; set; }
+
+        public List<Guid> GitCommitIds { get; set; } = new List<Guid>();
     }
 }

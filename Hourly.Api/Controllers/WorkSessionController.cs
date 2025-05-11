@@ -110,7 +110,7 @@ namespace Hourly.Api.Controllers
 
             try
             {
-                var created = await _workSessionService.Create(workSession);
+                var created = await _workSessionService.Create(workSession, request.GitCommitIds);
 
                 return CreatedAtAction(
                     nameof(GetWorkSessionById),       // must match method name exactly
@@ -138,7 +138,7 @@ namespace Hourly.Api.Controllers
         {
             try
             {
-                var workSession = await _workSessionService.AddGitcommit(workSessionId, gitCommitId);
+                var workSession = await _workSessionService.AddGitCommit(workSessionId, gitCommitId);
                 return Ok(workSession.ToResponse());
             }
             catch (EntityNotFoundException ex)
@@ -199,7 +199,7 @@ namespace Hourly.Api.Controllers
 
             try
             {
-                var updated = await _workSessionService.Update(workSession);
+                var updated = await _workSessionService.Update(workSession, request.GitCommitIds);
                 return Ok(updated.ToResponse());
             }
             catch (EntityNotFoundException ex)

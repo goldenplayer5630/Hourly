@@ -7,7 +7,7 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
         [Required]
         public Guid UserId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Task description is required.")]
         public string TaskDescription { get; set; }
 
         [Required]
@@ -22,5 +22,7 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
         public bool WBSO { get; set; }
 
         public string? OtherRemarks { get; set; }
+
+        public List<Guid> GitCommitIds { get; set; } = new List<Guid>();
     }
 }
