@@ -14,7 +14,8 @@ namespace Hourly.IntergrationTests.Domain.Services
             await base.InitializeAsync();
             var workSessionRepository = new WorkSessionRepository(_dbContext);
             var gitCommitRepository = new GitCommitRepository(_dbContext);
-            _workSessionService = new WorkSessionService(workSessionRepository, gitCommitRepository);
+            var userRepository = new UserRepository(_dbContext);
+            _workSessionService = new WorkSessionService(workSessionRepository, gitCommitRepository, userRepository);
         }
     }
 }

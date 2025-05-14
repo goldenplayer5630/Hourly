@@ -60,6 +60,7 @@ namespace Hourly.Shared.Mappers
         {
             return new User
             {
+                Id = id,
                 Name = request.Name,
                 Email = request.Email,
                 GitEmail = request.GitEmail,
