@@ -42,7 +42,7 @@ namespace Hourly.Shared.Entities
 
         public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits;
 
-        public float TotalEffectiveHours
+        public float RawEffectiveHours
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Hourly.Shared.Entities
         {
             get
             {
-                var net = TotalEffectiveHours + TVTUsedHours - TVTAccruedHours;
+                var net = RawEffectiveHours + TVTUsedHours - TVTAccruedHours;
                 if (net < 0)
                     throw new DomainValidationException("Net effective hours cannot be negative.");
                 return net;
@@ -89,18 +89,17 @@ namespace Hourly.Shared.Entities
             if (TVTAccruedHours > 0 && TVTUsedHours > 0)
                 throw new DomainValidationException("Cannot both accrue and use TVT hours in the same work session.");
 
-            if (TVTAccruedHours < 0)
-                throw new DomainValidationException("TVTAccruedHours cannot be negative.");
+            if (TVTAccruedHours < 0 || TVTUsedHours < 0)
+                throw new DomainValidationException("TVTAccruedHours and TVTUsedHours cannot be negative.");
 
-            if (TVTUsedHours < 0)
-                throw new DomainValidationException("TVTUsedHours cannot be negative.");
-
-            var duration = (EndTime - StartTime).TotalHours;
-            if ((TVTAccruedHours + TVTUsedHours) > duration)
-                throw new DomainValidationException("Sum of TVTAccruedHours and TVTUsedHours cannot exceed total session duration.");
+            if (RawEffectiveHours < 0 || NetEffectiveHours < 0)
+                throw new DomainValidationException("Total effective and net effective hours cannot be negative.");
 
             if (!IsValid15MinuteInterval(StartTime.Minute) || !IsValid15MinuteInterval(EndTime.Minute))
                 throw new DomainValidationException("Start and end time must be in 15-minute intervals.");
+
+            if (Math.Abs(TVTAccruedHours % 0.25) > 0.0001)
+                throw new DomainValidationException("TVTAccruedHours and TVTUsedHours must be in increments of 15 minutes.");
 
             var today = DateTime.UtcNow.Date;
             if (StartTime.Date > today || EndTime.Date > today)

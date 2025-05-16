@@ -169,11 +169,11 @@ namespace Hourly.Data.Migrations
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Factor = table.Column<float>(type: "real", nullable: false),
+                    TVTAccruedHours = table.Column<float>(type: "real", nullable: false),
+                    TVTUsedHours = table.Column<float>(type: "real", nullable: false),
                     WBSO = table.Column<bool>(type: "boolean", nullable: false),
                     Locked = table.Column<bool>(type: "boolean", nullable: false),
                     OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    TVTAccruedHours = table.Column<float>(type: "real", nullable: false),
-                    TVTUsedHours = table.Column<float>(type: "real", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

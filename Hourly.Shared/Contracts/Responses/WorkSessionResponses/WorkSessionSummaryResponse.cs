@@ -24,7 +24,7 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         public float Factor { get; set; }
 
         [Required]
-        public float TotalEffectiveHours { get; set; }
+        public float RawEffectiveHours { get; set; }
 
         [Required]
         public float NetEffectiveHours { get; set; }

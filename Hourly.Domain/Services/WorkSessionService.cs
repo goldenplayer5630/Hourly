@@ -39,7 +39,7 @@ namespace Hourly.Domain.Services
             workSession.Id = Guid.NewGuid();
             workSession.CreatedAt = DateTime.UtcNow;
 
-            ValidateWorkSessionTime(workSession);
+            workSession.Validate();
 
             var user = await _userRepository.GetById(workSession.UserId)
                 ?? throw new EntityNotFoundException("User not found!");
@@ -62,7 +62,7 @@ namespace Hourly.Domain.Services
         {
             workSession.UpdatedAt = DateTime.UtcNow;
 
-            ValidateWorkSessionTime(workSession);
+            workSession.Validate();
 
             var user = await _userRepository.GetById(workSession.UserId)
                 ?? throw new EntityNotFoundException("User not found!");
@@ -132,41 +132,6 @@ namespace Hourly.Domain.Services
         public async Task Delete(Guid workSessionId)
         {
             await _repository.Delete(workSessionId);
-        }
-
-        private void ValidateWorkSessionTime(WorkSession workSession)
-        {
-            if (!HasValidMinuteIntervals(workSession.StartTime, workSession.EndTime))
-            {
-                throw new DomainValidationException("Start and end time must be in 15-minute intervals.");
-            }
-
-            if (!HasValidTimeRange(workSession.StartTime, workSession.EndTime))
-            {
-                throw new DomainValidationException("Start time must be earlier than end time.");
-            }
-
-            if (!SessionIsNotInFuture(workSession.StartTime, workSession.EndTime))
-            {
-                throw new DomainValidationException("Work session start and end times cannot be in the future.");
-            }
-        }
-
-        private bool HasValidTimeRange(DateTime startTime, DateTime endTime)
-        {
-            return startTime < endTime;
-        }
-
-        private bool SessionIsNotInFuture(DateTime startTime, DateTime endTime)
-        {
-            return (startTime.Date <= DateTime.UtcNow.Date) && (endTime.Date <= DateTime.UtcNow.Date);
-        }
-
-        private bool HasValidMinuteIntervals(DateTime startTime, DateTime endTime)
-        {
-            bool IsValidMinute(int minute) => minute == 0 || minute == 15 || minute == 30 || minute == 45;
-
-            return IsValidMinute(startTime.Minute) && IsValidMinute(endTime.Minute);
         }
     }
 }
