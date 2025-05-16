@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250516140648_initCreate")]
+    [Migration("20250516144138_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -308,10 +308,10 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<float?>("TVTAccruedHours")
+                    b.Property<float>("TVTAccruedHours")
                         .HasColumnType("real");
 
-                    b.Property<float?>("TVTUsedHours")
+                    b.Property<float>("TVTUsedHours")
                         .HasColumnType("real");
 
                     b.Property<string>("TaskDescription")

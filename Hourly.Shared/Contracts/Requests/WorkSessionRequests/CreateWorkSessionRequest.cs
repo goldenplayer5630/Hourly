@@ -25,9 +25,9 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
 
         public string? OtherRemarks { get; set; }
 
-        public float? TVTAccruedHours { get; set; }
+        public float TVTAccruedHours { get; set; }
 
-        public float? TVTUsedHours { get; set; }
+        public float TVTUsedHours { get; set; }
 
         public List<Guid> GitCommitIds { get; set; } = new List<Guid>();
     }

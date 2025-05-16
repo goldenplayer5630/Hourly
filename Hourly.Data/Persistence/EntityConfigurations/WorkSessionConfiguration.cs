@@ -43,10 +43,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired(false);
 
             builder.Property(x => x.TVTAccruedHours)
-                .IsRequired(false);
+                .IsRequired();
 
             builder.Property(x => x.TVTUsedHours)
-                .IsRequired(false);
+                .IsRequired();
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()

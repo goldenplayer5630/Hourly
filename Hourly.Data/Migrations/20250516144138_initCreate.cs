@@ -172,8 +172,8 @@ namespace Hourly.Data.Migrations
                     WBSO = table.Column<bool>(type: "boolean", nullable: false),
                     Locked = table.Column<bool>(type: "boolean", nullable: false),
                     OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    TVTAccruedHours = table.Column<float>(type: "real", nullable: true),
-                    TVTUsedHours = table.Column<float>(type: "real", nullable: true),
+                    TVTAccruedHours = table.Column<float>(type: "real", nullable: false),
+                    TVTUsedHours = table.Column<float>(type: "real", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

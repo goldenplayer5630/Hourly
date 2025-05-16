@@ -305,10 +305,10 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<float?>("TVTAccruedHours")
+                    b.Property<float>("TVTAccruedHours")
                         .HasColumnType("real");
 
-                    b.Property<float?>("TVTUsedHours")
+                    b.Property<float>("TVTUsedHours")
                         .HasColumnType("real");
 
                     b.Property<string>("TaskDescription")
