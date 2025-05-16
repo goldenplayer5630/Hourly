@@ -29,6 +29,9 @@ namespace Hourly.Shared.Contracts.Responses.UserResponses
         public string? GitAccessToken { get; set; }
 
         [Required]
+        public float TVTAccruedHours { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

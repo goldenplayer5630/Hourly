@@ -198,6 +198,9 @@ namespace Hourly.Data.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
+                    b.Property<float>("TVTAccruedHours")
+                        .HasColumnType("real");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 

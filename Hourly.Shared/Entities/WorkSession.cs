@@ -29,9 +29,20 @@ namespace Hourly.Shared.Entities
         [Required]
         public float Factor { get; set; }
 
-        public float Duration
+        public float TotalEffectiveHours
         {
-            get { return (float)((EndTime - StartTime).TotalHours) * Factor; } // Fix for CS0029
+            get
+            {
+                return (float)(((EndTime - StartTime).TotalHours) * Factor);
+            }
+        }
+
+        public float NetEffectiveHours
+        {
+            get
+            {
+                return TotalEffectiveHours + (TVTUsedHours ?? 0) - (TVTAccruedHours ?? 0);
+            }
         }
 
         public bool WBSO { get; set; }

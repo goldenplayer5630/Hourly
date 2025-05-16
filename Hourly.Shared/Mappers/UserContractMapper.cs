@@ -69,5 +69,27 @@ namespace Hourly.Shared.Mappers
                 User = entity.User.ToSummaryResponse(),
             };
         }
+
+        public static UserContractSummaryResponse ToSummaryResponse(this UserContract entity)
+        {
+            return new UserContractSummaryResponse
+            {
+                Id = entity.Id,
+                UserId = entity.UserId,
+                Name = entity.Name,
+                ContractType = entity.ContractType,
+                MinMonthlyHours = entity.MinMonthlyHours,
+                MaxMonthlyHours = entity.MaxMonthlyHours,
+                GrossHourlyRate = entity.GrossHourlyRate,
+                HolidayHoursPercentage = entity.HolidayHoursPercentage,
+                MonthlyPaidHolidayHours = entity.MonthlyPaidHolidayHours,
+                StartDate = entity.StartDate,
+                EndDate = entity.EndDate,
+                ContractFilePath = entity.ContractFilePath,
+                Description = entity.Description,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
     }
 }

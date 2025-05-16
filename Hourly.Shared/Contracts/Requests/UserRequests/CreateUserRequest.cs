@@ -19,5 +19,8 @@ namespace Hourly.Shared.Contracts.Requests.UserRequests
 
         public string? GitAccessToken { get; set; }
 
+        [Required]
+        public float TVTAccruedHours { get; set; }
+
     }
 }

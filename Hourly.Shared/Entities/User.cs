@@ -32,6 +32,9 @@ namespace Hourly.Shared.Entities
 
         public string? GitAccessToken { get; set; }
 
+        [Required]
+        public float TVTAccruedHours { get; set; }
+
         public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
 
         public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();

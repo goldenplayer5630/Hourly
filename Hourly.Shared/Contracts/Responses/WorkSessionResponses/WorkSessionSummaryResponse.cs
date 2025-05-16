@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
 {
@@ -23,7 +24,10 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         public float Factor { get; set; }
 
         [Required]
-        public float Duration { get; set; }
+        public float TotalEffectiveHours { get; set; }
+
+        [Required]
+        public float NetEffectiveHours { get; set; }
 
         public bool WBSO { get; set; }
 

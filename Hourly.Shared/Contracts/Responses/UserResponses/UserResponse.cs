@@ -1,6 +1,7 @@
 ﻿using Hourly.Shared.Contracts.Responses.DepartmentResponses;
 using Hourly.Shared.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Contracts.Responses.RoleResponses;
+using Hourly.Shared.Contracts.Responses.UserContractResponses;
 using Hourly.Shared.Contracts.Responses.WorkSessionResponses;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +18,7 @@ namespace Hourly.Shared.Contracts.Responses.UserResponses
         public ICollection<WorkSessionSummaryResponse> WorkSessions { get; set; } = new List<WorkSessionSummaryResponse>();
 
         public ICollection<GitCommitSummaryResponse> GitCommits { get; set; } = new List<GitCommitSummaryResponse>();
+
+        public ICollection<UserContractSummaryResponse> Contracts { get; set; } = new List<UserContractSummaryResponse>();
     }
 }

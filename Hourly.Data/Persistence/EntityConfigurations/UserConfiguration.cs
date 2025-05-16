@@ -26,6 +26,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.GitAccessToken)
                 .IsRequired(false);
 
+            builder.Property(x => x.TVTAccruedHours)
+                .IsRequired();
+
             builder.HasOne(x => x.Role)
                 .WithMany(r => r.Users)
                 .IsRequired()
