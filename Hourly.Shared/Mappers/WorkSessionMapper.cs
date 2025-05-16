@@ -21,6 +21,8 @@ namespace Hourly.Shared.Mappers
                 WBSO = entity.WBSO,
                 OtherRemarks = entity.OtherRemarks,
                 GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
+                TVTAccruedHours = entity.TVTAccruedHours,
+                TVTUsedHours = entity.TVTUsedHours,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
@@ -39,6 +41,8 @@ namespace Hourly.Shared.Mappers
                 Duration = entity.Duration,
                 WBSO = entity.WBSO,
                 OtherRemarks = entity.OtherRemarks,
+                TVTAccruedHours = entity.TVTAccruedHours,
+                TVTUsedHours = entity.TVTUsedHours,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
@@ -54,7 +58,9 @@ namespace Hourly.Shared.Mappers
                 EndTime = request.EndTime,
                 Factor = request.Factor,
                 WBSO = request.WBSO,
-                OtherRemarks = request.OtherRemarks
+                OtherRemarks = request.OtherRemarks,
+                TVTAccruedHours = request.TVTAccruedHours,
+                TVTUsedHours = request.TVTUsedHours,
             };
         }
 
@@ -69,7 +75,9 @@ namespace Hourly.Shared.Mappers
                 EndTime = request.EndTime,
                 Factor = request.Factor,
                 WBSO = request.WBSO,
-                OtherRemarks = request.OtherRemarks
+                OtherRemarks = request.OtherRemarks,
+                TVTAccruedHours = request.TVTAccruedHours,
+                TVTUsedHours = request.TVTUsedHours,
             };
         }
     }

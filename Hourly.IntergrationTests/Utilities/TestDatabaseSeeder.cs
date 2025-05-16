@@ -21,6 +21,7 @@ namespace Hourly.IntergrationTests.Utilities
             var gitCommitIds = gitCommits.Select(g => g.Id).ToList();
             var workSessions = WorkSessionFactory.CreateWorkSessions(userIds);
             var workSessionIds = workSessions.Select(w => w.Id).ToList();
+            var userContracts = UserContractFactory.CreateUserContracts(userIds);
             GCWSLinkFactory.LinkCommitsToWorkSessions(workSessions, gitCommits, 5);
 
             // Adding data to testdatabase
@@ -30,6 +31,7 @@ namespace Hourly.IntergrationTests.Utilities
             context.GitRepositories.AddRange(gitRepositories);
             context.GitCommits.AddRange(gitCommits);
             context.WorkSessions.AddRange(workSessions);
+            context.UserContracts.AddRange(userContracts);
 
             // Saving data to testdatabase
             await context.SaveChangesAsync();

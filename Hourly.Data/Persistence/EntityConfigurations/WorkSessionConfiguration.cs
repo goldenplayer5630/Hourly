@@ -35,8 +35,17 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.WBSO)
                 .IsRequired();
 
+            builder.Property(x => x.Locked)
+                .IsRequired();
+
             builder.Property(x => x.OtherRemarks)
                 .HasMaxLength(1000)
+                .IsRequired(false);
+
+            builder.Property(x => x.TVTAccruedHours)
+                .IsRequired(false);
+
+            builder.Property(x => x.TVTUsedHours)
                 .IsRequired(false);
 
             builder.Property(x => x.CreatedAt)

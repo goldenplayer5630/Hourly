@@ -44,6 +44,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .WithOne(gc => gc.Author)
                 .HasForeignKey(gc => gc.AuthorId);
 
+            builder.HasMany(x => x.Contracts)
+                .WithOne(uc => uc.User)
+                .HasForeignKey(uc => uc.UserId);
+
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
                 .HasConversion(DateTimeConverter.UtcDateTimeConverter);
@@ -55,3 +59,4 @@ namespace Hourly.Data.Persistence.EntityConfigurations
     }
 
 }
+

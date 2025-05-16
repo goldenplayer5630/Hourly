@@ -19,6 +19,9 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     .RuleFor(c => c.EndTime, (f, c) => c.StartTime.AddHours(f.Random.Int(1, 8)).ToUniversalTime())
                     .RuleFor(c => c.Factor, (f, c) => f.Random.Float(0.5f, 2.0f))
                     .RuleFor(c => c.WBSO, f => f.Random.Bool())
+                    .RuleFor(c => c.Locked, f => false)
+                    .RuleFor(c => c.TVTAccruedHours, f => f.Random.Float(0, 100))
+                    .RuleFor(c => c.TVTUsedHours, f => f.Random.Float(0, 100))
                     .RuleFor(c => c.OtherRemarks, f => f.Lorem.Paragraph())
                     .RuleFor(u => u.CreatedAt, f => f.Date.Past().ToUniversalTime())
                     .RuleFor(u => u.UpdatedAt, f => f.Date.Recent().ToUniversalTime());

@@ -28,15 +28,16 @@ builder.Services.AddScoped<IGitRepositoryRepository, GitRepositoryRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWorkSessionRepository, WorkSessionRepository>();
+builder.Services.AddScoped<IUserContractRepository, UserContractRepository>();
 
 // Register services
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IGitCommitService, GitCommitService>();
 builder.Services.AddScoped<IGitRepositoryService, GitRepositoryService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>(); // NOTE: this line is duplicated above
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWorkSessionService, WorkSessionService>();
+builder.Services.AddScoped<IUserContractService, UserContractService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250416105313_initCreate")]
+    [Migration("20250516130920_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -213,6 +213,73 @@ namespace Hourly.Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ContractFilePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("ContractType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<float?>("GrossHourlyRate")
+                        .HasColumnType("real");
+
+                    b.Property<int?>("HolidayHoursPercentage")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MaxMonthlyHours")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MinMonthlyHours")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("MonthlyPaidHolidayHours")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("UserContracts");
+                });
+
             modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -228,12 +295,21 @@ namespace Hourly.Data.Migrations
                     b.Property<float>("Factor")
                         .HasColumnType("real");
 
+                    b.Property<bool>("Locked")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("OtherRemarks")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<float?>("TVTAccruedHours")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("TVTUsedHours")
+                        .HasColumnType("real");
 
                     b.Property<string>("TaskDescription")
                         .HasMaxLength(500)
@@ -306,6 +382,21 @@ namespace Hourly.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+                {
+                    b.HasOne("Hourly.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Hourly.Shared.Entities.User", null)
+                        .WithMany("Contracts")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
                 {
                     b.HasOne("Hourly.Shared.Entities.User", "User")
@@ -334,6 +425,8 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
                 {
+                    b.Navigation("Contracts");
+
                     b.Navigation("GitCommits");
 
                     b.Navigation("WorkSessions");

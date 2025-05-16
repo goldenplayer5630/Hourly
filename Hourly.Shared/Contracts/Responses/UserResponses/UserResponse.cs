@@ -2,7 +2,6 @@
 using Hourly.Shared.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Contracts.Responses.RoleResponses;
 using Hourly.Shared.Contracts.Responses.WorkSessionResponses;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Shared.Contracts.Responses.UserResponses

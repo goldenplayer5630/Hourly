@@ -27,7 +27,13 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
 
         public bool WBSO { get; set; }
 
+        public bool Locked { get; set; }
+
         public string? OtherRemarks { get; set; }
+
+        public float? TVTAccruedHours { get; set; }
+
+        public float? TVTUsedHours { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

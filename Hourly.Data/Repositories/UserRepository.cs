@@ -21,6 +21,7 @@ namespace Hourly.Data.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.GitCommits)
                 .Include(u => u.WorkSessions)
+                .Include(u => u.Contracts)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 

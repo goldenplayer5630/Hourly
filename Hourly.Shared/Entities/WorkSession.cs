@@ -36,7 +36,13 @@ namespace Hourly.Shared.Entities
 
         public bool WBSO { get; set; }
 
+        public bool Locked { get; set; }
+
         public string? OtherRemarks { get; set; }
+
+        public float? TVTAccruedHours { get; set; }
+
+        public float? TVTUsedHours { get; set; }
 
         public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits;
 

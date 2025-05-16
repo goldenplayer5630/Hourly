@@ -121,6 +121,43 @@ namespace Hourly.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserContracts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ContractType = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    MinMonthlyHours = table.Column<int>(type: "integer", nullable: false),
+                    MaxMonthlyHours = table.Column<int>(type: "integer", nullable: false),
+                    GrossHourlyRate = table.Column<float>(type: "real", nullable: true),
+                    HolidayHoursPercentage = table.Column<int>(type: "integer", nullable: true),
+                    MonthlyPaidHolidayHours = table.Column<bool>(type: "boolean", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ContractFilePath = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId1 = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserContracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserContracts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserContracts_Users_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkSessions",
                 columns: table => new
                 {
@@ -131,7 +168,10 @@ namespace Hourly.Data.Migrations
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Factor = table.Column<float>(type: "real", nullable: false),
                     WBSO = table.Column<bool>(type: "boolean", nullable: false),
+                    Locked = table.Column<bool>(type: "boolean", nullable: false),
                     OtherRemarks = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    TVTAccruedHours = table.Column<float>(type: "real", nullable: true),
+                    TVTUsedHours = table.Column<float>(type: "real", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -186,6 +226,16 @@ namespace Hourly.Data.Migrations
                 column: "WorkSessionsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserContracts_UserId",
+                table: "UserContracts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserContracts_UserId1",
+                table: "UserContracts",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_DepartmentId",
                 table: "Users",
                 column: "DepartmentId");
@@ -206,6 +256,9 @@ namespace Hourly.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "GitCommitWorkSessions");
+
+            migrationBuilder.DropTable(
+                name: "UserContracts");
 
             migrationBuilder.DropTable(
                 name: "GitCommits");

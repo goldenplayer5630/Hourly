@@ -36,6 +36,8 @@ namespace Hourly.Shared.Entities
 
         public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
+        public ICollection<UserContract> Contracts { get; set; } = new List<UserContract>();
+
         [Required]
         public DateTime CreatedAt { get; set; }
 
