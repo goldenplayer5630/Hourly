@@ -8,7 +8,6 @@ namespace Hourly.Abstractions.Repositories
         Task<IEnumerable<Role>> GetAll();
         Task<Role> Create(Role role);
         Task<Role> Update(Role role);
-        Task Delete(Guid roleId);
         Task SaveChanges();
     }
 }

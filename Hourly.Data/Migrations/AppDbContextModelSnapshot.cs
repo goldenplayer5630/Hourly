@@ -371,7 +371,7 @@ namespace Hourly.Data.Migrations
                     b.HasOne("Hourly.Shared.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -384,7 +384,7 @@ namespace Hourly.Data.Migrations
                     b.HasOne("Hourly.Shared.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hourly.Shared.Entities.User", null)

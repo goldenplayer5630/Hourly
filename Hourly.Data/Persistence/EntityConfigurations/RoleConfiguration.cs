@@ -19,7 +19,8 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.HasMany(x => x.Users)
                 .WithOne(u => u.Role)
-                .HasForeignKey(u => u.RoleId);
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()

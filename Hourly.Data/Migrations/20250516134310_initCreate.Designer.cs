@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250516130920_initCreate")]
+    [Migration("20250516134310_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -374,7 +374,7 @@ namespace Hourly.Data.Migrations
                     b.HasOne("Hourly.Shared.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -387,7 +387,7 @@ namespace Hourly.Data.Migrations
                     b.HasOne("Hourly.Shared.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hourly.Shared.Entities.User", null)

@@ -91,19 +91,5 @@ namespace Hourly.Tests.Data.Repositories
             Assert.NotNull(result);
             Assert.Equal("Updated Role Name", result.Name);
         }
-
-        [Fact]
-        public async Task Delete_ShouldDeleteEntity()
-        {
-            // Arrange
-            var existing = await _dbContext.Roles.FirstAsync();
-
-            // Act
-            await _roleRepository.Delete(existing.Id);
-            var result = await _dbContext.Roles.FindAsync(existing.Id);
-
-            // Assert
-            Assert.Null(result);
-        }
     }
 }

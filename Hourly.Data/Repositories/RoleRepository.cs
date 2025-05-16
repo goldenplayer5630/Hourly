@@ -47,21 +47,9 @@ namespace Hourly.Data.Repositories
             return (result > 0 ? role : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task Delete(Guid roleId)
-        {
-            var existingRole = await _context.Roles.FindAsync(roleId);
-            if (existingRole == null)
-            {
-                throw new EntityNotFoundException("Role not found!");
-            }
-            _context.Roles.Remove(existingRole);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
         }
-
     }
 }

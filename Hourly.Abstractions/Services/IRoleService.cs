@@ -8,6 +8,5 @@ namespace Hourly.Abstractions.Services
         Task<Role> GetById(Guid roleId);
         Task<Role> Create(Role role);
         Task<Role> Update(Role role);
-        Task Delete(Guid roleId);
     }
 }

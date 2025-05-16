@@ -68,7 +68,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasOne(uc => uc.User)
                 .WithMany()
                 .HasForeignKey(uc => uc.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

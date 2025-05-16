@@ -37,10 +37,5 @@ namespace Hourly.Domain.Services
             role.UpdatedAt = DateTime.UtcNow;
             return await _repository.Update(role);
         }
-
-        public async Task Delete(Guid roleId)
-        {
-            await _repository.Delete(roleId);
-        }
     }
 }
