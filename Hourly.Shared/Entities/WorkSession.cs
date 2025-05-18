@@ -57,7 +57,11 @@ namespace Hourly.Shared.Entities
         {
             get
             {
-                var net = RawEffectiveHours + TVTUsedHours - TVTAccruedHours;
+                if (TVTUsedHours > 0 && TVTAccruedHours > 0)
+                    throw new DomainValidationException("Cannot both accrue and use TVT hours in the same work session.");
+
+                var net = TVTAccruedHours > 0 ? RawEffectiveHours - TVTAccruedHours : RawEffectiveHours + TVTUsedHours;
+
                 if (net < 0)
                     throw new DomainValidationException("Net effective hours cannot be negative.");
                 return net;
@@ -80,8 +84,8 @@ namespace Hourly.Shared.Entities
 
         public void Validate()
         {
-            if (StartTime >= EndTime)
-                throw new DomainValidationException("Start time must be before end time.");
+            if (StartTime > EndTime)
+                throw new DomainValidationException("Start time must be before or equal to end time.");
 
             if (Factor < 0)
                 throw new DomainValidationException("Factor cannot be negative.");
