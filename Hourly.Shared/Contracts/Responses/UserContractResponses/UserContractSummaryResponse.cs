@@ -20,6 +20,8 @@ namespace Hourly.Shared.Contracts.Responses.UserContractResponses
         public ContractTypes ContractType { get; set; }
         public bool IsActive { get; set; }
 
+        // VINCENT TODO: Change this to weekly, add a monthly avarage
+        // VINCENT TODO: Make sure that the minimum amount of hours is the maximum amount of TVT hours
         [Required]
         public int MinMonthlyHours { get; set; }
         [Required]
