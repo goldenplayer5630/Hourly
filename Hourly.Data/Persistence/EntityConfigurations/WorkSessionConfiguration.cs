@@ -29,6 +29,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.EndTime)
                 .IsRequired();
 
+            builder.Property(x => x.BreakTime)
+                .IsRequired();
+
             builder.Property(x => x.Factor)
                 .IsRequired();
 

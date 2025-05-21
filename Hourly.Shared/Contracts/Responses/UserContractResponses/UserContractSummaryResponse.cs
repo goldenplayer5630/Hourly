@@ -23,13 +23,16 @@ namespace Hourly.Shared.Contracts.Responses.UserContractResponses
         // VINCENT TODO: Change this to weekly, add a monthly avarage
         // VINCENT TODO: Make sure that the minimum amount of hours is the maximum amount of TVT hours
         [Required]
-        public int MinMonthlyHours { get; set; }
+        public double MinWeeklyHours { get; set; }
         [Required]
-        public int MaxMonthlyHours { get; set; }
+        public double MaxWeeklyHours { get; set; }
 
-        public float? GrossHourlyRate { get; set; }
+        public double? GrossHourlyRate { get; set; }
         public int? HolidayHoursPercentage { get; set; }
         public bool MonthlyPaidHolidayHours { get; set; }
+
+        public double MinimumHoursPerMonth { get; set; }
+        public double MaximumHoursPerMonth { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

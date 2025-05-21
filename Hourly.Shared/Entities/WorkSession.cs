@@ -26,6 +26,8 @@ namespace Hourly.Shared.Entities
         [Required]
         public DateTime EndTime { get; set; }
 
+        public float BreakTime { get; set; }
+
         [Required]
         public float Factor { get; set; }
 
@@ -46,7 +48,7 @@ namespace Hourly.Shared.Entities
         {
             get
             {
-                var total = (float)((EndTime - StartTime).TotalHours * Factor);
+                var total = (float)((EndTime - StartTime).TotalHours * Factor) - BreakTime;
                 if (total < 0)
                     throw new DomainValidationException("Total effective hours cannot be negative.");
                 return total;
@@ -98,6 +100,12 @@ namespace Hourly.Shared.Entities
 
             if (RawEffectiveHours < 0 || NetEffectiveHours < 0)
                 throw new DomainValidationException("Total effective and net effective hours cannot be negative.");
+
+            if (BreakTime < 0)
+                throw new DomainValidationException("Break time cannot be negative.");
+
+            if (BreakTime >= RawEffectiveHours)
+                throw new DomainValidationException("Break time cannot exceed total effective hours.");
 
             if (!IsValid15MinuteInterval(StartTime.Minute) || !IsValid15MinuteInterval(EndTime.Minute))
                 throw new DomainValidationException("Start and end time must be in 15-minute intervals.");

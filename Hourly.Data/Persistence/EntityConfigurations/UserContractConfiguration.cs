@@ -27,10 +27,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(uc => uc.IsActive)
                 .IsRequired();
 
-            builder.Property(uc => uc.MinMonthlyHours)
+            builder.Property(uc => uc.MinWeeklyHours)
                 .IsRequired();
 
-            builder.Property(uc => uc.MaxMonthlyHours)
+            builder.Property(uc => uc.MaxWeeklyHours)
                 .IsRequired();
 
             builder.Property(uc => uc.GrossHourlyRate)

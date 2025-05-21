@@ -236,8 +236,8 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<float?>("GrossHourlyRate")
-                        .HasColumnType("real");
+                    b.Property<double?>("GrossHourlyRate")
+                        .HasColumnType("double precision");
 
                     b.Property<int?>("HolidayHoursPercentage")
                         .HasColumnType("integer");
@@ -245,11 +245,11 @@ namespace Hourly.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MaxMonthlyHours")
-                        .HasColumnType("integer");
+                    b.Property<double>("MaxWeeklyHours")
+                        .HasColumnType("double precision");
 
-                    b.Property<int>("MinMonthlyHours")
-                        .HasColumnType("integer");
+                    b.Property<double>("MinWeeklyHours")
+                        .HasColumnType("double precision");
 
                     b.Property<bool>("MonthlyPaidHolidayHours")
                         .HasColumnType("boolean");
@@ -285,6 +285,9 @@ namespace Hourly.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<float>("BreakTime")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

@@ -14,9 +14,9 @@ namespace Hourly.Shared.Contracts.Requests.UserContractRequests
         public bool IsActive { get; set; }
 
         [Required]
-        public int MinMonthlyHours { get; set; }
+        public double MinWeeklyHours { get; set; }
         [Required]
-        public int MaxMonthlyHours { get; set; }
+        public double MaxWeeklyHours { get; set; }
 
         public float? GrossHourlyRate { get; set; }
         public int? HolidayHoursPercentage { get; set; }

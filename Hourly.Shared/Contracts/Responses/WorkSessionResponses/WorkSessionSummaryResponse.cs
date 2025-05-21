@@ -20,6 +20,8 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         [Required]
         public DateTime EndTime { get; set; }
 
+        public float BreakTime { get; set; }
+
         [Required]
         public float Factor { get; set; }
 

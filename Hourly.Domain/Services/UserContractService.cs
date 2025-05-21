@@ -34,12 +34,18 @@ namespace Hourly.Domain.Services
         {
             userContract.Id = Guid.NewGuid();
             userContract.CreatedAt = DateTime.UtcNow;
+
+            userContract.Validate();
+
             return await _repository.Create(userContract);
         }
 
         public async Task<UserContract> Update(UserContract userContract)
         {
             userContract.UpdatedAt = DateTime.UtcNow;
+
+            userContract.Validate();
+
             return await _repository.Update(userContract);
         }
 

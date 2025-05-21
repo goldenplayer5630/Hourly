@@ -15,7 +15,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     .RuleFor(c => c.Id, f => Guid.NewGuid())
                     .RuleFor(c => c.UserId, _ => userId)
                     .RuleFor(c => c.TaskDescription, f => f.Lorem.Sentence())
-                    .RuleFor(c => c.Factor, f => f.Random.Float(0.5f, 2.0f))
+                    .RuleFor(c => c.Factor, f => f.Random.Float(1.0f, 2.0f))
                     .RuleFor(c => c.StartTime, f =>
                     {
                         var past = f.Date.Past(1).ToUniversalTime().Date;
@@ -25,7 +25,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     })
                     .RuleFor(c => c.EndTime, (f, c) =>
                     {
-                        var durationInHours = f.Random.Int(1, 8);
+                        var durationInHours = f.Random.Int(2, 8);
                         var end = c.StartTime.AddHours(durationInHours);
                         var minute = f.PickRandom(0, 15, 30, 45);
                         end = new DateTime(end.Year, end.Month, end.Day, end.Hour, minute, 0, DateTimeKind.Utc);
@@ -39,6 +39,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
 
                         return end;
                     })
+                    .RuleFor(c => c.BreakTime, f => f.PickRandom(0.25f, 0.5f, 0.75f, 1f))
                     .RuleFor(c => c.WBSO, f => f.Random.Bool())
                     .RuleFor(c => c.Locked, _ => false)
                     .RuleFor(c => c.OtherRemarks, f => f.Lorem.Sentence())

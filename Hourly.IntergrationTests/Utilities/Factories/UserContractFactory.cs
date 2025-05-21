@@ -20,6 +20,10 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     var startDate = faker.Date.Past(2);
                     var endDate = faker.Date.Future();
 
+                    // Ensure MinWeeklyHours < MaxWeeklyHours
+                    int minWeeklyHours = faker.Random.Int(8, 32);
+                    int maxWeeklyHours = faker.Random.Int((minWeeklyHours + 1), (minWeeklyHours + 8));
+
                     contracts.Add(new UserContract
                     {
                         Id = Guid.NewGuid(),
@@ -27,8 +31,8 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                         Name = faker.Name.JobTitle(),
                         ContractType = faker.PickRandom(contractTypes),
                         IsActive = i == 0,
-                        MinMonthlyHours = faker.Random.Int(40, 80),
-                        MaxMonthlyHours = faker.Random.Int(81, 160),
+                        MinWeeklyHours = minWeeklyHours,
+                        MaxWeeklyHours = maxWeeklyHours,
                         GrossHourlyRate = faker.Random.Float(15, 100),
                         HolidayHoursPercentage = faker.Random.Bool() ? faker.Random.Int(0, 30) : null,
                         MonthlyPaidHolidayHours = faker.Random.Bool(),
