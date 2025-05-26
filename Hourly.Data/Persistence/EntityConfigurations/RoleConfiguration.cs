@@ -9,13 +9,18 @@ namespace Hourly.Data.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.ToTable("role");
+
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("name");
 
             builder.Property(x => x.Permissions)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("permissions");
 
             builder.HasMany(r => r.Users)
                 .WithOne(u => u.Role)
@@ -24,11 +29,12 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
+                .HasColumnName("created_at")
                 .HasConversion(DateTimeConverter.UtcDateTimeConverter);
 
             builder.Property(x => x.UpdatedAt)
+                .HasColumnName("updated_at")
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
-
         }
     }
 

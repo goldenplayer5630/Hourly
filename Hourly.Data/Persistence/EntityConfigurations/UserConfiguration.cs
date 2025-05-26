@@ -9,56 +9,78 @@ namespace Hourly.Data.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("user");
+
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Email)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("email");
 
             builder.Property(x => x.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("name");
 
             builder.Property(x => x.GitEmail)
-                .IsRequired(false);
+                .IsRequired(false)
+                .HasColumnName("git_email");
 
             builder.Property(x => x.GitUsername)
-                .IsRequired(false);
+                .IsRequired(false)
+                .HasColumnName("git_username");
 
             builder.Property(x => x.GitAccessToken)
-                .IsRequired(false);
+                .IsRequired(false)
+                .HasColumnName("git_access_token");
 
             builder.Property(x => x.TVTAccruedHours)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("tvt_accrued_hours");
+
+            builder.Property(x => x.RoleId)
+                .HasColumnName("role_id");
+
+            builder.Property(x => x.DepartmentId)
+                .HasColumnName("department_id");
 
             builder.HasOne(x => x.Role)
                 .WithMany(r => r.Users)
                 .IsRequired()
-                .HasForeignKey(x => x.RoleId);
+                .HasForeignKey(x => x.RoleId)
+                .HasConstraintName("fk_user_role");
 
             builder.HasOne(x => x.Department)
                 .WithMany(d => d.Users)
                 .IsRequired(false)
-                .HasForeignKey(x => x.DepartmentId);
+                .HasForeignKey(x => x.DepartmentId)
+                .HasConstraintName("fk_user_department");
 
             builder.Ignore(x => x.GitCommits);
 
+            //builder.Navigation("_gitCommits").UsePropertyAccessMode(PropertyAccessMode.Field);
             builder.HasMany<GitCommit>("_gitCommits")
                 .WithOne(gc => gc.Author)
-                .HasForeignKey(gc => gc.AuthorId);
+                .HasForeignKey(gc => gc.AuthorId)
+                .HasConstraintName("fk_git_commit_author");
 
             builder.Ignore(x => x.Contracts);
 
+            //builder.Navigation("_userContracts").UsePropertyAccessMode(PropertyAccessMode.Field);
             builder.HasMany<UserContract>("_userContracts")
                 .WithOne(uc => uc.User)
                 .HasForeignKey(uc => uc.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_user_contract_user");
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
+                .HasColumnName("created_at")
                 .HasConversion(DateTimeConverter.UtcDateTimeConverter);
 
             builder.Property(x => x.UpdatedAt)
+                .HasColumnName("updated_at")
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
-
         }
     }
 

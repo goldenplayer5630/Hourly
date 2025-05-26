@@ -21,40 +21,29 @@ namespace Hourly.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("GitCommitWorkSession", b =>
-                {
-                    b.Property<Guid>("_gitCommitsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("_workSessionsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("_gitCommitsId", "_workSessionsId");
-
-                    b.HasIndex("_workSessionsId");
-
-                    b.ToTable("GitCommitWorkSessions", (string)null);
-                });
-
             modelBuilder.Entity("Hourly.Shared.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("department", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.GitCommit", b =>
@@ -110,99 +99,122 @@ namespace Hourly.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("ExtRepositoryId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("ext_repository_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Namespace")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("namespace");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("web_url");
 
                     b.HasKey("Id");
 
-                    b.ToTable("GitRepositories");
+                    b.ToTable("git_repository", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Permissions")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("permissions");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("role", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("department_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("GitAccessToken")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("git_access_token");
 
                     b.Property<string>("GitEmail")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("git_email");
 
                     b.Property<string>("GitUsername")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("git_username");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("role_id");
 
                     b.Property<float>("TVTAccruedHours")
-                        .HasColumnType("real");
+                        .HasColumnType("real")
+                        .HasColumnName("tvt_accrued_hours");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -210,138 +222,168 @@ namespace Hourly.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("ContractFilePath")
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("contract_file_path");
 
                     b.Property<int>("ContractType")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("contract_type");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("description");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_date");
 
                     b.Property<double?>("GrossHourlyRate")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("gross_hourly_rate");
 
                     b.Property<int?>("HolidayHoursPercentage")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("holiday_hours_percentage");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<double>("MaxWeeklyHours")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("max_weekly_hours");
 
                     b.Property<double>("MinWeeklyHours")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("min_weekly_hours");
 
                     b.Property<bool>("MonthlyPaidHolidayHours")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("monthly_paid_holiday_hours");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_date");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserContracts");
+                    b.ToTable("user_contract", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<float>("BreakTime")
-                        .HasColumnType("real");
+                        .HasColumnType("real")
+                        .HasColumnName("break_time");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_time");
 
                     b.Property<float>("Factor")
-                        .HasColumnType("real");
+                        .HasColumnType("real")
+                        .HasColumnName("factor");
 
                     b.Property<bool>("Locked")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("locked");
 
                     b.Property<string>("OtherRemarks")
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("other_remarks");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_time");
 
                     b.Property<float>("TVTAccruedHours")
-                        .HasColumnType("real");
+                        .HasColumnType("real")
+                        .HasColumnName("tvt_accrued_hours");
 
                     b.Property<float>("TVTUsedHours")
-                        .HasColumnType("real");
+                        .HasColumnType("real")
+                        .HasColumnName("tvt_used_hours");
 
                     b.Property<string>("TaskDescription")
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("task_description");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<Guid>("UserContractId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_contract_id");
 
                     b.Property<bool>("WBSO")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("wbso");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserContractId");
 
-                    b.ToTable("WorkSessions");
+                    b.ToTable("work_session", (string)null);
                 });
 
-            modelBuilder.Entity("GitCommitWorkSession", b =>
+            modelBuilder.Entity("git_commit_work_sessions", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.GitCommit", null)
-                        .WithMany()
-                        .HasForeignKey("_gitCommitsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("git_commit_id")
+                        .HasColumnType("uuid");
 
-                    b.HasOne("Hourly.Shared.Entities.WorkSession", null)
-                        .WithMany()
-                        .HasForeignKey("_workSessionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("work_session_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("git_commit_id", "work_session_id");
+
+                    b.HasIndex("work_session_id");
+
+                    b.ToTable("git_commit_work_sessions", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.GitCommit", b =>
@@ -350,7 +392,8 @@ namespace Hourly.Data.Migrations
                         .WithMany("_gitCommits")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_git_commit_author");
 
                     b.HasOne("Hourly.Shared.Entities.GitRepository", "Repository")
                         .WithMany("_gitCommits")
@@ -367,13 +410,15 @@ namespace Hourly.Data.Migrations
                 {
                     b.HasOne("Hourly.Shared.Entities.Department", "Department")
                         .WithMany("Users")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .HasConstraintName("fk_user_department");
 
                     b.HasOne("Hourly.Shared.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_role");
 
                     b.Navigation("Department");
 
@@ -386,7 +431,8 @@ namespace Hourly.Data.Migrations
                         .WithMany("_userContracts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_contract_user_id");
 
                     b.Navigation("User");
                 });
@@ -397,9 +443,25 @@ namespace Hourly.Data.Migrations
                         .WithMany("_workSessions")
                         .HasForeignKey("UserContractId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_work_session_user_contract_id");
 
                     b.Navigation("UserContract");
+                });
+
+            modelBuilder.Entity("git_commit_work_sessions", b =>
+                {
+                    b.HasOne("Hourly.Shared.Entities.GitCommit", null)
+                        .WithMany()
+                        .HasForeignKey("git_commit_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hourly.Shared.Entities.WorkSession", null)
+                        .WithMany()
+                        .HasForeignKey("work_session_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.Department", b =>

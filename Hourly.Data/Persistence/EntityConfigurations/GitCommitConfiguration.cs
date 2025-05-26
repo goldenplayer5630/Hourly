@@ -45,7 +45,24 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.HasMany<WorkSession>("_workSessions")
                 .WithMany("_gitCommits")
-                .UsingEntity(j => j.ToTable("GitCommitWorkSessions"));
+                .UsingEntity<Dictionary<string, object>>(
+                    "git_commit_work_sessions",
+
+                    j => j.HasOne<WorkSession>()
+                          .WithMany()
+                          .HasForeignKey("work_session_id")
+                          .OnDelete(DeleteBehavior.Cascade),
+
+                    j => j.HasOne<GitCommit>()
+                          .WithMany()
+                          .HasForeignKey("git_commit_id")
+                          .OnDelete(DeleteBehavior.Cascade),
+
+                    j =>
+                    {
+                        j.HasKey("git_commit_id", "work_session_id");
+                        j.ToTable("git_commit_work_sessions");
+                    });
 
 
         }
