@@ -78,22 +78,22 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasMany<GitCommit>("_gitCommits")
                 .WithMany("_workSessions")
                 .UsingEntity<Dictionary<string, object>>(
-                    "git_commit_work_sessions", // 👈 Custom join table name
+                    "git_commit_work_sessions",
 
                     j => j.HasOne<GitCommit>()
                           .WithMany()
-                          .HasForeignKey("git_commit_id")     // 👈 Custom column name
+                          .HasForeignKey("git_commit_id")
                           .OnDelete(DeleteBehavior.Cascade),
 
                     j => j.HasOne<WorkSession>()
                           .WithMany()
-                          .HasForeignKey("work_session_id")   // 👈 Custom column name
+                          .HasForeignKey("work_session_id")
                           .OnDelete(DeleteBehavior.Cascade),
 
                     j =>
                     {
-                        j.HasKey("git_commit_id", "work_session_id"); // 👈 Custom composite PK
-                        j.ToTable("git_commit_work_sessions");         // 👈 Make sure table name is repeated here
+                        j.HasKey("git_commit_id", "work_session_id");
+                        j.ToTable("git_commit_work_sessions");
                     });
 
         }
