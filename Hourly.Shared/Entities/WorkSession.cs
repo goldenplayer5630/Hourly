@@ -6,16 +6,15 @@ namespace Hourly.Shared.Entities
 {
     public class WorkSession
     {
-        private List<GitCommit> _gitCommits = new();
+        protected List<GitCommit> _gitCommits = new();
 
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public User? User { get; private set; }
+        public Guid UserContractId { get; private set; }
+        [ForeignKey("UserContractId")]
+        public UserContract UserContract { get; private set; } = null!;
 
         [Required]
         public string TaskDescription { get; set; }
@@ -42,15 +41,15 @@ namespace Hourly.Shared.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits;
+        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
 
         public float RawEffectiveHours
         {
             get
             {
-                var total = (float)((EndTime - StartTime).TotalHours * Factor) - BreakTime;
+                var total = (float)((EndTime - StartTime).TotalHours) - BreakTime;
                 if (total < 0)
-                    throw new DomainValidationException("Total effective hours cannot be negative.");
+                    throw new DomainValidationException("Raw effective hours cannot be negative.");
                 return total;
             }
         }
@@ -62,7 +61,7 @@ namespace Hourly.Shared.Entities
                 if (TVTUsedHours > 0 && TVTAccruedHours > 0)
                     throw new DomainValidationException("Cannot both accrue and use TVT hours in the same work session.");
 
-                var net = TVTAccruedHours > 0 ? RawEffectiveHours - TVTAccruedHours : RawEffectiveHours + TVTUsedHours;
+                var net = (TVTAccruedHours > 0 ? RawEffectiveHours - TVTAccruedHours : RawEffectiveHours + TVTUsedHours) * Factor;
 
                 if (net < 0)
                     throw new DomainValidationException("Net effective hours cannot be negative.");
@@ -82,6 +81,18 @@ namespace Hourly.Shared.Entities
             if (!_gitCommits.Any(gc => gc.Id == gitCommit.Id))
                 throw new DomainValidationException("Git commit is not associated with this work session.");
             _gitCommits.Remove(gitCommit);
+        }
+
+        public void AssignToUserContract(UserContract userContract)
+        {
+            if (UserContractId == userContract.Id)
+            {
+                throw new DomainValidationException("Work session is already assigned to this user contract.");
+            }
+
+            UserContractId = userContract.Id;
+            UserContract = userContract;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void Validate()
@@ -105,7 +116,7 @@ namespace Hourly.Shared.Entities
                 throw new DomainValidationException("Break time cannot be negative.");
 
             if (BreakTime >= RawEffectiveHours)
-                throw new DomainValidationException("Break time cannot exceed total effective hours.");
+                throw new DomainValidationException("Break time cannot exceed net effective hours.");
 
             if (!IsValid15MinuteInterval(StartTime.Minute) || !IsValid15MinuteInterval(EndTime.Minute))
                 throw new DomainValidationException("Start and end time must be in 15-minute intervals.");

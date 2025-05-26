@@ -9,7 +9,7 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         public Guid Id { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        public Guid UserContractId { get; set; }
 
         [Required]
         public string TaskDescription { get; set; }

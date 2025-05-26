@@ -1,4 +1,5 @@
 ﻿using Hourly.Shared.Exceptions;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +7,9 @@ namespace Hourly.Shared.Entities
 {
     public class User
     {
+        protected List<GitCommit> _gitCommits = new();
+        protected List<UserContract> _userContracts = new();
+
         [Key]
         public Guid Id { get; set; }
 
@@ -35,11 +39,9 @@ namespace Hourly.Shared.Entities
         [Required]
         public float TVTAccruedHours { get; set; }
 
-        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
-
-        public ICollection<UserContract> Contracts { get; set; } = new List<UserContract>();
+        public IReadOnlyCollection<UserContract> Contracts => _userContracts.AsReadOnly();
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -68,7 +70,7 @@ namespace Hourly.Shared.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AssignRole(Role role)
+        public void AssignToRole(Role role)
         {
             if (RoleId == role.Id)
             {

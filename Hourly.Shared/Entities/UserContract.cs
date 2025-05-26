@@ -7,6 +7,8 @@ namespace Hourly.Shared.Entities
 {
     public class UserContract
     {
+        private readonly List<WorkSession> _workSessions = new();
+
         [Key]
         public Guid Id { get; set; }
         [Required]
@@ -48,14 +50,25 @@ namespace Hourly.Shared.Entities
         public string? ContractFilePath { get; set; }
         public string? Description { get; set; }
 
-        // Navigation properties
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-
         [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        // Navigation properties
+        [ForeignKey("UserId")]
+        public User User { get; set; } = null!;
+        public IReadOnlyCollection<WorkSession> WorkSessions => _workSessions.AsReadOnly();
+
+        public void AssignToUser(User user)
+        {
+            if (UserId == user.Id)
+            {
+                throw new DomainValidationException("Contract is already assigned to this user.");
+            }
+            UserId = user.Id;
+            UpdatedAt = DateTime.UtcNow;
+        }
 
         public void Validate()
         {

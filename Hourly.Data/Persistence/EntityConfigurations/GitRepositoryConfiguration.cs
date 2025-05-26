@@ -16,7 +16,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.Namespace).HasMaxLength(255);
             builder.Property(x => x.WebUrl).HasMaxLength(500);
 
-            builder.HasMany(x => x.GitCommits)
+            builder.Ignore(x => x.GitCommits);
+
+            builder.HasMany<GitCommit>("_gitCommits")
                 .WithOne(c => c.Repository)
                 .HasForeignKey(c => c.RepositoryId);
 

@@ -41,8 +41,8 @@ namespace Hourly.Domain.Services
 
             workSession.Validate();
 
-            var user = await _userRepository.GetById(workSession.UserId)
-                ?? throw new EntityNotFoundException("User not found!");
+            var user = await _userRepository.GetById(workSession.UserContractId)
+                ?? throw new EntityNotFoundException("User contract not found!");
 
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
@@ -64,8 +64,8 @@ namespace Hourly.Domain.Services
 
             workSession.Validate();
 
-            var user = await _userRepository.GetById(workSession.UserId)
-                ?? throw new EntityNotFoundException("User not found!");
+            var user = await _userRepository.GetById(workSession.UserContractId)
+                ?? throw new EntityNotFoundException("User contract not found!");
 
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");

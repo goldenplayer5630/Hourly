@@ -22,7 +22,6 @@ namespace Hourly.Shared.Mappers
                 GitAccessToken = entity.GitAccessToken,
                 TVTAccruedHours = entity.TVTAccruedHours,
                 GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
-                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList(),
                 Contracts = entity.Contracts.Select(uc => uc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt

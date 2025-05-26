@@ -24,7 +24,6 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.Property(x => x.UpdatedAt)
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
-
         }
     }
 }

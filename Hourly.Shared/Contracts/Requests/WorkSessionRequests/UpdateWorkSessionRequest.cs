@@ -5,7 +5,7 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
     public class UpdateWorkSessionRequest
     {
         [Required]
-        public Guid UserId { get; init; }
+        public Guid UserContractId { get; init; }
 
         [Required]
         public string TaskDescription { get; set; }

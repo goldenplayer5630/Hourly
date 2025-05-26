@@ -59,11 +59,10 @@ namespace Hourly.Tests.Data.Repositories
         public async Task Create_ShouldAddEntity()
         {
             // Arrange
-            var existingUser = await _dbContext.Users.FirstAsync();
+            var existingUserContract = await _dbContext.UserContracts.FirstAsync();
             var entity = new WorkSession
             {
                 Id = Guid.NewGuid(),
-                UserId = existingUser.Id,
                 TaskDescription = "New Task",
                 StartTime = DateTime.UtcNow,
                 EndTime = DateTime.UtcNow.AddHours(1),
@@ -71,6 +70,8 @@ namespace Hourly.Tests.Data.Repositories
                 WBSO = false,
                 OtherRemarks = "No remarks"
             };
+
+            entity.AssignToUserContract(existingUserContract);
 
             // Act
             await _workSessionRepository.Create(entity);

@@ -19,9 +19,8 @@ namespace Hourly.Data.Repositories
             return await _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
-                .Include(u => u.GitCommits)
-                .Include(u => u.WorkSessions)
-                .Include(u => u.Contracts)
+                .Include("_gitCommits")
+                .Include("_userContracts")
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 

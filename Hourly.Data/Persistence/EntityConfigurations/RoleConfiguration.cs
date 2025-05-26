@@ -17,10 +17,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.Permissions)
                 .IsRequired();
 
-            builder.HasMany(x => x.Users)
+            builder.HasMany(r => r.Users)
                 .WithOne(u => u.Role)
                 .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()

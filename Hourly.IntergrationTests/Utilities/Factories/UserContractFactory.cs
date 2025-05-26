@@ -6,13 +6,13 @@ namespace Hourly.IntergrationTests.Utilities.Factories
 {
     public class UserContractFactory
     {
-        public static List<UserContract> CreateUserContracts(List<Guid> userIds)
+        public static List<UserContract> CreateUserContracts(List<User> users)
         {
             var contractTypes = Enum.GetValues(typeof(ContractTypes)).Cast<ContractTypes>().Where(ct => ct != ContractTypes.Undefined).ToArray();
             var contracts = new List<UserContract>();
             var faker = new Faker();
 
-            foreach (var userId in userIds)
+            foreach (var user in users)
             {
                 int contractCount = faker.Random.Int(1, 3);
                 for (int i = 0; i < contractCount; i++)
@@ -24,10 +24,9 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     int minWeeklyHours = faker.Random.Int(8, 32);
                     int maxWeeklyHours = faker.Random.Int((minWeeklyHours + 1), (minWeeklyHours + 8));
 
-                    contracts.Add(new UserContract
+                    var contract = new UserContract
                     {
                         Id = Guid.NewGuid(),
-                        UserId = userId,
                         Name = faker.Name.JobTitle(),
                         ContractType = faker.PickRandom(contractTypes),
                         IsActive = i == 0,
@@ -42,7 +41,9 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                         Description = faker.Lorem.Sentence(),
                         CreatedAt = faker.Date.Past(3, startDate),
                         UpdatedAt = faker.Random.Bool(0.5f) ? faker.Date.Recent(30, DateTime.Now) : null
-                    });
+                    };
+                    contracts.Add(contract);
+                    contract.AssignToUser(user);
                 }
             }
 

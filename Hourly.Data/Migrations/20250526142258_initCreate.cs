@@ -86,7 +86,7 @@ namespace Hourly.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,8 +140,7 @@ namespace Hourly.Data.Migrations
                     ContractFilePath = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UserId1 = table.Column<Guid>(type: "uuid", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -152,11 +151,6 @@ namespace Hourly.Data.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserContracts_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -164,7 +158,7 @@ namespace Hourly.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserContractId = table.Column<Guid>(type: "uuid", nullable: false),
                     TaskDescription = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -182,9 +176,9 @@ namespace Hourly.Data.Migrations
                 {
                     table.PrimaryKey("PK_WorkSessions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkSessions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_WorkSessions_UserContracts_UserContractId",
+                        column: x => x.UserContractId,
+                        principalTable: "UserContracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -193,21 +187,21 @@ namespace Hourly.Data.Migrations
                 name: "GitCommitWorkSessions",
                 columns: table => new
                 {
-                    GitCommitsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkSessionsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    _gitCommitsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    _workSessionsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GitCommitWorkSessions", x => new { x.GitCommitsId, x.WorkSessionsId });
+                    table.PrimaryKey("PK_GitCommitWorkSessions", x => new { x._gitCommitsId, x._workSessionsId });
                     table.ForeignKey(
-                        name: "FK_GitCommitWorkSessions_GitCommits_GitCommitsId",
-                        column: x => x.GitCommitsId,
+                        name: "FK_GitCommitWorkSessions_GitCommits__gitCommitsId",
+                        column: x => x._gitCommitsId,
                         principalTable: "GitCommits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GitCommitWorkSessions_WorkSessions_WorkSessionsId",
-                        column: x => x.WorkSessionsId,
+                        name: "FK_GitCommitWorkSessions_WorkSessions__workSessionsId",
+                        column: x => x._workSessionsId,
                         principalTable: "WorkSessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -224,19 +218,14 @@ namespace Hourly.Data.Migrations
                 column: "RepositoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GitCommitWorkSessions_WorkSessionsId",
+                name: "IX_GitCommitWorkSessions__workSessionsId",
                 table: "GitCommitWorkSessions",
-                column: "WorkSessionsId");
+                column: "_workSessionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserContracts_UserId",
                 table: "UserContracts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserContracts_UserId1",
-                table: "UserContracts",
-                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_DepartmentId",
@@ -249,9 +238,9 @@ namespace Hourly.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkSessions_UserId",
+                name: "IX_WorkSessions_UserContractId",
                 table: "WorkSessions",
-                column: "UserId");
+                column: "UserContractId");
         }
 
         /// <inheritdoc />
@@ -261,9 +250,6 @@ namespace Hourly.Data.Migrations
                 name: "GitCommitWorkSessions");
 
             migrationBuilder.DropTable(
-                name: "UserContracts");
-
-            migrationBuilder.DropTable(
                 name: "GitCommits");
 
             migrationBuilder.DropTable(
@@ -271,6 +257,9 @@ namespace Hourly.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "GitRepositories");
+
+            migrationBuilder.DropTable(
+                name: "UserContracts");
 
             migrationBuilder.DropTable(
                 name: "Users");

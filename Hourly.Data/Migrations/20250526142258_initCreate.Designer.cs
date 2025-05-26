@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250521150714_initCreate")]
+    [Migration("20250526142258_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -26,15 +26,15 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("GitCommitWorkSession", b =>
                 {
-                    b.Property<Guid>("GitCommitsId")
+                    b.Property<Guid>("_gitCommitsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("WorkSessionsId")
+                    b.Property<Guid>("_workSessionsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("GitCommitsId", "WorkSessionsId");
+                    b.HasKey("_gitCommitsId", "_workSessionsId");
 
-                    b.HasIndex("WorkSessionsId");
+                    b.HasIndex("_workSessionsId");
 
                     b.ToTable("GitCommitWorkSessions", (string)null);
                 });
@@ -271,14 +271,9 @@ namespace Hourly.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserContracts");
                 });
@@ -324,7 +319,7 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("UserContractId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("WBSO")
@@ -332,7 +327,7 @@ namespace Hourly.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserContractId");
 
                     b.ToTable("WorkSessions");
                 });
@@ -341,13 +336,13 @@ namespace Hourly.Data.Migrations
                 {
                     b.HasOne("Hourly.Shared.Entities.GitCommit", null)
                         .WithMany()
-                        .HasForeignKey("GitCommitsId")
+                        .HasForeignKey("_gitCommitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hourly.Shared.Entities.WorkSession", null)
                         .WithMany()
-                        .HasForeignKey("WorkSessionsId")
+                        .HasForeignKey("_workSessionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -355,13 +350,13 @@ namespace Hourly.Data.Migrations
             modelBuilder.Entity("Hourly.Shared.Entities.GitCommit", b =>
                 {
                     b.HasOne("Hourly.Shared.Entities.User", "Author")
-                        .WithMany("GitCommits")
+                        .WithMany("_gitCommits")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hourly.Shared.Entities.GitRepository", "Repository")
-                        .WithMany("GitCommits")
+                        .WithMany("_gitCommits")
                         .HasForeignKey("RepositoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -380,7 +375,7 @@ namespace Hourly.Data.Migrations
                     b.HasOne("Hourly.Shared.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -391,27 +386,23 @@ namespace Hourly.Data.Migrations
             modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
                 {
                     b.HasOne("Hourly.Shared.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("_userContracts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Hourly.Shared.Entities.User", null)
-                        .WithMany("Contracts")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.User", "User")
-                        .WithMany("WorkSessions")
-                        .HasForeignKey("UserId")
+                    b.HasOne("Hourly.Shared.Entities.UserContract", "UserContract")
+                        .WithMany("_workSessions")
+                        .HasForeignKey("UserContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserContract");
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.Department", b =>
@@ -421,7 +412,7 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("Hourly.Shared.Entities.GitRepository", b =>
                 {
-                    b.Navigation("GitCommits");
+                    b.Navigation("_gitCommits");
                 });
 
             modelBuilder.Entity("Hourly.Shared.Entities.Role", b =>
@@ -431,11 +422,14 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
                 {
-                    b.Navigation("Contracts");
+                    b.Navigation("_gitCommits");
 
-                    b.Navigation("GitCommits");
+                    b.Navigation("_userContracts");
+                });
 
-                    b.Navigation("WorkSessions");
+            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+                {
+                    b.Navigation("_workSessions");
                 });
 #pragma warning restore 612, 618
         }

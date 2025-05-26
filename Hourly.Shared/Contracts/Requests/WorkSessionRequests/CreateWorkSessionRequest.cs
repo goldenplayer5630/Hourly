@@ -5,7 +5,7 @@ namespace Hourly.Shared.Contracts.Requests.WorkSessionRequests
     public class CreateWorkSessionRequest
     {
         [Required]
-        public Guid UserId { get; set; }
+        public Guid UserContractId { get; set; }
 
         [Required(ErrorMessage = "Task description is required.")]
         public string TaskDescription { get; set; }

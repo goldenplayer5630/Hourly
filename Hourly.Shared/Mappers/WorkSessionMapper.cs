@@ -11,8 +11,8 @@ namespace Hourly.Shared.Mappers
             return new WorkSessionResponse
             {
                 Id = entity.Id,
-                UserId = entity.UserId,
-                User = entity.User?.ToSummaryResponse(),
+                UserContractId = entity.UserContractId,
+                UserContract = entity.UserContract.ToSummaryResponse(),
                 TaskDescription = entity.TaskDescription,
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime,
@@ -35,7 +35,7 @@ namespace Hourly.Shared.Mappers
             return new WorkSessionSummaryResponse
             {
                 Id = entity.Id,
-                UserId = entity.UserId,
+                UserContractId = entity.UserContractId,
                 TaskDescription = entity.TaskDescription,
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime,
@@ -56,7 +56,6 @@ namespace Hourly.Shared.Mappers
         {
             return new WorkSession
             {
-                UserId = request.UserId,
                 TaskDescription = request.TaskDescription,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
@@ -74,7 +73,6 @@ namespace Hourly.Shared.Mappers
             return new WorkSession
             {
                 Id = id,
-                UserId = request.UserId,
                 TaskDescription = request.TaskDescription,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,

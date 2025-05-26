@@ -37,7 +37,7 @@ namespace Hourly.Domain.Services
             var role = await _roleRepository.GetById(user.RoleId)
                 ?? throw new EntityNotFoundException("Role not found!");
 
-            user.AssignRole(role);
+            user.AssignToRole(role);
 
             return await _repository.Create(user);
         }

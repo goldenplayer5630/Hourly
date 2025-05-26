@@ -4,6 +4,8 @@ namespace Hourly.Shared.Entities
 {
     public class GitRepository
     {
+        protected List<GitCommit> _gitCommits = new();
+
         [Key]
         public Guid Id { get; set; }
 
@@ -19,7 +21,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public string WebUrl { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
 
         [Required]
         public DateTime CreatedAt { get; set; }

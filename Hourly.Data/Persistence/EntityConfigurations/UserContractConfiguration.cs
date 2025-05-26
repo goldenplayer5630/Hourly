@@ -55,7 +55,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasMaxLength(500);
 
             builder.Property(uc => uc.Description)
-                                .IsRequired(false)
+                .IsRequired(false)
                 .HasMaxLength(1000);
 
             builder.Property(uc => uc.CreatedAt)
@@ -66,9 +66,17 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
 
             builder.HasOne(uc => uc.User)
-                .WithMany()
+                .WithMany("_userContracts")
                 .HasForeignKey(uc => uc.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Ignore(uc => uc.WorkSessions);
+
+            builder.HasMany<WorkSession>("_workSessions")
+                .WithOne(ws => ws.UserContract)
+                .HasForeignKey(ws => ws.UserContractId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

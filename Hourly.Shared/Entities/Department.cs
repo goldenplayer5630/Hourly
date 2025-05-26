@@ -10,7 +10,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public string Name { get; set; }
 
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<User> Users { get; init; } = new List<User>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

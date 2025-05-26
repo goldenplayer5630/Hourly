@@ -72,6 +72,7 @@ namespace Hourly.Shared.Mappers
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 User = entity.User.ToSummaryResponse(),
+                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList()
             };
         }
 

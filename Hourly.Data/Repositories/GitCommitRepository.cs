@@ -17,7 +17,7 @@ namespace Hourly.Data.Repositories
         public async Task<GitCommit?> GetById(Guid gitCommitId)
         {
             return await _context.GitCommits
-                .Include(gc => gc.WorkSessions)
+                .Include("_workSessions")
                 .Include(gc => gc.Repository)
                 .Include(gc => gc.Author)
                 .ThenInclude(u => u.Role)

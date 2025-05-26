@@ -6,15 +6,17 @@ namespace Hourly.Shared.Entities
 {
     public class GitCommit
     {
+        protected List<WorkSession> _workSessions = new();
+
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public Guid RepositoryId { get; internal set; }
+        public Guid RepositoryId { get; private set; }
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository Repository { get; internal set; }
+        public GitRepository Repository { get; private set; }
 
         [Required]
         public string ExtCommitId { get; set; }
@@ -37,7 +39,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public string WebUrl { get; set; }
 
-        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+        public IReadOnlyCollection<WorkSession> WorkSessions => _workSessions;
 
         [Required]
         public DateTime CreatedAt { get; set; }

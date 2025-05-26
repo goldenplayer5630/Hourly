@@ -27,16 +27,12 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasMaxLength(500);
 
             builder.HasOne(x => x.Author)
-                .WithMany(u => u.GitCommits)
+                .WithMany("_gitCommits")
                 .HasForeignKey(x => x.AuthorId);
 
             builder.HasOne(x => x.Repository)
-                .WithMany(r => r.GitCommits)
+                .WithMany("_gitCommits")
                 .HasForeignKey(x => x.RepositoryId);
-
-            builder.HasMany(x => x.WorkSessions)
-                .WithMany(x => x.GitCommits)
-                .UsingEntity(j => j.ToTable("GitCommitWorkSessions"));
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
@@ -44,6 +40,13 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.Property(x => x.UpdatedAt)
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
+
+            builder.Ignore(gc => gc.WorkSessions);
+
+            builder.HasMany<WorkSession>("_workSessions")
+                .WithMany("_gitCommits")
+                .UsingEntity(j => j.ToTable("GitCommitWorkSessions"));
+
 
         }
     }

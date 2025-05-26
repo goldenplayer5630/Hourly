@@ -39,17 +39,18 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired(false)
                 .HasForeignKey(x => x.DepartmentId);
 
-            builder.HasMany(x => x.WorkSessions)
-                .WithOne(ws => ws.User)
-                .HasForeignKey(ws => ws.UserId);
+            builder.Ignore(x => x.GitCommits);
 
-            builder.HasMany(x => x.GitCommits)
+            builder.HasMany<GitCommit>("_gitCommits")
                 .WithOne(gc => gc.Author)
                 .HasForeignKey(gc => gc.AuthorId);
 
-            builder.HasMany(x => x.Contracts)
+            builder.Ignore(x => x.Contracts);
+
+            builder.HasMany<UserContract>("_userContracts")
                 .WithOne(uc => uc.User)
-                .HasForeignKey(uc => uc.UserId);
+                .HasForeignKey(uc => uc.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired()

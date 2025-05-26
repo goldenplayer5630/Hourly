@@ -17,9 +17,8 @@ namespace Hourly.Data.Repositories
         public async Task<WorkSession?> GetById(Guid workSessionId)
         {
             return await _context.WorkSessions
-                .Include(ws => ws.GitCommits)
-                .Include(ws => ws.User)
-                .ThenInclude(u => u.Role)
+                .Include("_gitCommits")
+                .Include(ws => ws.UserContract)
                 .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }
 
@@ -28,12 +27,12 @@ namespace Hourly.Data.Repositories
             return await _context.WorkSessions.ToListAsync();
         }
 
-        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month, bool? wbso)
+        public async Task<IEnumerable<WorkSession>> Filter(Guid? userContractId, int? year, int? month, bool? wbso)
         {
             var query = _context.WorkSessions.AsQueryable();
 
-            if (userId.HasValue)
-                query = query.Where(ws => ws.UserId == userId.Value);
+            if (userContractId.HasValue)
+                query = query.Where(ws => ws.UserContractId == userContractId.Value);
 
             if (year.HasValue)
                 query = query.Where(ws => ws.StartTime.Year == year.Value);
