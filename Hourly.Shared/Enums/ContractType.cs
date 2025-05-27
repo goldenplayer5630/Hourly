@@ -1,6 +1,6 @@
 ﻿namespace Hourly.Shared.Enums
 {
-    public enum ContractTypes
+    public enum ContractType
     {
         Undefined = 0,
         MinMax = 1,

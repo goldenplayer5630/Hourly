@@ -17,7 +17,7 @@ namespace Hourly.Data.Repositories
         public async Task<WorkSession?> GetById(Guid workSessionId)
         {
             return await _context.WorkSessions
-                .Include("_gitCommits")
+                .Include(ws => ws.GitCommits)
                 .Include(ws => ws.UserContract)
                 .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }
@@ -29,7 +29,9 @@ namespace Hourly.Data.Repositories
 
         public async Task<IEnumerable<WorkSession>> Filter(Guid? userContractId, int? year, int? month, bool? wbso)
         {
-            var query = _context.WorkSessions.AsQueryable();
+            var query = _context.WorkSessions
+                .Include(ws => ws.UserContract)
+                .AsQueryable();
 
             if (userContractId.HasValue)
                 query = query.Where(ws => ws.UserContractId == userContractId.Value);

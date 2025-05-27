@@ -41,10 +41,8 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.UpdatedAt)
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
 
-            builder.Ignore(gc => gc.WorkSessions);
-
-            builder.HasMany<WorkSession>("_workSessions")
-                .WithMany("_gitCommits")
+            builder.HasMany(gc => gc.WorkSessions)
+                .WithMany(ws => ws.GitCommits)
                 .UsingEntity<Dictionary<string, object>>(
                     "git_commit_work_sessions",
 

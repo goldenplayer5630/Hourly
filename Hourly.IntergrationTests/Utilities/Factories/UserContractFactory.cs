@@ -8,7 +8,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
     {
         public static List<UserContract> CreateUserContracts(List<User> users)
         {
-            var contractTypes = Enum.GetValues(typeof(ContractTypes)).Cast<ContractTypes>().Where(ct => ct != ContractTypes.Undefined).ToArray();
+            var contractTypes = Enum.GetValues(typeof(ContractType)).Cast<ContractType>().Where(ct => ct != ContractType.Undefined).ToArray();
             var contracts = new List<UserContract>();
             var faker = new Faker();
 

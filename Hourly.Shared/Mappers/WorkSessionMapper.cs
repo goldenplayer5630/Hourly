@@ -57,6 +57,7 @@ namespace Hourly.Shared.Mappers
             return new WorkSession
             {
                 TaskDescription = request.TaskDescription,
+                UserContractId = request.UserContractId,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 Factor = request.Factor,
@@ -74,6 +75,7 @@ namespace Hourly.Shared.Mappers
             {
                 Id = id,
                 TaskDescription = request.TaskDescription,
+                UserContractId = request.UserContractId,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 Factor = request.Factor,

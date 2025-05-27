@@ -9,13 +9,13 @@ namespace Hourly.Domain.Services
     {
         private readonly IWorkSessionRepository _repository;
         private readonly IGitCommitRepository _gitCommitRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserContractRepository _userContractRepository;
 
-        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository, IUserRepository userRepository)
+        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository, IUserContractRepository userContractRepository)
         {
             _repository = repository;
             _gitCommitRepository = gitCommitRepository;
-            _userRepository = userRepository;
+            _userContractRepository = userContractRepository;
         }
 
         public async Task<WorkSession> GetById(Guid workSessionId)
@@ -29,9 +29,9 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
-        public async Task<IEnumerable<WorkSession>> Filter(Guid? userId, int? year, int? month, bool? wbso)
+        public async Task<IEnumerable<WorkSession>> Filter(Guid? userContractId, int? year, int? month, bool? wbso)
         {
-            return await _repository.Filter(userId, year, month, wbso);
+            return await _repository.Filter(userContractId, year, month, wbso);
         }
 
         public async Task<WorkSession> Create(WorkSession workSession, IEnumerable<Guid> gitCommitIds)
@@ -41,12 +41,12 @@ namespace Hourly.Domain.Services
 
             workSession.Validate();
 
-            var user = await _userRepository.GetById(workSession.UserContractId)
+            var userContract = await _userContractRepository.GetById(workSession.UserContractId)
                 ?? throw new EntityNotFoundException("User contract not found!");
-
+            
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
-
+            
             foreach (var commitId in gitCommitIds.Distinct())
             {
                 var commit = await _gitCommitRepository.GetById(commitId)
@@ -54,39 +54,47 @@ namespace Hourly.Domain.Services
 
                 workSession.AddGitCommit(commit);
             }
+
+            workSession.AssignToUserContract(userContract);
 
             return await _repository.Create(workSession);
         }
 
-        public async Task<WorkSession> Update(WorkSession workSession, IEnumerable<Guid> gitCommitIds)
+        public async Task<WorkSession> Update(WorkSession updated, IEnumerable<Guid> gitCommitIds)
         {
-            workSession.UpdatedAt = DateTime.UtcNow;
+            var existing = await _repository.GetById(updated.Id)
+                ?? throw new EntityNotFoundException("WorkSession not found!");
 
-            workSession.Validate();
+            existing.TaskDescription = updated.TaskDescription;
+            existing.StartTime = updated.StartTime;
+            existing.EndTime = updated.EndTime;
+            existing.Factor = updated.Factor;
+            existing.BreakTime = updated.BreakTime;
+            existing.WBSO = updated.WBSO;
+            existing.OtherRemarks = updated.OtherRemarks;
+            existing.UpdatedAt = DateTime.UtcNow;
 
-            var user = await _userRepository.GetById(workSession.UserContractId)
-                ?? throw new EntityNotFoundException("User contract not found!");
+            var userContract = await _userContractRepository.GetById(updated.UserContractId)
+                ?? throw new EntityNotFoundException("UserContract not found!");
 
-            if (workSession.WBSO && !gitCommitIds.Any())
+            existing.AssignToUserContract(userContract);
+
+            if (existing.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
 
-            foreach (var commit in workSession.GitCommits.ToList())
-            {
-                var gitCommit = await _gitCommitRepository.GetById(commit.Id)
-                    ?? throw new EntityNotFoundException($"GitCommit {commit.Id} not found!");
+            // Replace commit links
+            existing.GitCommits.Clear();
 
-                workSession.RemoveGitCommit(gitCommit);
+            foreach (var commitId in gitCommitIds)
+            {
+                var commit = await _gitCommitRepository.GetById(commitId);
+                if (commit == null)
+                    throw new EntityNotFoundException($"GitCommit {commitId} not found!");
+
+                existing.AddGitCommit(commit);
             }
 
-            foreach (var commitId in gitCommitIds.Distinct())
-            {
-                var commit = await _gitCommitRepository.GetById(commitId)
-                    ?? throw new EntityNotFoundException($"GitCommit {commitId} not found!");
-
-                workSession.AddGitCommit(commit);
-            }
-
-            return await _repository.Update(workSession);
+            return await _repository.Update(existing);
         }
 
         public async Task<WorkSession> AddGitCommit(Guid workSessionId, Guid gitCommitId)

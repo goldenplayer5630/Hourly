@@ -25,6 +25,11 @@ namespace Hourly.Domain.Services
                 ?? throw new EntityNotFoundException("UserContract not found!");
         }
 
+        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        {
+            return await _repository.FilterUserContracts(userId, year, month);
+        }
+
         public async Task<IEnumerable<UserContract>> GetAll()
         {
             return await _repository.GetAll();

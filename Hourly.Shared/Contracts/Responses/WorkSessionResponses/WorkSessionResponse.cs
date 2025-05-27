@@ -8,8 +8,6 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
 {
     public class WorkSessionResponse : WorkSessionSummaryResponse
     {
-        [ForeignKey("UserId")]
-        public UserSummaryResponse? User { get; set; }
 
         [ForeignKey("UserContractId")]
         public UserContractSummaryResponse? UserContract { get; set; }

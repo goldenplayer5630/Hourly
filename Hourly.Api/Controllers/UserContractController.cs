@@ -47,6 +47,33 @@ namespace Hourly.Api.Controllers
             }
         }
 
+        [HttpGet("Filter")]
+        public async Task<IActionResult> FilterUserContracts([FromQuery] Guid? userContractId, [FromQuery] int? year, [FromQuery] int? month)
+        {
+            try
+            {
+                var results = await _userContractService.FilterUserContracts(userContractId, year, month);
+                return Ok(results.Select(uc => uc.ToResponse()));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while filtering user contracts.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
         [HttpGet("{userContractId}")]
         public async Task<IActionResult> GetUserContractById(Guid userContractId)
         {

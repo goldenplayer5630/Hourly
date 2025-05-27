@@ -73,10 +73,8 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasForeignKey(x => x.UserContractId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Ignore(ws => ws.GitCommits);
-
-            builder.HasMany<GitCommit>("_gitCommits")
-                .WithMany("_workSessions")
+            builder.HasMany(ws => ws.GitCommits)
+                .WithMany(gc => gc.WorkSessions)
                 .UsingEntity<Dictionary<string, object>>(
                     "git_commit_work_sessions",
 

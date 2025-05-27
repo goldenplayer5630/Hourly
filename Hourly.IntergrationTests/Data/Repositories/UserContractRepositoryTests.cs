@@ -71,7 +71,7 @@ namespace Hourly.IntergrationTests.Data.Repositories
             {
                 UserId = user.Id,
                 Name = "Integration Test Contract",
-                ContractType = ContractTypes.FullTime,
+                ContractType = ContractType.FullTime,
                 IsActive = true,
                 MinWeeklyHours = 160,
                 MaxWeeklyHours = 200,

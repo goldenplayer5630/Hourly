@@ -17,7 +17,7 @@ namespace Hourly.Shared.Contracts.Responses.UserContractResponses
         [Required]
         public string Name { get; set; }
         [Required]
-        public ContractTypes ContractType { get; set; }
+        public ContractType ContractType { get; set; }
         public bool IsActive { get; set; }
 
         // VINCENT TODO: Change this to weekly, add a monthly avarage

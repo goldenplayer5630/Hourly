@@ -1,4 +1,5 @@
 ﻿using Hourly.Shared.Exceptions;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,13 +7,11 @@ namespace Hourly.Shared.Entities
 {
     public class WorkSession
     {
-        protected List<GitCommit> _gitCommits = new();
-
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public Guid UserContractId { get; private set; }
+        public Guid UserContractId { get; init; }
         [ForeignKey("UserContractId")]
         public UserContract UserContract { get; private set; } = null!;
 
@@ -41,7 +40,7 @@ namespace Hourly.Shared.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         public float RawEffectiveHours
         {
@@ -71,26 +70,20 @@ namespace Hourly.Shared.Entities
 
         public void AddGitCommit(GitCommit gitCommit)
         {
-            if (_gitCommits.Any(gc => gc.Id == gitCommit.Id))
+            if (GitCommits.Any(gc => gc.Id == gitCommit.Id))
                 throw new DomainValidationException("Git commit is already associated with this work session.");
-            _gitCommits.Add(gitCommit);
+            GitCommits.Add(gitCommit);
         }
 
         public void RemoveGitCommit(GitCommit gitCommit)
         {
-            if (!_gitCommits.Any(gc => gc.Id == gitCommit.Id))
+            if (!GitCommits.Any(gc => gc.Id == gitCommit.Id))
                 throw new DomainValidationException("Git commit is not associated with this work session.");
-            _gitCommits.Remove(gitCommit);
+            GitCommits.Remove(gitCommit);
         }
 
         public void AssignToUserContract(UserContract userContract)
         {
-            if (UserContractId == userContract.Id)
-            {
-                throw new DomainValidationException("Work session is already assigned to this user contract.");
-            }
-
-            UserContractId = userContract.Id;
             UserContract = userContract;
             UpdatedAt = DateTime.UtcNow;
         }

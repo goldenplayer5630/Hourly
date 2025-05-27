@@ -6,8 +6,6 @@ namespace Hourly.Shared.Entities
 {
     public class GitCommit
     {
-        protected List<WorkSession> _workSessions = new();
-
         [Key]
         public Guid Id { get; set; }
 
@@ -39,7 +37,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public string WebUrl { get; set; }
 
-        public IReadOnlyCollection<WorkSession> WorkSessions => _workSessions;
+        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

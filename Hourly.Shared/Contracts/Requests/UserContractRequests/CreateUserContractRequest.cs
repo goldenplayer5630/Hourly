@@ -10,7 +10,7 @@ namespace Hourly.Shared.Contracts.Requests.UserContractRequests
         [Required]
         public string Name { get; set; }
         [Required]
-        public ContractTypes ContractType { get; set; }
+        public ContractType ContractType { get; set; }
         public bool IsActive { get; set; }
 
         [Required]

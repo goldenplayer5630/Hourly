@@ -1,5 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
+using Hourly.Shared.Entities;
 using Hourly.Shared.Exceptions;
 using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -47,11 +48,11 @@ namespace Hourly.Api.Controllers
         }
 
         [HttpGet("Filter")]
-        public async Task<IActionResult> FilterWorkSessions([FromQuery] Guid? userId, [FromQuery] int? year, [FromQuery] int? month, bool? wbso)
+        public async Task<IActionResult> FilterWorkSessions([FromQuery] Guid? userContractId, [FromQuery] int? year, [FromQuery] int? month, bool? wbso)
         {
             try
             {
-                var results = await _workSessionService.Filter(userId, year, month, wbso);
+                var results = await _workSessionService.Filter(userContractId, year, month, wbso);
                 return Ok(results.Select(ws => ws.ToResponse()));
             }
             catch (EntityNotFoundException ex)

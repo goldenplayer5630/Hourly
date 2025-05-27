@@ -28,6 +28,23 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(r => r.Id == userContractId);
         }
 
+        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        {
+            var query = _context.UserContracts
+                .Include(u => u.User)
+                .ThenInclude(u => u.Role)
+                .AsQueryable();
+            if (userId.HasValue)
+            {
+                query = query.Where(uc => uc.UserId == userId.Value);
+            }
+            if (year.HasValue && month.HasValue)
+            {
+                query = query.Where(uc => uc.StartDate.Year == year.Value && uc.StartDate.Month == month.Value);
+            }
+            return await query.ToListAsync();
+        }
+
         public async Task<IEnumerable<UserContract>> GetAll()
         {
             return await _context.UserContracts
