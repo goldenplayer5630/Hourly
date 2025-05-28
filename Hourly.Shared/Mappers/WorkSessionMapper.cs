@@ -22,7 +22,7 @@ namespace Hourly.Shared.Mappers
                 NetEffectiveHours = entity.NetEffectiveHours,
                 WBSO = entity.WBSO,
                 OtherRemarks = entity.OtherRemarks,
-                GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
+                GitCommits = entity.GitCommits.Select(gc => gc.ToResponse()).ToList(),
                 TVTAccruedHours = entity.TVTAccruedHours,
                 TVTUsedHours = entity.TVTUsedHours,
                 CreatedAt = entity.CreatedAt,

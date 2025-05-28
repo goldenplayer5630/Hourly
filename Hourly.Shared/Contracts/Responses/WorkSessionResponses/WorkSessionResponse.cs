@@ -1,6 +1,7 @@
 ﻿using Hourly.Shared.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Contracts.Responses.UserContractResponses;
 using Hourly.Shared.Contracts.Responses.UserResponses;
+using Hourly.Shared.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,7 +13,7 @@ namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
         [ForeignKey("UserContractId")]
         public UserContractSummaryResponse? UserContract { get; set; }
 
-        public ICollection<GitCommitSummaryResponse> GitCommits { get; set; } = new List<GitCommitSummaryResponse>();
+        public ICollection<GitCommitResponse> GitCommits { get; set; } = new List<GitCommitResponse>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

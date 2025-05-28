@@ -18,6 +18,10 @@ namespace Hourly.Data.Repositories
         {
             return await _context.WorkSessions
                 .Include(ws => ws.GitCommits)
+                    .ThenInclude(gc => gc.Repository)
+                .Include(ws => ws.GitCommits)
+                    .ThenInclude(gc => gc.Author)
+                    .ThenInclude(u => u.Role)
                 .Include(ws => ws.UserContract)
                 .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }
