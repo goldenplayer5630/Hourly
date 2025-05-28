@@ -21,6 +21,8 @@ namespace Hourly.Shared.Contracts.Requests.GitCommitRequests
         [Required]
         public Guid AuthorId { get; set; }
 
+        public DateTime AuthoredDate { get; set; }
+
         [Required]
         public string WebUrl { get; init; }
     }

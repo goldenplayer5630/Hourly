@@ -22,6 +22,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                         ExtCommitId = faker.Random.AlphaNumeric(40),
                         ExtCommitShortId = "", // set below
                         Title = faker.Lorem.Sentence(5, 7),
+                        AuthoredDate = faker.Date.Between(DateTime.UtcNow.AddDays(-3), DateTime.UtcNow),
                         Comment = faker.Lorem.Paragraph(),
                         WebUrl = faker.Internet.Url(),
                         CreatedAt = faker.Date.Past().ToUniversalTime(),

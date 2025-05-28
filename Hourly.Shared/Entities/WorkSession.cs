@@ -122,6 +122,24 @@ namespace Hourly.Shared.Entities
                 throw new DomainValidationException("Work session start and end times cannot be in the future.");
         }
 
+        public void UpdateFrom(WorkSession updated)
+        {
+            TaskDescription = updated.TaskDescription;
+            StartTime = updated.StartTime;
+            EndTime = updated.EndTime;
+            BreakTime = updated.BreakTime;
+            Factor = updated.Factor;
+            TVTAccruedHours = updated.TVTAccruedHours;
+            TVTUsedHours = updated.TVTUsedHours;
+            WBSO = updated.WBSO;
+            Locked = updated.Locked;
+            OtherRemarks = updated.OtherRemarks;
+            CreatedAt = updated.CreatedAt;
+            UpdatedAt = DateTime.UtcNow;
+
+            Validate();
+        }
+
         private bool IsValid15MinuteInterval(int minute)
         {
             return minute == 0 || minute == 15 || minute == 30 || minute == 45;

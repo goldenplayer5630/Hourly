@@ -65,22 +65,15 @@ namespace Hourly.Domain.Services
             var existing = await _repository.GetById(updated.Id)
                 ?? throw new EntityNotFoundException("WorkSession not found!");
 
-            existing.TaskDescription = updated.TaskDescription;
-            existing.StartTime = updated.StartTime;
-            existing.EndTime = updated.EndTime;
-            existing.Factor = updated.Factor;
-            existing.BreakTime = updated.BreakTime;
-            existing.WBSO = updated.WBSO;
-            existing.OtherRemarks = updated.OtherRemarks;
-            existing.UpdatedAt = DateTime.UtcNow;
-
             var userContract = await _userContractRepository.GetById(updated.UserContractId)
                 ?? throw new EntityNotFoundException("UserContract not found!");
 
-            existing.AssignToUserContract(userContract);
+            existing.UpdateFrom(updated);
 
             if (existing.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
+
+            existing.AssignToUserContract(userContract);
 
             // Replace commit links
             existing.GitCommits.Clear();

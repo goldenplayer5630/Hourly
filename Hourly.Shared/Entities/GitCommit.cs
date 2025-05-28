@@ -34,6 +34,8 @@ namespace Hourly.Shared.Entities
         [ForeignKey("AuthorId")]
         public User Author { get; set; }
 
+        public DateTime AuthoredDate { get; set; }
+
         [Required]
         public string WebUrl { get; set; }
 

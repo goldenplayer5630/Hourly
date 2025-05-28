@@ -26,7 +26,31 @@ namespace Hourly.Data.Repositories
 
         public async Task<IEnumerable<GitCommit>> GetAll()
         {
-            return await _context.GitCommits.ToListAsync();
+            return await _context.GitCommits
+                .Include(gc => gc.Repository)
+                .Include(gc => gc.Author)
+                .ThenInclude(u => u.Role)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
+        {
+            var query = _context.GitCommits
+                .Include(gc => gc.Repository)
+                .Include(gc => gc.Author)
+                .ThenInclude(u => u.Role)
+                .AsQueryable();
+
+            if (repositoryId.HasValue)
+                query = query.Where(gc => gc.RepositoryId == repositoryId.Value);
+
+            if (authorId.HasValue)
+                query = query.Where(gc => gc.AuthorId == authorId.Value);
+
+            if (authoredDate.HasValue && authoredDate != default)
+                query = query.Where(gc => gc.AuthoredDate.Date == authoredDate.Value.Date);
+
+            return await query.ToListAsync();
         }
 
         public async Task<GitCommit> Create(GitCommit gitCommit)

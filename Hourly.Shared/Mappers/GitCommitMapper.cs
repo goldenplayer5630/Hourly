@@ -19,6 +19,7 @@ namespace Hourly.Shared.Mappers
                 Comment = entity.Comment,
                 AuthorId = entity.AuthorId,
                 Author = entity.Author.ToSummaryResponse(),
+                AuthoredDate = entity.AuthoredDate,
                 WebUrl = entity.WebUrl,
                 WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
@@ -37,6 +38,7 @@ namespace Hourly.Shared.Mappers
                 Title = entity.Title,
                 Comment = entity.Comment,
                 AuthorId = entity.AuthorId,
+                AuthoredDate = entity.AuthoredDate,
                 WebUrl = entity.WebUrl,
             };
         }
@@ -50,6 +52,7 @@ namespace Hourly.Shared.Mappers
                 Title = response.Title,
                 Comment = response.Comment,
                 AuthorId = response.AuthorId,
+                AuthoredDate = response.AuthoredDate,
                 WebUrl = response.WebUrl,
             };
         }

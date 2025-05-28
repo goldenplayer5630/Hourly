@@ -29,6 +29,11 @@ namespace Hourly.Domain.Services
             return await _repository.GetAll();
         }
 
+        public async Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
+        {
+            return await _repository.Filter(repositoryId, authorId, authoredDate);
+        }
+
         public async Task<GitCommit> Create(GitCommit gitCommit)
         {
             gitCommit.Id = Guid.NewGuid();

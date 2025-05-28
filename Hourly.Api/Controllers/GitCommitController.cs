@@ -1,4 +1,5 @@
 ﻿using Hourly.Abstractions.Services;
+using Hourly.Domain.Services;
 using Hourly.Shared.Contracts.Requests.GitCommitRequests;
 using Hourly.Shared.Exceptions;
 using Hourly.Shared.Mappers;
@@ -25,7 +26,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitCommits = await _gitCommitService.GetAll();
-                return Ok(gitCommits.Select(gc => gc.ToSummaryResponse()).ToList());
+                return Ok(gitCommits.Select(gc => gc.ToResponse()).ToList());
             }
             catch (EntityNotFoundException ex)
             {
@@ -69,6 +70,33 @@ namespace Hourly.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while retrieving a gitCommit.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpGet("Filter")]
+        public async Task<IActionResult> FilterGitCommits([FromQuery] Guid? repositoryId, [FromQuery] Guid? authorId, [FromQuery] DateTime? authoredDate)
+        {
+            try
+            {
+                var results = await _gitCommitService.Filter(repositoryId, authorId, authoredDate);
+                return Ok(results.Select(ws => ws.ToResponse()));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving work sessions by month.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }

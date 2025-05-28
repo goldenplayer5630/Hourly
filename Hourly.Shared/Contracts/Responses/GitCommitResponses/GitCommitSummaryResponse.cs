@@ -24,6 +24,8 @@ namespace Hourly.Shared.Contracts.Responses.GitCommitResponses
         [Required]
         public Guid AuthorId { get; set; }
 
+        public DateTime AuthoredDate { get; set; }
+
         [Required]
         public string WebUrl { get; set; }
 

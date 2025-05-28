@@ -90,32 +90,33 @@ namespace Hourly.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GitCommits",
+                name: "git_commits",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    RepositoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExtCommitId = table.Column<string>(type: "text", nullable: false),
-                    ExtCommitShortId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Comment = table.Column<string>(type: "text", nullable: true),
-                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    WebUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    repository_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ext_commit_id = table.Column<string>(type: "text", nullable: false),
+                    ext_commit_short_id = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    comment = table.Column<string>(type: "text", nullable: true),
+                    author_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    authored_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    web_url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GitCommits", x => x.Id);
+                    table.PrimaryKey("PK_git_commits", x => x.id);
                     table.ForeignKey(
-                        name: "FK_GitCommits_git_repository_RepositoryId",
-                        column: x => x.RepositoryId,
+                        name: "FK_git_commits_git_repository_repository_id",
+                        column: x => x.repository_id,
                         principalTable: "git_repository",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_git_commit_author",
-                        column: x => x.AuthorId,
+                        column: x => x.author_id,
                         principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -194,10 +195,10 @@ namespace Hourly.Data.Migrations
                 {
                     table.PrimaryKey("PK_git_commit_work_sessions", x => new { x.git_commit_id, x.work_session_id });
                     table.ForeignKey(
-                        name: "FK_git_commit_work_sessions_GitCommits_git_commit_id",
+                        name: "FK_git_commit_work_sessions_git_commits_git_commit_id",
                         column: x => x.git_commit_id,
-                        principalTable: "GitCommits",
-                        principalColumn: "Id",
+                        principalTable: "git_commits",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_git_commit_work_sessions_work_session_work_session_id",
@@ -213,14 +214,14 @@ namespace Hourly.Data.Migrations
                 column: "work_session_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GitCommits_AuthorId",
-                table: "GitCommits",
-                column: "AuthorId");
+                name: "IX_git_commits_author_id",
+                table: "git_commits",
+                column: "author_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GitCommits_RepositoryId",
-                table: "GitCommits",
-                column: "RepositoryId");
+                name: "IX_git_commits_repository_id",
+                table: "git_commits",
+                column: "repository_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_department_id",
@@ -250,7 +251,7 @@ namespace Hourly.Data.Migrations
                 name: "git_commit_work_sessions");
 
             migrationBuilder.DropTable(
-                name: "GitCommits");
+                name: "git_commits");
 
             migrationBuilder.DropTable(
                 name: "work_session");
