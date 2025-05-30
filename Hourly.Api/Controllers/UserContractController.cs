@@ -48,11 +48,11 @@ namespace Hourly.Api.Controllers
         }
 
         [HttpGet("Filter")]
-        public async Task<IActionResult> FilterUserContracts([FromQuery] Guid? userContractId, [FromQuery] int? year, [FromQuery] int? month)
+        public async Task<IActionResult> FilterUserContracts([FromQuery] Guid? userId, [FromQuery] int? year, [FromQuery] int? month)
         {
             try
             {
-                var results = await _userContractService.FilterUserContracts(userContractId, year, month);
+                var results = await _userContractService.FilterUserContracts(userId, year, month);
                 return Ok(results.Select(uc => uc.ToResponse()));
             }
             catch (EntityNotFoundException ex)
