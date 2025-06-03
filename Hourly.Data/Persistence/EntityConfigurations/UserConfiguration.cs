@@ -34,9 +34,9 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired(false)
                 .HasColumnName("git_access_token");
 
-            builder.Property(x => x.TVTAccruedHours)
+            builder.Property(x => x.TVTHourBalance)
                 .IsRequired()
-                .HasColumnName("tvt_accrued_hours");
+                .HasColumnName("tvt_hour_balance");
 
             builder.Property(x => x.RoleId)
                 .HasColumnName("role_id");
@@ -83,6 +83,4 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
         }
     }
-
 }
-

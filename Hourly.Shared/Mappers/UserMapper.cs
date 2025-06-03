@@ -20,7 +20,7 @@ namespace Hourly.Shared.Mappers
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,
                 GitAccessToken = entity.GitAccessToken,
-                TVTAccruedHours = entity.TVTAccruedHours,
+                TVTHourBalance = entity.TVTHourBalance,
                 GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
                 Contracts = entity.Contracts.Select(uc => uc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
@@ -41,7 +41,7 @@ namespace Hourly.Shared.Mappers
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,
                 GitAccessToken = entity.GitAccessToken,
-                TVTAccruedHours = entity.TVTAccruedHours,
+                TVTHourBalance = entity.TVTHourBalance,
             };
         }
 
@@ -54,7 +54,7 @@ namespace Hourly.Shared.Mappers
                 GitEmail = request.GitEmail,
                 GitUsername = request.GitUsername,
                 GitAccessToken = request.GitAccessToken,
-                TVTAccruedHours = request.TVTAccruedHours,
+                TVTHourBalance = request.TVTHourBalance,
                 RoleId = request.RoleId,
             };
         }
@@ -69,7 +69,7 @@ namespace Hourly.Shared.Mappers
                 GitEmail = request.GitEmail,
                 GitUsername = request.GitUsername,
                 GitAccessToken = request.GitAccessToken,
-                TVTAccruedHours = request.TVTAccruedHours,
+                TVTHourBalance = request.TVTHourBalance,
                 RoleId = request.RoleId,
             };
         }

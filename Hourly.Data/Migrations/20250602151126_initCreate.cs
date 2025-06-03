@@ -69,7 +69,7 @@ namespace Hourly.Data.Migrations
                     git_email = table.Column<string>(type: "text", nullable: true),
                     git_username = table.Column<string>(type: "text", nullable: true),
                     git_access_token = table.Column<string>(type: "text", nullable: true),
-                    tvt_accrued_hours = table.Column<float>(type: "real", nullable: false),
+                    tvt_hour_balance = table.Column<float>(type: "real", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

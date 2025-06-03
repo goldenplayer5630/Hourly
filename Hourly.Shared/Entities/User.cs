@@ -37,7 +37,7 @@ namespace Hourly.Shared.Entities
         public string? GitAccessToken { get; set; }
 
         [Required]
-        public float TVTAccruedHours { get; set; }
+        public float TVTHourBalance { get; set; }
 
         public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
 

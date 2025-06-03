@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250528150248_initCreate")]
+    [Migration("20250602151126_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -225,9 +225,9 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("role_id");
 
-                    b.Property<float>("TVTAccruedHours")
+                    b.Property<float>("TVTHourBalance")
                         .HasColumnType("real")
-                        .HasColumnName("tvt_accrued_hours");
+                        .HasColumnName("tvt_hour_balance");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")

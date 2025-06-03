@@ -222,9 +222,9 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("role_id");
 
-                    b.Property<float>("TVTAccruedHours")
+                    b.Property<float>("TVTHourBalance")
                         .HasColumnType("real")
-                        .HasColumnName("tvt_accrued_hours");
+                        .HasColumnName("tvt_hour_balance");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
