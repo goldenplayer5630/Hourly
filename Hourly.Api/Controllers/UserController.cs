@@ -1,7 +1,7 @@
 ﻿using Hourly.Abstractions.Services;
-using Hourly.Shared.Contracts.Requests.UserRequests;
-using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
+using Hourly.Domain.Contracts.Requests.UserRequests;
+using Hourly.Domain.Exceptions;
+using Hourly.Domain.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

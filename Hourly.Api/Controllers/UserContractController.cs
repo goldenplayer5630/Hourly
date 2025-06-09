@@ -1,7 +1,7 @@
 ﻿using Hourly.Abstractions.Services;
-using Hourly.Shared.Contracts.Requests.UserContractRequests;
-using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
+using Hourly.Domain.Contracts.Requests.UserContractRequests;
+using Hourly.Domain.Exceptions;
+using Hourly.Domain.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
@@ -138,7 +138,7 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var userContract = request.ToUserContract();
+            var userContract = request.ToUserContract(userContractId);
 
             try
             {

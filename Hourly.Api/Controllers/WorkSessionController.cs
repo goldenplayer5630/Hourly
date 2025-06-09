@@ -1,8 +1,8 @@
 ﻿using Hourly.Abstractions.Services;
-using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
-using Hourly.Shared.Entities;
-using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
+using Hourly.Domain.Contracts.Requests.WorkSessionRequests;
+using Hourly.Domain.Entities;
+using Hourly.Domain.Exceptions;
+using Hourly.Domain.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers

@@ -1,0 +1,33 @@
+﻿using Hourly.Domain.Contracts.Responses.RoleResponses;
+using Hourly.Domain.Entities;
+
+namespace Hourly.Domain.Mappers
+{
+    public static partial class RoleMapper
+    {
+        public static RoleResponse ToResponse(this Role entity)
+        {
+            return new RoleResponse
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Permissions = entity.Permissions,
+                Users = entity.Users.Select(u => u.ToSummaryResponse()).ToList(),
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
+
+        public static RoleSummaryResponse ToSummaryResponse(this Role entity)
+        {
+            return new RoleSummaryResponse
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Permissions = entity.Permissions,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
+    }
+}

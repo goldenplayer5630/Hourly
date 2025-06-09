@@ -1,7 +1,7 @@
 using Hourly.Abstractions.Repositories;
 using Hourly.Abstractions.Services;
 using Hourly.Data.Repositories;
-using Hourly.Domain.Services;
+using Hourly.Application.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

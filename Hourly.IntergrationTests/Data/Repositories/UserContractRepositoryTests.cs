@@ -1,9 +1,9 @@
 ﻿using Hourly.Abstractions.Repositories;
 using Hourly.Data.Repositories;
 using Hourly.IntergrationTests.Utilities;
-using Hourly.Shared.Entities;
+using Hourly.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Hourly.Shared.Enums;
+using Hourly.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

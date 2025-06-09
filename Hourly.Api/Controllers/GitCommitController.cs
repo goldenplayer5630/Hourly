@@ -1,8 +1,8 @@
 ﻿using Hourly.Abstractions.Services;
-using Hourly.Domain.Services;
-using Hourly.Shared.Contracts.Requests.GitCommitRequests;
-using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
+using Hourly.Application.Services;
+using Hourly.Domain.Contracts.Requests.GitCommitRequests;
+using Hourly.Domain.Exceptions;
+using Hourly.Domain.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers

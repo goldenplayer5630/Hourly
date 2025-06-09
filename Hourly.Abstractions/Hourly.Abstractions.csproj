@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hourly.Shared\Hourly.Shared.csproj" />
+      <ProjectReference Include="..\Hourly.Domain\Hourly.Domain.csproj" />
     </ItemGroup>
 
 </Project>

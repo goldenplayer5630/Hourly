@@ -1,4 +1,4 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Domain.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {

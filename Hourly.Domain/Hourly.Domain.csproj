@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Hourly.Abstractions\Hourly.Abstractions.csproj" />
-      <ProjectReference Include="..\Hourly.Shared\Hourly.Shared.csproj" />
-    </ItemGroup>
-
 </Project>

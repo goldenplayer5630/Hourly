@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Hourly.Abstractions.Repositories;
+using Hourly.Abstractions.Services;
+using Hourly.Domain.Entities;
+using Hourly.Domain.Exceptions;
+
+namespace Hourly.Application.Services
+{
+    public class UserContractService : IUserContractService
+    {
+        private readonly IUserContractRepository _repository;
+        private readonly IUserRepository _userRepository;
+
+        public UserContractService(IUserContractRepository repository, IUserRepository userRepository)
+        {
+            _repository = repository;
+            _userRepository = userRepository;
+        }
+
+        public async Task<UserContract> GetById(Guid userContractId)
+        {
+            return await _repository.GetById(userContractId)
+                ?? throw new EntityNotFoundException("UserContract not found!");
+        }
+
+        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        {
+            return await _repository.FilterUserContracts(userId, year, month);
+        }
+
+        public async Task<IEnumerable<UserContract>> GetAll()
+        {
+            return await _repository.GetAll();
+        }
+
+        public async Task<UserContract> Create(UserContract userContract)
+        {
+            userContract.Id = Guid.NewGuid();
+            userContract.CreatedAt = DateTime.UtcNow;
+
+            userContract.Validate();
+
+            var user = await _userRepository.GetById(userContract.UserId)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            userContract.AssignToUser(user);
+
+            return await _repository.Create(userContract);
+        }
+
+        public async Task<UserContract> Update(UserContract userContract)
+        {
+            var existing = await _repository.GetById(userContract.Id)
+                ?? throw new EntityNotFoundException("UserContract not found!");
+
+            var user = await _userRepository.GetById(userContract.UserId)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            existing.Update(userContract);
+
+            existing.AssignToUser(user);
+
+            return await _repository.Update(existing);
+        }
+
+        public async Task Delete(Guid userContractId)
+        {
+            await _repository.Delete(userContractId);
+        }
+    }
+}

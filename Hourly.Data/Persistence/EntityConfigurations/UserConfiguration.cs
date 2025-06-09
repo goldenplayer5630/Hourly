@@ -1,5 +1,5 @@
 ﻿using Hourly.Data.Persistence.Converters;
-using Hourly.Shared.Entities;
+using Hourly.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,8 +1,8 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Data.Repositories;
-using Hourly.Domain.Services;
+using Hourly.Application.Services;
 using Hourly.IntergrationTests.Utilities;
-using Hourly.Shared.Entities;
+using Hourly.Domain.Entities;
 
 
 namespace Hourly.IntergrationTests.Domain.Services
@@ -15,7 +15,8 @@ namespace Hourly.IntergrationTests.Domain.Services
         {
             await base.InitializeAsync();
             var userContractRepository = new UserContractRepository(_dbContext);
-            _userContractService = new UserContractService(userContractRepository);
+            var userRepository = new UserRepository(_dbContext);
+            _userContractService = new UserContractService(userContractRepository, userRepository);
         }
     }
 }
