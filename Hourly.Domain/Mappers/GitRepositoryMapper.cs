@@ -1,9 +1,9 @@
-﻿using Hourly.Shared.Contracts.Requests.GitRepositoryRequests;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.GitRepositoryRequests;
 using Hourly.Shared.Contracts.Responses.GitRepositoryResponses;
-using Hourly.Shared.Entities;
 
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class GitRepositoryMapper
     {
@@ -16,7 +16,7 @@ namespace Hourly.Shared.Mappers
                 Name = entity.Name,
                 Namespace = entity.Namespace,
                 WebUrl = entity.WebUrl,
-                GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
+                GitCommits = (entity.GitCommits as List<GitCommit> ?? throw new Exception()).Select(gc => gc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };

@@ -1,15 +1,15 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {
     public interface IUserContractRepository
     {
-        Task<UserContract?> GetById(Guid userContractId);
-        Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month);
-        Task<IEnumerable<UserContract>> GetAll();
-        Task<UserContract> Create(UserContract userContract);
-        Task<UserContract> Update(UserContract userContract);
-        Task Delete(Guid userContractId);
+        Task<IUserContract?> GetById(Guid IUserContractId);
+        Task<IEnumerable<IUserContract>> FilterUserContracts(Guid? userId, int? year, int? month);
+        Task<IEnumerable<IUserContract>> GetAll();
+        Task<IUserContract> Create(IUserContract IUserContract);
+        Task<IUserContract> Update(IUserContract IUserContract);
+        Task Delete(Guid IUserContractId);
         Task SaveChanges();
     }
 }

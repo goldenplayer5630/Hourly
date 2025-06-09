@@ -1,14 +1,14 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {
     public interface IUserRepository
     {
-        Task<User?> GetById(Guid userId);
-        Task<IEnumerable<User>> GetAll();
-        Task<User> Create(User user);
-        Task<User> Update(User user);
-        Task Delete(Guid userId);
+        Task<IUser?> GetById(Guid IUserId);
+        Task<IEnumerable<IUser>> GetAll();
+        Task<IUser> Create(IUser IUser);
+        Task<IUser> Update(IUser IUser);
+        Task Delete(Guid IUserId);
         Task SaveChanges();
     }
 }

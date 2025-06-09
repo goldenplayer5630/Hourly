@@ -1,4 +1,4 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext
@@ -8,13 +8,13 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<Department> Departments { get; set; }
-    public DbSet<WorkSession> WorkSessions { get; set; }
-    public DbSet<GitRepository> GitRepositories { get; set; }
-    public DbSet<GitCommit> GitCommits { get; set; }
-    public DbSet<UserContract> UserContracts { get; set; }
+    public DbSet<IUser> Users { get; set; }
+    public DbSet<IRole> Roles { get; set; }
+    public DbSet<IDepartment> Departments { get; set; }
+    public DbSet<IWorkSession> WorkSessions { get; set; }
+    public DbSet<IGitRepository> GitRepositories { get; set; }
+    public DbSet<IGitCommit> GitCommits { get; set; }
+    public DbSet<IUserContract> UserContracts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

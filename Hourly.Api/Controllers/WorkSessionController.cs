@@ -1,8 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
-using Hourly.Shared.Entities;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
@@ -26,7 +24,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var workSessions = await _workSessionService.GetAll();
-                return Ok(workSessions.Select(ws => ws.ToSummaryResponse()).ToList());
+                return Ok(workSessions);
             }
             catch (EntityNotFoundException ex)
             {
@@ -53,7 +51,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var results = await _workSessionService.Filter(userContractId, year, month, wbso);
-                return Ok(results.Select(ws => ws.ToResponse()));
+                return Ok(results);
             }
             catch (EntityNotFoundException ex)
             {
@@ -80,7 +78,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _workSessionService.GetById(workSessionId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -107,7 +105,7 @@ namespace Hourly.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var workSession = request.ToWorkSession();
+            var workSession = request;
 
             try
             {
@@ -116,7 +114,7 @@ namespace Hourly.Api.Controllers
                 return CreatedAtAction(
                     nameof(GetWorkSessionById),       // must match method name exactly
                     new { workSessionId = created.Id },          // must match [HttpGet("{id}")]
-                    created.ToResponse());            // payload returned in body
+                    created);            // payload returned in body
             }
             catch (ValidationException ex)
             {
@@ -140,7 +138,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var workSession = await _workSessionService.AddGitCommit(workSessionId, gitCommitId);
-                return Ok(workSession.ToResponse());
+                return Ok(workSession);
             }
             catch (EntityNotFoundException ex)
             {
@@ -167,7 +165,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var workSession = await _workSessionService.RemoveGitCommit(workSessionId, gitCommitId);
-                return Ok(workSession.ToResponse());
+                return Ok(workSession);
             }
             catch (EntityNotFoundException ex)
             {
@@ -196,12 +194,12 @@ namespace Hourly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var workSession = request.ToWorkSession(workSessionId);
+            var workSession = request;
 
             try
             {
-                var updated = await _workSessionService.Update(workSession, request.GitCommitIds);
-                return Ok(updated.ToResponse());
+                var updated = await _workSessionService.Update(workSessionId, workSession, request.GitCommitIds);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {

@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +14,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<GitCommit?> GetById(Guid gitCommitId)
+        public async Task<IGitCommit?> GetById(Guid gitCommitId)
         {
             return await _context.GitCommits
                 .Include(gc => gc.WorkSessions)
@@ -24,7 +24,7 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(gc => gc.Id == gitCommitId);
         }
 
-        public async Task<IEnumerable<GitCommit>> GetAll()
+        public async Task<IEnumerable<IGitCommit>> GetAll()
         {
             return await _context.GitCommits
                 .Include(gc => gc.Repository)
@@ -33,7 +33,7 @@ namespace Hourly.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
+        public async Task<IEnumerable<IGitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
         {
             var query = _context.GitCommits
                 .Include(gc => gc.Repository)
@@ -53,7 +53,7 @@ namespace Hourly.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<GitCommit> Create(GitCommit gitCommit)
+        public async Task<IGitCommit> Create(IGitCommit gitCommit)
         {
             await _context.GitCommits.AddAsync(gitCommit);
             var result = await _context.SaveChangesAsync();

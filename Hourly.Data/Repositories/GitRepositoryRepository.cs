@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,28 +14,28 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<GitRepository?> GetById(Guid gitRepositoryId)
+        public async Task<IGitRepository?> GetById(Guid gitRepositoryId)
         {
             return await _context.GitRepositories
                 .Include("_gitCommits")
                 .FirstOrDefaultAsync(gr => gr.Id == gitRepositoryId);
         }
 
-        public async Task<IEnumerable<GitRepository>> GetAll()
+        public async Task<IEnumerable<IGitRepository>> GetAll()
         {
             return await _context.GitRepositories
                 .Include("_gitCommits")
                 .ToListAsync();
         }
 
-        public async Task<GitRepository> Create(GitRepository gitRepository)
+        public async Task<IGitRepository> Create(IGitRepository gitRepository)
         {
             await _context.GitRepositories.AddAsync(gitRepository);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<GitRepository> Update(GitRepository gitRepository)
+        public async Task<IGitRepository> Update(IGitRepository gitRepository)
         {
             var existingGitRepository = await _context.GitRepositories.FindAsync(gitRepository.Id);
             if (existingGitRepository == null)

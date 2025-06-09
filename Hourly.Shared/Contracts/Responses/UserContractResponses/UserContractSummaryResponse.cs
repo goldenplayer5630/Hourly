@@ -1,10 +1,5 @@
 ﻿using Hourly.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hourly.Shared.Contracts.Responses.UserContractResponses
 {

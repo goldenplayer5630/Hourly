@@ -1,13 +1,14 @@
-﻿using Hourly.Data.Persistence.Converters;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Data.Persistence.Converters;
+using Hourly.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
-    public class GitRepositoryConfiguration : IEntityTypeConfiguration<GitRepository>
+    public class GitRepositoryConfiguration : IEntityTypeConfiguration<IGitRepository>
     {
-        public void Configure(EntityTypeBuilder<GitRepository> builder)
+        public void Configure(EntityTypeBuilder<IGitRepository> builder)
         {
             builder.ToTable("git_repository");
 

@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<Department?> GetById(Guid departmentId)
+        public async Task<IDepartment?> GetById(Guid departmentId)
         {
             return await _context.Departments
                 .Include(d => d.Users)
@@ -21,7 +21,7 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(d => d.Id == departmentId);
         }
 
-        public async Task<IEnumerable<Department>> GetAll()
+        public async Task<IEnumerable<IDepartment>> GetAll()
         {
             return await _context.Departments
             .Include(d => d.Users)
@@ -29,14 +29,14 @@ namespace Hourly.Data.Repositories
             .ToListAsync();
         }
 
-        public async Task<Department> Create(Department department)
+        public async Task<IDepartment> Create(IDepartment department)
         {
             await _context.Departments.AddAsync(department);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? department : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<Department> Update(Department department)
+        public async Task<IDepartment> Update(IDepartment department)
         {
             var existingDepartment = await _context.Departments.FindAsync(department.Id);
             if (existingDepartment == null)

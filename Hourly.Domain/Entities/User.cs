@@ -1,14 +1,14 @@
-﻿using Hourly.Shared.Exceptions;
-using System.Collections.Generic;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Shared.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hourly.Shared.Entities
+namespace Hourly.Domain.Entities
 {
-    public class User
+    public class User : IUser
     {
-        protected List<GitCommit> _gitCommits = new();
-        protected List<UserContract> _userContracts = new();
+        protected List<IGitCommit> _gitCommits = new();
+        protected List<IUserContract> _userContracts = new();
 
         [Key]
         public Guid Id { get; set; }
@@ -23,12 +23,12 @@ namespace Hourly.Shared.Entities
         public Guid RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public Role Role { get; private set; }
+        public IRole Role { get; private set; }
 
         public Guid? DepartmentId { get; private set; }
 
         [ForeignKey("DepartmentId")]
-        public Department? Department { get; private set; }
+        public IDepartment? Department { get; private set; }
 
         public string? GitEmail { get; set; }
 
@@ -39,16 +39,29 @@ namespace Hourly.Shared.Entities
         [Required]
         public float TVTHourBalance { get; set; }
 
-        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
+        public IReadOnlyCollection<IGitCommit> GitCommits => _gitCommits.AsReadOnly();
 
-        public IReadOnlyCollection<UserContract> Contracts => _userContracts.AsReadOnly();
+        public IReadOnlyCollection<IUserContract> Contracts => _userContracts.AsReadOnly();
 
         [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
-        public void AssignToDepartment(Department department)
+        public void Update(IUser updatedUser)
+        {
+            if (updatedUser == null)
+                throw new ArgumentNullException(nameof(updatedUser));
+            Name = updatedUser.Name;
+            Email = updatedUser.Email;
+            GitEmail = updatedUser.GitEmail;
+            GitUsername = updatedUser.GitUsername;
+            GitAccessToken = updatedUser.GitAccessToken;
+            TVTHourBalance = updatedUser.TVTHourBalance;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AssignToDepartment(IDepartment department)
         {
             if (DepartmentId == department.Id)
             {
@@ -70,7 +83,7 @@ namespace Hourly.Shared.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AssignToRole(Role role)
+        public void AssignToRole(IRole role)
         {
             if (RoleId == role.Id)
             {

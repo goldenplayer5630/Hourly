@@ -1,7 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.UserRequests;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,7 +26,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var users = await _userService.GetAll();
-                var response = users.Select(user => user.ToSummaryResponse()).ToList();
+                var response = users.Select(user => user).ToList();
                 return Ok(response);
             }
             catch (EntityNotFoundException ex)
@@ -55,7 +54,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _userService.GetById(userId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -83,12 +82,11 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = request.ToUser();
 
             try
             {
-                var created = await _userService.Create(user);
-                return CreatedAtAction(nameof(GetUserById), new { userId = created.Id }, created.ToResponse());
+                var created = await _userService.Create(request);
+                return CreatedAtAction(nameof(GetUserById), new { userId = created.Id }, created);
             }
             catch (ValidationException ex)
             {
@@ -112,7 +110,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _userService.AddDepartment(userId, departmentId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -139,7 +137,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _userService.RemoveDepartment(userId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -167,12 +165,11 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = request.ToUser(userId);
 
             try
             {
-                var updated = await _userService.Update(user);
-                return Ok(updated.ToResponse());
+                var updated = await _userService.Update(userId, request);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {

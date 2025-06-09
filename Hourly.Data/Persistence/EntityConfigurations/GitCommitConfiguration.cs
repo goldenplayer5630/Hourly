@@ -1,13 +1,13 @@
-﻿using Hourly.Data.Persistence.Converters;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Data.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
-    public class GitCommitConfiguration : IEntityTypeConfiguration<GitCommit>
+    public class GitCommitConfiguration : IEntityTypeConfiguration<IGitCommit>
     {
-        public void Configure(EntityTypeBuilder<GitCommit> builder)
+        public void Configure(EntityTypeBuilder<IGitCommit> builder)
         {
             builder.ToTable("git_commits");
 
@@ -66,12 +66,12 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .UsingEntity<Dictionary<string, object>>(
                     "git_commit_work_sessions",
 
-                    j => j.HasOne<WorkSession>()
+                    j => j.HasOne<IWorkSession>()
                           .WithMany()
                           .HasForeignKey("work_session_id")
                           .OnDelete(DeleteBehavior.Cascade),
 
-                    j => j.HasOne<GitCommit>()
+                    j => j.HasOne<IGitCommit>()
                           .WithMany()
                           .HasForeignKey("git_commit_id")
                           .OnDelete(DeleteBehavior.Cascade),

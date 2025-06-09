@@ -1,14 +1,14 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {
     public interface IDepartmentRepository
     {
-        Task<Department?> GetById(Guid departmentId);
-        Task<IEnumerable<Department>> GetAll();
-        Task<Department> Create(Department department);
-        Task<Department> Update(Department department);
-        Task Delete(Guid departmentId);
+        Task<IDepartment?> GetById(Guid IDepartmentId);
+        Task<IEnumerable<IDepartment>> GetAll();
+        Task<IDepartment> Create(IDepartment IDepartment);
+        Task<IDepartment> Update(IDepartment IDepartment);
+        Task Delete(Guid IDepartmentId);
         Task SaveChanges();
     }
 }

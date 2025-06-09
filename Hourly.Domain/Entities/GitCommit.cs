@@ -1,10 +1,11 @@
-﻿using Hourly.Shared.Exceptions;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Shared.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hourly.Shared.Entities
+namespace Hourly.Domain.Entities
 {
-    public class GitCommit
+    public class GitCommit : IGitCommit
     {
         [Key]
         public Guid Id { get; set; }
@@ -14,7 +15,7 @@ namespace Hourly.Shared.Entities
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository Repository { get; private set; }
+        public IGitRepository Repository { get; private set; }
 
         [Required]
         public string ExtCommitId { get; set; }
@@ -32,21 +33,21 @@ namespace Hourly.Shared.Entities
 
         [Required]
         [ForeignKey("AuthorId")]
-        public User Author { get; set; }
+        public IUser Author { get; set; }
 
         public DateTime AuthoredDate { get; set; }
 
         [Required]
         public string WebUrl { get; set; }
 
-        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+        public IReadOnlyCollection<IWorkSession> WorkSessions { get; set; } = new List<IWorkSession>();
 
         [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
-        public void AssignToRepository(GitRepository repository)
+        public void AssignToRepository(IGitRepository repository)
         {
             if (RepositoryId == repository.Id)
             {
@@ -57,7 +58,7 @@ namespace Hourly.Shared.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AssignToAuthor(User author)
+        public void AssignToAuthor(IUser author)
         {
             if (AuthorId == author.Id)
             {

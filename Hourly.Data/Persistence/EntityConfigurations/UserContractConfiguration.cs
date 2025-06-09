@@ -1,13 +1,14 @@
-﻿using Hourly.Data.Persistence.Converters;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Data.Persistence.Converters;
+using Hourly.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hourly.Data.Persistence.EntityConfigurations
 {
-    public class UserContractConfiguration : IEntityTypeConfiguration<UserContract>
+    public class UserContractConfiguration : IEntityTypeConfiguration<IUserContract>
     {
-        public void Configure(EntityTypeBuilder<UserContract> builder)
+        public void Configure(EntityTypeBuilder<IUserContract> builder)
         {
             builder.ToTable("user_contract");
 

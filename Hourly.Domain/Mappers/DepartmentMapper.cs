@@ -1,8 +1,8 @@
-﻿using Hourly.Shared.Contracts.Requests.DepartmentRequests;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.DepartmentRequests;
 using Hourly.Shared.Contracts.Responses.DepartmentResponses;
-using Hourly.Shared.Entities;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class DepartmentMapper
     {
@@ -12,7 +12,7 @@ namespace Hourly.Shared.Mappers
             {
                 Id = department.Id,
                 Name = department.Name,
-                Users = department.Users.Select(user => user.ToSummaryResponse()).ToList(),
+                Users = (department.Users as List<User> ?? throw new Exception()).Select(u => u.ToSummaryResponse()).ToList(),
                 CreatedAt = department.CreatedAt,
                 UpdatedAt = department.UpdatedAt
             };

@@ -1,9 +1,8 @@
-﻿using Hourly.Shared.Contracts.Requests.UserContractRequests;
-using System.Runtime.CompilerServices;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.UserContractRequests;
 using Hourly.Shared.Contracts.Responses.UserContractResponses;
-using Hourly.Shared.Entities;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class UserContractMapper
     {
@@ -11,7 +10,6 @@ namespace Hourly.Shared.Mappers
         {
             return new UserContract
             {
-                Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 Name = request.Name,
                 ContractType = request.ContractType,
@@ -28,11 +26,11 @@ namespace Hourly.Shared.Mappers
             };
         }
 
-        public static UserContract ToUserContract(this UpdateUserContractRequest request)
+        public static UserContract ToUserContract(this UpdateUserContractRequest request, Guid id)
         {
             return new UserContract
             {
-                Id = Guid.NewGuid(),
+                Id = id,
                 UserId = request.UserId,
                 Name = request.Name,
                 ContractType = request.ContractType,
@@ -71,8 +69,8 @@ namespace Hourly.Shared.Mappers
                 Description = entity.Description,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
-                User = entity.User.ToSummaryResponse(),
-                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList()
+                User = (entity.User as User ?? throw new Exception()).ToSummaryResponse(),
+                WorkSessions = (entity.WorkSessions as List<WorkSession> ?? throw new Exception()).Select(ws => ws.ToSummaryResponse()).ToList()
             };
         }
 

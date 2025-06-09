@@ -6,6 +6,8 @@ namespace Hourly.Shared.Contracts.Requests.UserContractRequests
     public class UpdateUserContractRequest
     {
         [Required]
+        public Guid Id { get; set; }
+        [Required]
         public Guid UserId { get; set; }
         [Required]
         public string Name { get; set; }

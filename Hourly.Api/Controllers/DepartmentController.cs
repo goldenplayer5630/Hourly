@@ -1,7 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.DepartmentRequests;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -26,7 +25,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var departments = await _departmentService.GetAll();
-                return Ok(departments.Select(d => d.ToResponse()).ToList());
+                return Ok(departments.Select(d => d).ToList());
             }
             catch (EntityNotFoundException ex)
             {
@@ -54,7 +53,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _departmentService.GetById(departmentId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -79,12 +78,10 @@ namespace Hourly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var department = request.ToDepartment();
-
             try
             {
-                var created = await _departmentService.Create(department);
-                return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = created.Id }, created.ToResponse());
+                var created = await _departmentService.Create(request);
+                return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = created.Id }, created);
             }
             catch (ValidationException ex)
             {
@@ -106,12 +103,10 @@ namespace Hourly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var department = request.ToDepartment(departmentId);
-
             try
             {
-                var updated = await _departmentService.Update(department);
-                return Ok(updated.ToResponse());
+                var updated = await _departmentService.Update(departmentId, request);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {

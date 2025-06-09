@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hourly.Abstractions.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace Hourly.Shared.Entities
+namespace Hourly.Domain.Entities
 {
-    public class Role
+    public class Role : IRole
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,7 +14,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public string Permissions { get; set; } // Store as JSON string
 
-        public ICollection<User> Users { get; init; } = new List<User>();
+        public ICollection<IUser> Users { get; init; } = new List<IUser>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

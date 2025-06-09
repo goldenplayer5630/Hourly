@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 
 namespace Hourly.Shared.Contracts.Responses.WorkSessionResponses
 {

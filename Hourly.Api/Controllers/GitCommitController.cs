@@ -1,8 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
-using Hourly.Domain.Services;
 using Hourly.Shared.Contracts.Requests.GitCommitRequests;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
@@ -26,7 +24,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitCommits = await _gitCommitService.GetAll();
-                return Ok(gitCommits.Select(gc => gc.ToResponse()).ToList());
+                return Ok(gitCommits.Select(gc => gc).ToList());
             }
             catch (EntityNotFoundException ex)
             {
@@ -53,7 +51,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _gitCommitService.GetById(gitCommitId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -80,7 +78,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var results = await _gitCommitService.Filter(repositoryId, authorId, authoredDate);
-                return Ok(results.Select(ws => ws.ToResponse()));
+                return Ok(results.Select(ws => ws));
             }
             catch (EntityNotFoundException ex)
             {
@@ -109,12 +107,10 @@ namespace Hourly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var gitCommit = request.ToGitCommit();
-
             try
             {
-                var created = await _gitCommitService.Create(gitCommit);
-                return CreatedAtAction(nameof(GetGitCommitById), new { gitCommitId = created.Id }, created.ToResponse());
+                var created = await _gitCommitService.Create(request);
+                return CreatedAtAction(nameof(GetGitCommitById), new { gitCommitId = created.Id }, created);
             }
             catch (ValidationException ex)
             {

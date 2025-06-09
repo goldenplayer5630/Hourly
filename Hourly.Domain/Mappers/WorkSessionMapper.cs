@@ -1,8 +1,8 @@
-﻿using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.WorkSessionRequests;
 using Hourly.Shared.Contracts.Responses.WorkSessionResponses;
-using Hourly.Shared.Entities;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class WorkSessionMapper
     {
@@ -12,7 +12,7 @@ namespace Hourly.Shared.Mappers
             {
                 Id = entity.Id,
                 UserContractId = entity.UserContractId,
-                UserContract = entity.UserContract.ToSummaryResponse(),
+                UserContract = (entity.UserContract as UserContract ?? throw new Exception()).ToSummaryResponse(),
                 TaskDescription = entity.TaskDescription,
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime,
@@ -22,7 +22,7 @@ namespace Hourly.Shared.Mappers
                 NetEffectiveHours = entity.NetEffectiveHours,
                 WBSO = entity.WBSO,
                 OtherRemarks = entity.OtherRemarks,
-                GitCommits = entity.GitCommits.Select(gc => gc.ToResponse()).ToList(),
+                GitCommits = (entity.GitCommits as List<GitCommit> ?? throw new Exception()).Select(gc => gc.ToResponse()).ToList(),
                 TVTAccruedHours = entity.TVTAccruedHours,
                 TVTUsedHours = entity.TVTUsedHours,
                 CreatedAt = entity.CreatedAt,

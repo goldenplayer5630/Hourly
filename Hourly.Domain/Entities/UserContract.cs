@@ -1,13 +1,14 @@
-﻿using Hourly.Shared.Enums;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Shared.Enums;
+using Hourly.Shared.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Hourly.Shared.Exceptions;
 
-namespace Hourly.Shared.Entities
+namespace Hourly.Domain.Entities
 {
-    public class UserContract
+    public class UserContract : IUserContract
     {
-        private readonly List<WorkSession> _workSessions = new();
+        private readonly List<IWorkSession> _workSessions = new();
 
         [Key]
         public Guid Id { get; set; }
@@ -24,7 +25,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public double MaxWeeklyHours { get; set; }
 
-        public double MinimumHoursPerMonth 
+        public double MinimumHoursPerMonth
         {
             get
             {
@@ -57,16 +58,32 @@ namespace Hourly.Shared.Entities
 
         // Navigation properties
         [ForeignKey("UserId")]
-        public User User { get; set; } = null!;
-        public IReadOnlyCollection<WorkSession> WorkSessions => _workSessions.AsReadOnly();
+        public IUser User { get; set; } = null!;
+        public IReadOnlyCollection<IWorkSession> WorkSessions => _workSessions.AsReadOnly();
 
-        public void AssignToUser(User user)
+        public void Update(IUserContract updatedContract)
         {
-            if (UserId == user.Id)
-            {
-                throw new DomainValidationException("Contract is already assigned to this user.");
-            }
-            UserId = user.Id;
+            UserId = updatedContract.UserId;
+            Name = updatedContract.Name;
+            ContractType = updatedContract.ContractType;
+            IsActive = updatedContract.IsActive;
+            MinWeeklyHours = updatedContract.MinWeeklyHours;
+            MaxWeeklyHours = updatedContract.MaxWeeklyHours;
+            GrossHourlyRate = updatedContract.GrossHourlyRate;
+            HolidayHoursPercentage = updatedContract.HolidayHoursPercentage;
+            MonthlyPaidHolidayHours = updatedContract.MonthlyPaidHolidayHours;
+            StartDate = updatedContract.StartDate;
+            EndDate = updatedContract.EndDate;
+            ContractFilePath = updatedContract.ContractFilePath;
+            Description = updatedContract.Description;
+            UpdatedAt = DateTime.UtcNow;
+
+            Validate();
+        }
+
+        public void AssignToUser(IUser user)
+        {
+            User = user;
             UpdatedAt = DateTime.UtcNow;
         }
 

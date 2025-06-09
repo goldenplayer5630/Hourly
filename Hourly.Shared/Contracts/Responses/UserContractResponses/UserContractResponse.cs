@@ -1,7 +1,5 @@
 ﻿using Hourly.Shared.Contracts.Responses.UserResponses;
 using Hourly.Shared.Contracts.Responses.WorkSessionResponses;
-using Hourly.Shared.Enums;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hourly.Shared.Contracts.Responses.UserContractResponses

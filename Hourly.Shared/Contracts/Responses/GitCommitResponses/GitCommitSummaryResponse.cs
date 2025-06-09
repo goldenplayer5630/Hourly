@@ -8,7 +8,7 @@ namespace Hourly.Shared.Contracts.Responses.GitCommitResponses
         public Guid Id { get; set; }
 
         [Required]
-        public Guid RepositoryId { get; internal set; }
+        public Guid RepositoryId { get; set; }
 
         [Required]
         public string ExtCommitId { get; set; }

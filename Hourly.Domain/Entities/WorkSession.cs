@@ -1,11 +1,11 @@
-﻿using Hourly.Shared.Exceptions;
-using System.Collections;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Shared.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hourly.Shared.Entities
+namespace Hourly.Domain.Entities
 {
-    public class WorkSession
+    public class WorkSession : IWorkSession
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,7 +13,7 @@ namespace Hourly.Shared.Entities
         [Required]
         public Guid UserContractId { get; init; }
         [ForeignKey("UserContractId")]
-        public UserContract UserContract { get; private set; } = null!;
+        public IUserContract UserContract { get; private set; } = null!;
 
         [Required]
         public string TaskDescription { get; set; }
@@ -40,7 +40,7 @@ namespace Hourly.Shared.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+        public ICollection<IGitCommit> GitCommits { get; set; } = new List<IGitCommit>();
 
         public float RawEffectiveHours
         {
@@ -68,21 +68,21 @@ namespace Hourly.Shared.Entities
             }
         }
 
-        public void AddGitCommit(GitCommit gitCommit)
+        public void AddGitCommit(IGitCommit gitCommit)
         {
             if (GitCommits.Any(gc => gc.Id == gitCommit.Id))
                 throw new DomainValidationException("Git commit is already associated with this work session.");
             GitCommits.Add(gitCommit);
         }
 
-        public void RemoveGitCommit(GitCommit gitCommit)
+        public void RemoveGitCommit(IGitCommit gitCommit)
         {
             if (!GitCommits.Any(gc => gc.Id == gitCommit.Id))
                 throw new DomainValidationException("Git commit is not associated with this work session.");
             GitCommits.Remove(gitCommit);
         }
 
-        public void AssignToUserContract(UserContract userContract)
+        public void AssignToUserContract(IUserContract userContract)
         {
             UserContract = userContract;
             UpdatedAt = DateTime.UtcNow;
@@ -122,7 +122,7 @@ namespace Hourly.Shared.Entities
                 throw new DomainValidationException("Work session start and end times cannot be in the future.");
         }
 
-        public void UpdateFrom(WorkSession updated)
+        public void Update(IWorkSession updated)
         {
             TaskDescription = updated.TaskDescription;
             StartTime = updated.StartTime;

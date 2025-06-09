@@ -1,8 +1,8 @@
-﻿using Hourly.Shared.Contracts.Requests.GitCommitRequests;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.GitCommitRequests;
 using Hourly.Shared.Contracts.Responses.GitCommitResponses;
-using Hourly.Shared.Entities;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class GitCommitMapper
     {
@@ -12,16 +12,16 @@ namespace Hourly.Shared.Mappers
             {
                 Id = entity.Id,
                 RepositoryId = entity.RepositoryId,
-                Repository = entity.Repository.ToSummaryResponse(),
+                Repository = (entity.Repository as GitRepository ?? throw new Exception()).ToSummaryResponse(),
                 ExtCommitId = entity.ExtCommitId,
                 ExtCommitShortId = entity.ExtCommitShortId,
                 Title = entity.Title,
                 Comment = entity.Comment,
                 AuthorId = entity.AuthorId,
-                Author = entity.Author.ToSummaryResponse(),
+                Author = (entity.Author as User ?? throw new Exception()).ToSummaryResponse(),
                 AuthoredDate = entity.AuthoredDate,
                 WebUrl = entity.WebUrl,
-                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList(),
+                WorkSessions = (entity.WorkSessions as List<WorkSession> ?? throw new Exception()).Select(ws => ws.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };

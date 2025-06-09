@@ -13,7 +13,7 @@ namespace Hourly.Shared.Contracts.Responses.GitCommitResponses
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepositorySummaryResponse Repository { get; internal set; }
+        public GitRepositorySummaryResponse Repository { get; set; }
 
         public ICollection<WorkSessionSummaryResponse> WorkSessions { get; set; } = new List<WorkSessionSummaryResponse>();
     }

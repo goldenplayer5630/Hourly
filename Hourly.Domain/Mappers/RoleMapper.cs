@@ -1,7 +1,7 @@
-﻿using Hourly.Shared.Contracts.Responses.RoleResponses;
-using Hourly.Shared.Entities;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Responses.RoleResponses;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class RoleMapper
     {
@@ -12,7 +12,7 @@ namespace Hourly.Shared.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 Permissions = entity.Permissions,
-                Users = entity.Users.Select(u => u.ToSummaryResponse()).ToList(),
+                Users = (entity.Users as List<User> ?? throw new Exception()).Select(u => u.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };

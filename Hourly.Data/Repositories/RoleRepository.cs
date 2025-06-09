@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,26 +14,26 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<Role?> GetById(Guid roleId)
+        public async Task<IRole?> GetById(Guid roleId)
         {
             return await _context.Roles
                 .Include(r => r.Users)
                 .FirstOrDefaultAsync(r => r.Id == roleId);
         }
 
-        public async Task<IEnumerable<Role>> GetAll()
+        public async Task<IEnumerable<IRole>> GetAll()
         {
             return await _context.Roles.ToListAsync();
         }
 
-        public async Task<Role> Create(Role role)
+        public async Task<IRole> Create(IRole role)
         {
             await _context.Roles.AddAsync(role);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? role : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<Role> Update(Role role)
+        public async Task<IRole> Update(IRole role)
         {
             var existingRole = await _context.Roles.FindAsync(role.Id);
             if (existingRole == null)

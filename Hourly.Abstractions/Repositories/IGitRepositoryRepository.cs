@@ -1,14 +1,14 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {
     public interface IGitRepositoryRepository
     {
-        Task<GitRepository?> GetById(Guid gitRepositoryId);
-        Task<IEnumerable<GitRepository>> GetAll();
-        Task<GitRepository> Create(GitRepository gitRepository);
-        Task<GitRepository> Update(GitRepository gitRepository);
-        Task Delete(Guid gitRepositoryId);
+        Task<IGitRepository?> GetById(Guid IGitRepositoryId);
+        Task<IEnumerable<IGitRepository>> GetAll();
+        Task<IGitRepository> Create(IGitRepository IGitRepository);
+        Task<IGitRepository> Update(IGitRepository IGitRepository);
+        Task Delete(Guid IGitRepositoryId);
         Task SaveChanges();
     }
 }

@@ -1,13 +1,13 @@
-﻿using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
 
 namespace Hourly.Abstractions.Repositories
 {
     public interface IRoleRepository
     {
-        Task<Role?> GetById(Guid roleId);
-        Task<IEnumerable<Role>> GetAll();
-        Task<Role> Create(Role role);
-        Task<Role> Update(Role role);
+        Task<IRole?> GetById(Guid IRoleId);
+        Task<IEnumerable<IRole>> GetAll();
+        Task<IRole> Create(IRole IRole);
+        Task<IRole> Update(IRole IRole);
         Task SaveChanges();
     }
 }

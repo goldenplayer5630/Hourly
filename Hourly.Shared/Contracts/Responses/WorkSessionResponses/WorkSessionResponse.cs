@@ -1,7 +1,5 @@
 ﻿using Hourly.Shared.Contracts.Responses.GitCommitResponses;
 using Hourly.Shared.Contracts.Responses.UserContractResponses;
-using Hourly.Shared.Contracts.Responses.UserResponses;
-using Hourly.Shared.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

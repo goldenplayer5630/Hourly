@@ -1,5 +1,5 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +14,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<WorkSession?> GetById(Guid workSessionId)
+        public async Task<IWorkSession?> GetById(Guid workSessionId)
         {
             return await _context.WorkSessions
                 .Include(ws => ws.GitCommits)
@@ -26,12 +26,12 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }
 
-        public async Task<IEnumerable<WorkSession>> GetAll()
+        public async Task<IEnumerable<IWorkSession>> GetAll()
         {
             return await _context.WorkSessions.ToListAsync();
         }
 
-        public async Task<IEnumerable<WorkSession>> Filter(Guid? userContractId, int? year, int? month, bool? wbso)
+        public async Task<IEnumerable<IWorkSession>> Filter(Guid? userContractId, int? year, int? month, bool? wbso)
         {
             var query = _context.WorkSessions
                 .Include(ws => ws.UserContract)
@@ -52,14 +52,14 @@ namespace Hourly.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<WorkSession> Create(WorkSession workSession)
+        public async Task<IWorkSession> Create(IWorkSession workSession)
         {
             await _context.WorkSessions.AddAsync(workSession);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? workSession : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<WorkSession> Update(WorkSession workSession)
+        public async Task<IWorkSession> Update(IWorkSession workSession)
         {
             var existingWorkSession = await _context.WorkSessions.FindAsync(workSession.Id);
             if (existingWorkSession == null)

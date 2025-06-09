@@ -1,12 +1,7 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hourly.Data.Repositories
 {
@@ -19,7 +14,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<UserContract?> GetById(Guid userContractId)
+        public async Task<IUserContract?> GetById(Guid userContractId)
         {
             return await _context.UserContracts
                 .Include("_workSessions")
@@ -28,7 +23,7 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(r => r.Id == userContractId);
         }
 
-        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        public async Task<IEnumerable<IUserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
         {
             var query = _context.UserContracts
                 .Include(u => u.User)
@@ -45,7 +40,7 @@ namespace Hourly.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<UserContract>> GetAll()
+        public async Task<IEnumerable<IUserContract>> GetAll()
         {
             return await _context.UserContracts
                 .Include(u => u.User)
@@ -53,14 +48,14 @@ namespace Hourly.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<UserContract> Create(UserContract userContract)
+        public async Task<IUserContract> Create(IUserContract userContract)
         {
             await _context.UserContracts.AddAsync(userContract);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? userContract : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<UserContract> Update(UserContract userContract)
+        public async Task<IUserContract> Update(IUserContract userContract)
         {
             var existingUserContract = await _context.UserContracts.FindAsync(userContract.Id);
             if (existingUserContract == null)

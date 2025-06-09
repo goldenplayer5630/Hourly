@@ -1,7 +1,8 @@
-﻿using Hourly.Abstractions.Repositories;
-using Hourly.Shared.Entities;
+﻿using Hourly.Abstractions.Entities;
+using Hourly.Abstractions.Repositories;
 using Hourly.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Hourly.Data.Repositories
 {
@@ -14,7 +15,7 @@ namespace Hourly.Data.Repositories
             _context = context;
         }
 
-        public async Task<User?> GetById(Guid userId)
+        public async Task<IUser?> GetById(Guid userId)
         {
             return await _context.Users
                 .Include(u => u.Role)
@@ -24,21 +25,21 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<IUser>> GetAll()
         {
             return await _context.Users
                 .Include(u => u.Role)
                 .ToListAsync();
         }
 
-        public async Task<User> Create(User user)
+        public async Task<IUser> Create(IUser user)
         {
             await _context.Users.AddAsync(user);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? user : null) ?? throw new InvalidOperationException();
         }
 
-        public async Task<User> Update(User user)
+        public async Task<IUser> Update(IUser user)
         {
             var existingUser = await _context.Users.FindAsync(user.Id);
             if (existingUser == null)

@@ -1,7 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.UserContractRequests;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
@@ -25,7 +24,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var userContracts = await _userContractService.GetAll();
-                var response = userContracts.Select(userContract => userContract.ToResponse()).ToList();
+                var response = userContracts.Select(userContract => userContract).ToList();
                 return Ok(response);
             }
             catch (EntityNotFoundException ex)
@@ -53,7 +52,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var results = await _userContractService.FilterUserContracts(userId, year, month);
-                return Ok(results.Select(uc => uc.ToResponse()));
+                return Ok(results.Select(uc => uc));
             }
             catch (EntityNotFoundException ex)
             {
@@ -80,7 +79,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _userContractService.GetById(userContractId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -108,12 +107,11 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var userContract = request.ToUserContract();
 
             try
             {
-                var created = await _userContractService.Create(userContract);
-                return CreatedAtAction(nameof(GetUserContractById), new { userContractId = created.Id }, created.ToResponse());
+                var created = await _userContractService.Create(request);
+                return CreatedAtAction(nameof(GetUserContractById), new { userContractId = created.Id }, created);
             }
             catch (ValidationException ex)
             {
@@ -138,12 +136,11 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var userContract = request.ToUserContract();
 
             try
             {
-                var updated = await _userContractService.Update(userContract);
-                return Ok(updated.ToResponse());
+                var updated = await _userContractService.Update(userContractId, request);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {

@@ -1,7 +1,6 @@
 ﻿using Hourly.Abstractions.Services;
 using Hourly.Shared.Contracts.Requests.GitRepositoryRequests;
 using Hourly.Shared.Exceptions;
-using Hourly.Shared.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
@@ -25,7 +24,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var gitRepositories = await _gitRepositoryService.GetAll();
-                return Ok(gitRepositories.Select(gr => gr.ToResponse()).ToList());
+                return Ok(gitRepositories.Select(gr => gr).ToList());
             }
             catch (EntityNotFoundException ex)
             {
@@ -53,7 +52,7 @@ namespace Hourly.Api.Controllers
             try
             {
                 var result = await _gitRepositoryService.GetById(gitRepositoryId);
-                return Ok(result.ToResponse());
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
@@ -82,12 +81,10 @@ namespace Hourly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var gitRepository = request.ToGitRepository();
-
             try
             {
-                var created = await _gitRepositoryService.Create(gitRepository);
-                return CreatedAtAction(nameof(GetGitRepositoryById), new { gitRepositoryId = created.Id }, created.ToResponse());
+                var created = await _gitRepositoryService.Create(request);
+                return CreatedAtAction(nameof(GetGitRepositoryById), new { gitRepositoryId = created.Id }, created);
             }
             catch (ValidationException ex)
             {
@@ -112,12 +109,11 @@ namespace Hourly.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var gitRepository = request.ToGitRepository(gitRepositoryId);
 
             try
             {
-                var updated = await _gitRepositoryService.Update(gitRepository);
-                return Ok(updated.ToResponse());
+                var updated = await _gitRepositoryService.Update(gitRepositoryId, request);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {

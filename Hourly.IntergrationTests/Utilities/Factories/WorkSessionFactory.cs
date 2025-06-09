@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Hourly.Shared.Entities;
 
 namespace Hourly.IntergrationTests.Utilities.Factories
 {
@@ -74,7 +73,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
 
                     // Instead of a while loop, set BreakTime once using a filtered PickRandom
                     var possibleBreakTimes = new List<float> { 0f, 0.25f, 0.5f, 0.75f, 1f }
-                        .Where(b => b !>= workSession.RawEffectiveHours)
+                        .Where(b => b! >= workSession.RawEffectiveHours)
                         .ToArray();
                     workSession.BreakTime = possibleBreakTimes.Length > 0
                         ? faker.PickRandom(possibleBreakTimes)

@@ -2,7 +2,6 @@
 using Hourly.Data.Repositories;
 using Hourly.Domain.Services;
 using Hourly.IntergrationTests.Utilities;
-using Hourly.Shared.Entities;
 
 
 namespace Hourly.IntergrationTests.Domain.Services

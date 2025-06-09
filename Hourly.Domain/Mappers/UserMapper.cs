@@ -1,8 +1,8 @@
-﻿using Hourly.Shared.Contracts.Requests.UserRequests;
+﻿using Hourly.Domain.Entities;
+using Hourly.Shared.Contracts.Requests.UserRequests;
 using Hourly.Shared.Contracts.Responses.UserResponses;
-using Hourly.Shared.Entities;
 
-namespace Hourly.Shared.Mappers
+namespace Hourly.Domain.Mappers
 {
     public static partial class UserMapper
     {
@@ -14,15 +14,15 @@ namespace Hourly.Shared.Mappers
                 Name = entity.Name,
                 Email = entity.Email,
                 RoleId = entity.RoleId,
-                Role = entity.Role.ToSummaryResponse(),
+                Role = (entity.Role as Role ?? throw new Exception()).ToSummaryResponse(),
                 DepartmentId = entity.DepartmentId,
-                Department = entity.Department?.ToSummaryResponse(),
+                Department = (entity.Department as Department ?? throw new Exception())?.ToSummaryResponse(),
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,
                 GitAccessToken = entity.GitAccessToken,
                 TVTHourBalance = entity.TVTHourBalance,
-                GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
-                Contracts = entity.Contracts.Select(uc => uc.ToSummaryResponse()).ToList(),
+                GitCommits = (entity.GitCommits as List<GitCommit> ?? throw new Exception()).Select(gc => gc.ToSummaryResponse()).ToList(),
+                Contracts = (entity.Contracts as List<UserContract> ?? throw new Exception()).Select(uc => uc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
@@ -36,7 +36,7 @@ namespace Hourly.Shared.Mappers
                 Name = entity.Name,
                 Email = entity.Email,
                 RoleId = entity.RoleId,
-                Role = entity.Role.ToSummaryResponse(),
+                Role = (entity.Role as Role ?? throw new Exception()).ToSummaryResponse(),
                 DepartmentId = entity.DepartmentId,
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,

@@ -1,6 +1,4 @@
-﻿using Hourly.Shared.Entities;
-
-namespace Hourly.IntergrationTests.Utilities.Factories
+﻿namespace Hourly.IntergrationTests.Utilities.Factories
 {
     internal static class GCWSLinkFactory
     {

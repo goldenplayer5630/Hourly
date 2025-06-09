@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Hourly.Shared.Entities;
 using Hourly.Shared.Enums;
 
 namespace Hourly.IntergrationTests.Utilities.Factories
