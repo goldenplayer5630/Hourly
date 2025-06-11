@@ -222,6 +222,37 @@ namespace Hourly.Api.Controllers
             }
         }
 
+        [HttpPatch("{workSessionId}")]
+        public async Task<IActionResult> UpdateWorkSessionLock(Guid workSessionId, [FromQuery] bool locked)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var updated = await _workSessionService.UpdateLock(workSessionId, locked);
+                return Ok(updated.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while updating the lock status of a work session.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
         [HttpDelete("{workSessionId}")]
         public async Task<IActionResult> DeleteWorkSession(Guid workSessionId)
         {

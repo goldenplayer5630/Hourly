@@ -11,6 +11,7 @@ namespace Hourly.Abstractions.Services
         Task<WorkSession> AddGitCommit(Guid workSessionId, Guid gitCommitId);
         Task<WorkSession> RemoveGitCommit(Guid workSessionId, Guid gitCommitId);
         Task<WorkSession> Update(WorkSession workSession, IEnumerable<Guid> gitCommitIds);
+        Task<WorkSession> UpdateLock(Guid workSessionId, bool locked);
         Task Delete(Guid workSessionId);
     }
 }

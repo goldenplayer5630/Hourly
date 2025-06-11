@@ -90,6 +90,17 @@ namespace Hourly.Application.Services
             return await _repository.Update(existing);
         }
 
+        public async Task<WorkSession> UpdateLock(Guid workSessionId, bool locked)
+        {
+            var existing = await _repository.GetById(workSessionId)
+                ?? throw new EntityNotFoundException("WorkSession not found!");
+
+            existing.Locked = locked;
+
+            existing.UpdatedAt = DateTime.UtcNow;
+            return await _repository.Update(existing);
+        }
+
         public async Task<WorkSession> AddGitCommit(Guid workSessionId, Guid gitCommitId)
         {
             var workSession = await _repository.GetById(workSessionId)
@@ -134,5 +145,7 @@ namespace Hourly.Application.Services
         {
             await _repository.Delete(workSessionId);
         }
+
+
     }
 }

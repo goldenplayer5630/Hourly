@@ -23,8 +23,6 @@ namespace Hourly.Domain.Contracts.Requests.WorkSessionRequests
 
         public bool WBSO { get; set; }
 
-        public bool Locked { get; set; }
-
         public string? OtherRemarks { get; set; }
 
         public float TVTAccruedHours { get; set; }

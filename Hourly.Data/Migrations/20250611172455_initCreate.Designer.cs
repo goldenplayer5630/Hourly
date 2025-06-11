@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250602151126_initCreate")]
+    [Migration("20250611172455_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace Hourly.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hourly.Shared.Entities.Department", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("department", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.GitCommit", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.GitCommit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +112,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("git_commits", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.GitRepository", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.GitRepository", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("git_repository", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.Role", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,7 +184,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("role", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,7 +242,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.UserContract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -320,7 +320,7 @@ namespace Hourly.Data.Migrations
                     b.ToTable("user_contract", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.WorkSession", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -403,16 +403,16 @@ namespace Hourly.Data.Migrations
                     b.ToTable("git_commit_work_sessions", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.GitCommit", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.GitCommit", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.User", "Author")
+                    b.HasOne("Hourly.Domain.Entities.User", "Author")
                         .WithMany("_gitCommits")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_git_commit_author");
 
-                    b.HasOne("Hourly.Shared.Entities.GitRepository", "Repository")
+                    b.HasOne("Hourly.Domain.Entities.GitRepository", "Repository")
                         .WithMany("_gitCommits")
                         .HasForeignKey("RepositoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -423,14 +423,14 @@ namespace Hourly.Data.Migrations
                     b.Navigation("Repository");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.Department", "Department")
+                    b.HasOne("Hourly.Domain.Entities.Department", "Department")
                         .WithMany("Users")
                         .HasForeignKey("DepartmentId")
                         .HasConstraintName("fk_user_department");
 
-                    b.HasOne("Hourly.Shared.Entities.Role", "Role")
+                    b.HasOne("Hourly.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -442,9 +442,9 @@ namespace Hourly.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.UserContract", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.User", "User")
+                    b.HasOne("Hourly.Domain.Entities.User", "User")
                         .WithMany("_userContracts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -454,9 +454,9 @@ namespace Hourly.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.WorkSession", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.WorkSession", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.UserContract", "UserContract")
+                    b.HasOne("Hourly.Domain.Entities.UserContract", "UserContract")
                         .WithMany("_workSessions")
                         .HasForeignKey("UserContractId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,42 +468,42 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("git_commit_work_sessions", b =>
                 {
-                    b.HasOne("Hourly.Shared.Entities.GitCommit", null)
+                    b.HasOne("Hourly.Domain.Entities.GitCommit", null)
                         .WithMany()
                         .HasForeignKey("git_commit_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hourly.Shared.Entities.WorkSession", null)
+                    b.HasOne("Hourly.Domain.Entities.WorkSession", null)
                         .WithMany()
                         .HasForeignKey("work_session_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.Department", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.GitRepository", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.GitRepository", b =>
                 {
                     b.Navigation("_gitCommits");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.Role", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.User", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
                     b.Navigation("_gitCommits");
 
                     b.Navigation("_userContracts");
                 });
 
-            modelBuilder.Entity("Hourly.Shared.Entities.UserContract", b =>
+            modelBuilder.Entity("Hourly.Domain.Entities.UserContract", b =>
                 {
                     b.Navigation("_workSessions");
                 });

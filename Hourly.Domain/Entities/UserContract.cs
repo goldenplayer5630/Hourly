@@ -93,6 +93,8 @@ namespace Hourly.Domain.Entities
                 throw new DomainValidationException("Minimum weekly hours cannot exceed maximum weekly hours.");
             if (StartDate > EndDate)
                 throw new DomainValidationException("Start date cannot be after end date.");
+            if (!IsActive && EndDate == null)
+                throw new DomainValidationException("Inactive contracts must have an end date.");
         }
     }
 }

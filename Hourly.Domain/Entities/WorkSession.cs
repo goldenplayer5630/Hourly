@@ -120,6 +120,9 @@ namespace Hourly.Domain.Entities
             var today = DateTime.UtcNow.Date;
             if (StartTime.Date > today || EndTime.Date > today)
                 throw new DomainValidationException("Work session start and end times cannot be in the future.");
+
+            if (Locked)
+                throw new DomainValidationException("Cannot modify a locked work session.");
         }
 
         public void Update(WorkSession updated)

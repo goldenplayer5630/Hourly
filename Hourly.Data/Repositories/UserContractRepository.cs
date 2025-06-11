@@ -28,7 +28,7 @@ namespace Hourly.Data.Repositories
                 .FirstOrDefaultAsync(r => r.Id == userContractId);
         }
 
-        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month, bool? isActive)
         {
             var query = _context.UserContracts
                 .Include(u => u.User)
@@ -41,6 +41,10 @@ namespace Hourly.Data.Repositories
             if (year.HasValue && month.HasValue)
             {
                 query = query.Where(uc => uc.StartDate.Year == year.Value && uc.StartDate.Month == month.Value);
+            }
+            if (isActive.HasValue)
+            {
+                query = query.Where(uc => uc.IsActive == isActive.Value);
             }
             return await query.ToListAsync();
         }

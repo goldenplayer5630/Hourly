@@ -5,7 +5,7 @@ namespace Hourly.Abstractions.Repositories
     public interface IUserContractRepository
     {
         Task<UserContract?> GetById(Guid userContractId);
-        Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month);
+        Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month, bool? isActive);
         Task<IEnumerable<UserContract>> GetAll();
         Task<UserContract> Create(UserContract userContract);
         Task<UserContract> Update(UserContract userContract);

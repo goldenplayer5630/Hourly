@@ -27,9 +27,9 @@ namespace Hourly.Application.Services
                 ?? throw new EntityNotFoundException("UserContract not found!");
         }
 
-        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month)
+        public async Task<IEnumerable<UserContract>> FilterUserContracts(Guid? userId, int? year, int? month, bool? isActive)
         {
-            return await _repository.FilterUserContracts(userId, year, month);
+            return await _repository.FilterUserContracts(userId, year, month, isActive);
         }
 
         public async Task<IEnumerable<UserContract>> GetAll()
@@ -47,6 +47,13 @@ namespace Hourly.Application.Services
             var user = await _userRepository.GetById(userContract.UserId)
                 ?? throw new EntityNotFoundException("User not found!");
 
+            var activeContracts = await _repository.FilterUserContracts(user.Id, null, null, true);
+
+            if (activeContracts.Any() && userContract.IsActive)
+            {
+                throw new DomainValidationException("User already has an active contract.");
+            }
+
             userContract.AssignToUser(user);
 
             return await _repository.Create(userContract);
@@ -59,6 +66,16 @@ namespace Hourly.Application.Services
 
             var user = await _userRepository.GetById(userContract.UserId)
                 ?? throw new EntityNotFoundException("User not found!");
+
+            var activeContracts = await _repository.FilterUserContracts(user.Id, null, null, true);
+
+            if (activeContracts.Any() && userContract.IsActive)
+            {
+                if (activeContracts.FirstOrDefault()?.Id != userContract.Id)
+                {
+                    throw new DomainValidationException("User already has an active contract.");
+                }
+            }
 
             existing.Update(userContract);
 
