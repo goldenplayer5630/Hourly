@@ -5,14 +5,14 @@ namespace Hourly.IntergrationTests.Utilities.Factories
 {
     internal class WorkSessionFactory
     {
-        public static List<WorkSession> CreateWorkSessions(List<UserContract> userContracts)
+        public static List<WorkSession> CreateWorkSessions(List<UserContract> userContracts, int count)
         {
             var workSessions = new List<WorkSession>();
             var faker = new Faker();
 
             foreach (var userContract in userContracts)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < count; i++)
                 {
                     var start = faker.Date.Past(1).ToUniversalTime().Date;
                     var hour = faker.Random.Int(6, 14);

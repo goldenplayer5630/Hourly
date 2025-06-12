@@ -20,7 +20,7 @@ namespace Hourly.IntergrationTests.Utilities
             var gitRepositoryIds = gitRepositories.Select(g => g.Id).ToList();
             var gitCommits = GitCommitFactory.CreateGitCommits(users, gitRepositories);
             var gitCommitIds = gitCommits.Select(g => g.Id).ToList();
-            var workSessions = WorkSessionFactory.CreateWorkSessions(userContracts);
+            var workSessions = WorkSessionFactory.CreateWorkSessions(userContracts, 100);
             var workSessionIds = workSessions.Select(w => w.Id).ToList();
             GCWSLinkFactory.LinkCommitsToWorkSessions(workSessions, gitCommits, 5);
 

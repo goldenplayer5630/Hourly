@@ -7,7 +7,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql("Host=localhost;Port=5432;Database=mydatabase;Username=admin;Password=admin123")); // or read from config
+            options.UseNpgsql("Host=localhost;Port=5432;Database=hourly;Username=admin;Password=admin123")); // or read from config
 
         services.AddLogging(); // Optional, if your seeder logs
     })

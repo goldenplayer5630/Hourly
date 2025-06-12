@@ -143,9 +143,15 @@ namespace Hourly.Application.Services
 
         public async Task Delete(Guid workSessionId)
         {
+            var existing = await _repository.GetById(workSessionId);
+            if (existing == null)
+            {
+                throw new EntityNotFoundException("WorkSession not found!");
+            }
+
+            existing.Validate();
+
             await _repository.Delete(workSessionId);
         }
-
-
     }
 }
