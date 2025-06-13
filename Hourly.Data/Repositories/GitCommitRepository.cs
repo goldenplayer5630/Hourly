@@ -18,7 +18,7 @@ namespace Hourly.Data.Repositories
         {
             return await _context.GitCommits
                 .Include(gc => gc.WorkSessions)
-                .Include(gc => gc.Repository)
+                .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
                 .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(gc => gc.Id == gitCommitId);
@@ -27,7 +27,7 @@ namespace Hourly.Data.Repositories
         public async Task<IEnumerable<GitCommit>> GetAll()
         {
             return await _context.GitCommits
-                .Include(gc => gc.Repository)
+                .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
                 .ThenInclude(u => u.Role)
                 .ToListAsync();
@@ -36,13 +36,13 @@ namespace Hourly.Data.Repositories
         public async Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
         {
             var query = _context.GitCommits
-                .Include(gc => gc.Repository)
+                .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
                 .ThenInclude(u => u.Role)
                 .AsQueryable();
 
             if (repositoryId.HasValue)
-                query = query.Where(gc => gc.RepositoryId == repositoryId.Value);
+                query = query.Where(gc => gc.GitRepositoryId == repositoryId.Value);
 
             if (authorId.HasValue)
                 query = query.Where(gc => gc.AuthorId == authorId.Value);

@@ -70,8 +70,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.HasOne(x => x.UserContract)
                 .WithMany(uc => uc.WorkSessions)
-                .HasForeignKey(x => x.UserContractId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(x => x.UserContractId);
 
             builder.HasMany(ws => ws.GitCommits)
                 .WithMany(gc => gc.WorkSessions)

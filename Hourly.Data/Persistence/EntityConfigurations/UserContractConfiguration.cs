@@ -85,15 +85,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
 
             builder.HasOne(uc => uc.User)
                 .WithMany(u => u.Contracts)
-                .HasForeignKey(uc => uc.UserId)
-                .HasConstraintName("fk_user_contract_user_id")
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany<WorkSession>()
-                .WithOne(ws => ws.UserContract)
-                .HasForeignKey(ws => ws.UserContractId)
-                .HasConstraintName("fk_work_session_user_contract_id")
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(uc => uc.UserId);
         }
     }
 }

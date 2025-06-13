@@ -10,11 +10,11 @@ namespace Hourly.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public Guid RepositoryId { get; private set; }
+        public Guid GitRepositoryId { get; private set; }
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository Repository { get; private set; }
+        public GitRepository GitRepository { get; private set; }
 
         [Required]
         public string ExtCommitId { get; set; }
@@ -48,12 +48,12 @@ namespace Hourly.Domain.Entities
 
         public void AssignToRepository(GitRepository repository)
         {
-            if (RepositoryId == repository.Id)
+            if (GitRepositoryId == repository.Id)
             {
                 throw new DomainValidationException("Commit is already part of this repository.");
             }
 
-            RepositoryId = repository.Id;
+            GitRepositoryId = repository.Id;
             UpdatedAt = DateTime.UtcNow;
         }
 

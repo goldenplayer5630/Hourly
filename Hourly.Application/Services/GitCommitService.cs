@@ -39,7 +39,7 @@ namespace Hourly.Application.Services
             gitCommit.Id = Guid.NewGuid();
             gitCommit.CreatedAt = DateTime.UtcNow;
 
-            var gitRepository = await _gitRepositoryRepository.GetById(gitCommit.RepositoryId)
+            var gitRepository = await _gitRepositoryRepository.GetById(gitCommit.GitRepositoryId)
                 ?? throw new EntityNotFoundException("GitRepository not found!");
 
             var author = await _userRepository.GetById(gitCommit.AuthorId)

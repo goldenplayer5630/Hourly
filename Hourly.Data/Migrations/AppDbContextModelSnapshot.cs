@@ -80,12 +80,12 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("ext_commit_short_id");
 
-                    b.Property<Guid?>("GitRepositoryId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid>("GitRepositoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("git_repository_id");
 
                     b.Property<Guid>("RepositoryId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("repository_id");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -96,9 +96,6 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("WebUrl")
                         .IsRequired()
@@ -111,10 +108,6 @@ namespace Hourly.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("GitRepositoryId");
-
-                    b.HasIndex("RepositoryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("git_commits", (string)null);
                 });
@@ -413,44 +406,33 @@ namespace Hourly.Data.Migrations
             modelBuilder.Entity("Hourly.Domain.Entities.GitCommit", b =>
                 {
                     b.HasOne("Hourly.Domain.Entities.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_git_commit_author");
-
-                    b.HasOne("Hourly.Domain.Entities.GitRepository", null)
                         .WithMany("GitCommits")
-                        .HasForeignKey("GitRepositoryId");
-
-                    b.HasOne("Hourly.Domain.Entities.GitRepository", "Repository")
-                        .WithMany()
-                        .HasForeignKey("RepositoryId")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hourly.Domain.Entities.User", null)
+                    b.HasOne("Hourly.Domain.Entities.GitRepository", "GitRepository")
                         .WithMany("GitCommits")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("GitRepositoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
-                    b.Navigation("Repository");
+                    b.Navigation("GitRepository");
                 });
 
             modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
                     b.HasOne("Hourly.Domain.Entities.Department", "Department")
                         .WithMany("Users")
-                        .HasForeignKey("DepartmentId")
-                        .HasConstraintName("fk_user_department");
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Hourly.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_role");
+                        .IsRequired();
 
                     b.Navigation("Department");
 
@@ -463,8 +445,7 @@ namespace Hourly.Data.Migrations
                         .WithMany("Contracts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_contract_user_id");
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -475,8 +456,7 @@ namespace Hourly.Data.Migrations
                         .WithMany("WorkSessions")
                         .HasForeignKey("UserContractId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_work_session_user_contract_id");
+                        .IsRequired();
 
                     b.Navigation("UserContract");
                 });

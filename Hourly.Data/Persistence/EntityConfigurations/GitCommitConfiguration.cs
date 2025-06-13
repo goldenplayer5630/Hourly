@@ -50,16 +50,16 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.Property(x => x.AuthorId)
                 .HasColumnName("author_id");
 
-            builder.Property(x => x.RepositoryId)
-                .HasColumnName("repository_id");
+            builder.Property(x => x.GitRepositoryId)
+                .HasColumnName("git_repository_id");
 
             builder.HasOne(x => x.Author)
                 .WithMany(a => a.GitCommits)
                 .HasForeignKey(x => x.AuthorId);
 
-            builder.HasOne(x => x.Repository)
+            builder.HasOne(x => x.GitRepository)
                 .WithMany(r => r.GitCommits)
-                .HasForeignKey(x => x.RepositoryId);
+                .HasForeignKey(x => x.GitRepositoryId);
 
             builder.HasMany(gc => gc.WorkSessions)
                 .WithMany(ws => ws.GitCommits)

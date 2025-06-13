@@ -77,12 +77,12 @@ namespace Hourly.Data.Migrations
                 {
                     table.PrimaryKey("PK_user", x => x.id);
                     table.ForeignKey(
-                        name: "fk_user_department",
+                        name: "FK_user_department_department_id",
                         column: x => x.department_id,
                         principalTable: "department",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "fk_user_role",
+                        name: "FK_user_role_role_id",
                         column: x => x.role_id,
                         principalTable: "role",
                         principalColumn: "id",
@@ -94,7 +94,7 @@ namespace Hourly.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    repository_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    git_repository_id = table.Column<Guid>(type: "uuid", nullable: false),
                     ext_commit_id = table.Column<string>(type: "text", nullable: false),
                     ext_commit_short_id = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
@@ -104,30 +104,19 @@ namespace Hourly.Data.Migrations
                     web_url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    GitRepositoryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    RepositoryId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_git_commits", x => x.id);
                     table.ForeignKey(
-                        name: "FK_git_commits_git_repository_GitRepositoryId",
-                        column: x => x.GitRepositoryId,
-                        principalTable: "git_repository",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_git_commits_git_repository_repository_id",
-                        column: x => x.repository_id,
+                        name: "FK_git_commits_git_repository_git_repository_id",
+                        column: x => x.git_repository_id,
                         principalTable: "git_repository",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_git_commits_user_UserId",
-                        column: x => x.UserId,
-                        principalTable: "user",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_git_commit_author",
+                        name: "FK_git_commits_user_author_id",
                         column: x => x.author_id,
                         principalTable: "user",
                         principalColumn: "id",
@@ -159,7 +148,7 @@ namespace Hourly.Data.Migrations
                 {
                     table.PrimaryKey("PK_user_contract", x => x.id);
                     table.ForeignKey(
-                        name: "fk_user_contract_user_id",
+                        name: "FK_user_contract_user_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "id",
@@ -189,7 +178,7 @@ namespace Hourly.Data.Migrations
                 {
                     table.PrimaryKey("PK_work_session", x => x.id);
                     table.ForeignKey(
-                        name: "fk_work_session_user_contract_id",
+                        name: "FK_work_session_user_contract_user_contract_id",
                         column: x => x.user_contract_id,
                         principalTable: "user_contract",
                         principalColumn: "id",
@@ -231,19 +220,9 @@ namespace Hourly.Data.Migrations
                 column: "author_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_git_commits_GitRepositoryId",
+                name: "IX_git_commits_git_repository_id",
                 table: "git_commits",
-                column: "GitRepositoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_git_commits_repository_id",
-                table: "git_commits",
-                column: "repository_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_git_commits_UserId",
-                table: "git_commits",
-                column: "UserId");
+                column: "git_repository_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_department_id",
