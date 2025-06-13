@@ -22,7 +22,7 @@ namespace Hourly.Data.Repositories
         public async Task<UserContract?> GetById(Guid userContractId)
         {
             return await _context.UserContracts
-                .Include("_workSessions")
+                .Include(uc => uc.WorkSessions)
                 .Include(r => r.User)
                 .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(r => r.Id == userContractId);

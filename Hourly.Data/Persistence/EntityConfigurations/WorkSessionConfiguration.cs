@@ -69,7 +69,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasColumnName("user_contract_id");
 
             builder.HasOne(x => x.UserContract)
-                .WithMany("_workSessions")
+                .WithMany(uc => uc.WorkSessions)
                 .HasForeignKey(x => x.UserContractId)
                 .OnDelete(DeleteBehavior.Cascade);
 

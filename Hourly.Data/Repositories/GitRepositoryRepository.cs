@@ -17,14 +17,14 @@ namespace Hourly.Data.Repositories
         public async Task<GitRepository?> GetById(Guid gitRepositoryId)
         {
             return await _context.GitRepositories
-                .Include("_gitCommits")
+                .Include(x => x.GitCommits)
                 .FirstOrDefaultAsync(gr => gr.Id == gitRepositoryId);
         }
 
         public async Task<IEnumerable<GitRepository>> GetAll()
         {
             return await _context.GitRepositories
-                .Include("_gitCommits")
+                .Include(x => x.GitCommits)
                 .ToListAsync();
         }
 
