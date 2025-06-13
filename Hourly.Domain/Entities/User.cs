@@ -1,4 +1,5 @@
 ﻿using Hourly.Domain.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,9 +8,6 @@ namespace Hourly.Domain.Entities
 {
     public class User
     {
-        protected List<GitCommit> _gitCommits = new();
-        protected List<UserContract> _userContracts = new();
-
         [Key]
         public Guid Id { get; set; }
 
@@ -39,9 +37,9 @@ namespace Hourly.Domain.Entities
         [Required]
         public float TVTHourBalance { get; set; }
 
-        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
-        public IReadOnlyCollection<UserContract> Contracts => _userContracts.AsReadOnly();
+        public ICollection<UserContract> Contracts { get; init; } = new List<UserContract>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

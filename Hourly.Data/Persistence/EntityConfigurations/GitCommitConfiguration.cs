@@ -54,11 +54,11 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasColumnName("repository_id");
 
             builder.HasOne(x => x.Author)
-                .WithMany("_gitCommits")
+                .WithMany(a => a.GitCommits)
                 .HasForeignKey(x => x.AuthorId);
 
             builder.HasOne(x => x.Repository)
-                .WithMany("_gitCommits")
+                .WithMany(r => r.GitCommits)
                 .HasForeignKey(x => x.RepositoryId);
 
             builder.HasMany(gc => gc.WorkSessions)

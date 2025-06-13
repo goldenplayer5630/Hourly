@@ -56,18 +56,12 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasForeignKey(x => x.DepartmentId)
                 .HasConstraintName("fk_user_department");
 
-            builder.Ignore(x => x.GitCommits);
-
-            //builder.Navigation("_gitCommits").UsePropertyAccessMode(PropertyAccessMode.Field);
-            builder.HasMany<GitCommit>("_gitCommits")
+            builder.HasMany<GitCommit>()
                 .WithOne(gc => gc.Author)
                 .HasForeignKey(gc => gc.AuthorId)
                 .HasConstraintName("fk_git_commit_author");
 
-            builder.Ignore(x => x.Contracts);
-
-            //builder.Navigation("_userContracts").UsePropertyAccessMode(PropertyAccessMode.Field);
-            builder.HasMany<UserContract>("_userContracts")
+            builder.HasMany<UserContract>()
                 .WithOne(uc => uc.User)
                 .HasForeignKey(uc => uc.UserId)
                 .OnDelete(DeleteBehavior.Cascade)

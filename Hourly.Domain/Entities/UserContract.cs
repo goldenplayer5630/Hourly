@@ -7,7 +7,6 @@ namespace Hourly.Domain.Entities
 {
     public class UserContract
     {
-        private readonly List<WorkSession> _workSessions = new();
 
         [Key]
         public Guid Id { get; set; }
@@ -58,7 +57,7 @@ namespace Hourly.Domain.Entities
         // Navigation properties
         [ForeignKey("UserId")]
         public User User { get; set; } = null!;
-        public IReadOnlyCollection<WorkSession> WorkSessions => _workSessions.AsReadOnly();
+        public ICollection<WorkSession> WorkSessions { get; set; }
 
         public void Update(UserContract updated)
         {

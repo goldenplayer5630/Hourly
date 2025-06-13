@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hourly.Domain.Entities
 {
     public class GitRepository
     {
-        protected List<GitCommit> _gitCommits = new();
-
         [Key]
         public Guid Id { get; set; }
 
@@ -21,7 +20,7 @@ namespace Hourly.Domain.Entities
         [Required]
         public string WebUrl { get; set; }
 
-        public IReadOnlyCollection<GitCommit> GitCommits => _gitCommits.AsReadOnly();
+        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

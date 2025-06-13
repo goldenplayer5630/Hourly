@@ -84,14 +84,12 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasConversion(DateTimeConverter.NullableUtcDateTimeConverter);
 
             builder.HasOne(uc => uc.User)
-                .WithMany("_userContracts")
+                .WithMany(u => u.Contracts)
                 .HasForeignKey(uc => uc.UserId)
                 .HasConstraintName("fk_user_contract_user_id")
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Ignore(uc => uc.WorkSessions);
-
-            builder.HasMany<WorkSession>("_workSessions")
+            builder.HasMany<WorkSession>()
                 .WithOne(ws => ws.UserContract)
                 .HasForeignKey(ws => ws.UserContractId)
                 .HasConstraintName("fk_work_session_user_contract_id")

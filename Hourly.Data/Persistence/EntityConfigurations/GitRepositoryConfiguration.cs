@@ -30,9 +30,7 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .HasMaxLength(500)
                 .HasColumnName("web_url");
 
-            builder.Ignore(x => x.GitCommits);
-
-            builder.HasMany<GitCommit>("_gitCommits")
+            builder.HasMany<GitCommit>()
                 .WithOne(c => c.Repository)
                 .HasForeignKey(c => c.RepositoryId);
 
