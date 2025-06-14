@@ -57,7 +57,7 @@ namespace Hourly.Domain.Entities
         // Navigation properties
         [ForeignKey("UserId")]
         public User User { get; set; } = null!;
-        public ICollection<WorkSession> WorkSessions { get; set; }
+        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
 
         public void Update(UserContract updated)
         {
