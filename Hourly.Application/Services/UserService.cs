@@ -34,12 +34,16 @@ namespace Hourly.Application.Services
             user.Id = Guid.NewGuid();
             user.CreatedAt = DateTime.UtcNow;
 
-            var role = await _roleRepository.GetById(user.RoleId)
-                ?? throw new EntityNotFoundException("Role not found!");
+            if (user.RoleId is not null && user.RoleId.HasValue)
+            {
+                var role = await _roleRepository.GetById(user.RoleId.Value)
+                    ?? throw new EntityNotFoundException("Role not found!");
 
-            user.AssignToRole(role);
+                user.AssignToRole(role);
+            }
 
-            return await _repository.Create(user);
+            var result = await _repository.Create(user);
+            return result;
         }
 
         public async Task<User> AddDepartment(Guid userId, Guid departmentId)
@@ -52,7 +56,7 @@ namespace Hourly.Application.Services
 
             user.AssignToDepartment(department);
 
-            await _repository.SaveChanges();
+            await _repository.Update(user);
 
             return user;
         }
@@ -64,14 +68,28 @@ namespace Hourly.Application.Services
 
             user.RemoveFromDepartment();
 
-            await _repository.SaveChanges();
+            await _repository.Update(user);
 
             return user;
         }
 
         public async Task<User> Update(User user)
         {
-            return await _repository.Update(user);
+            var existing = await _repository.GetById(user.Id)
+                ?? throw new EntityNotFoundException("User not found!");
+
+            if (user.RoleId is not null && user.RoleId.HasValue)
+            {
+                var role = await _roleRepository.GetById(user.RoleId.Value)
+                    ?? throw new EntityNotFoundException("Role not found!");
+
+                user.AssignToRole(role);
+            }
+
+            existing.Update(user);
+
+            var result = await _repository.Update(existing);
+            return result;
         }
 
         public async Task Delete(Guid userId)

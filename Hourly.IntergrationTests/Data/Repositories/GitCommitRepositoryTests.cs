@@ -69,13 +69,12 @@ namespace Hourly.Tests.Data.Repositories
                 ExtCommitId = "258958b9da4fe91f52c62c32eddade9cb8ee4828",
                 ExtCommitShortId = "258958b",
                 Title = "Initial commit",
-                AuthorId = Guid.NewGuid(),
+                AuthorId = existingUser.Id,
                 CreatedAt = DateTime.UtcNow,
-                WebUrl = "http://example.com"
+                WebUrl = "http://example.com",
+                AuthoredDate = DateTime.UtcNow,
+                GitRepositoryId = existingRepository.Id,
             };
-
-            entity.AssignToRepository(existingRepository);
-            entity.AssignToAuthor(existingUser);
 
             // Act
             await _gitCommitRepository.Create(entity);

@@ -10,11 +10,11 @@ namespace Hourly.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public Guid GitRepositoryId { get; private set; }
+        public Guid GitRepositoryId { get; set; }
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository GitRepository { get; private set; }
+        public GitRepository GitRepository { get; set; }
 
         [Required]
         public string ExtCommitId { get; set; }
@@ -28,11 +28,11 @@ namespace Hourly.Domain.Entities
         public string? Comment { get; set; }
 
         [Required]
-        public Guid AuthorId { get; set; }
+        public Guid? AuthorId { get; set; }
 
         [Required]
         [ForeignKey("AuthorId")]
-        public User Author { get; set; }
+        public User? Author { get; set; }
 
         public DateTime AuthoredDate { get; set; }
 
@@ -45,26 +45,5 @@ namespace Hourly.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
-
-        public void AssignToRepository(GitRepository repository)
-        {
-            if (GitRepositoryId == repository.Id)
-            {
-                throw new DomainValidationException("Commit is already part of this repository.");
-            }
-
-            GitRepositoryId = repository.Id;
-            UpdatedAt = DateTime.UtcNow;
-        }
-
-        public void AssignToAuthor(User author)
-        {
-            if (AuthorId == author.Id)
-            {
-                throw new DomainValidationException("Commit is already assigned to this author.");
-            }
-            AuthorId = author.Id;
-            UpdatedAt = DateTime.UtcNow;
-        }
     }
 }

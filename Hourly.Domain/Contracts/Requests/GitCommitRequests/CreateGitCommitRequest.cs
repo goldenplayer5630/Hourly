@@ -19,7 +19,7 @@ namespace Hourly.Domain.Contracts.Requests.GitCommitRequests
         public string? Comment { get; init; }
 
         [Required]
-        public Guid AuthorId { get; set; }
+        public Guid? AuthorId { get; set; }
 
         public DateTime AuthoredDate { get; set; }
 

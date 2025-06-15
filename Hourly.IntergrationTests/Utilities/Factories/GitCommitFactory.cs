@@ -26,12 +26,12 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                         Comment = faker.Lorem.Paragraph(),
                         WebUrl = faker.Internet.Url(),
                         CreatedAt = faker.Date.Past().ToUniversalTime(),
-                        UpdatedAt = faker.Date.Recent().ToUniversalTime()
+                        UpdatedAt = faker.Date.Recent().ToUniversalTime(),
+                        AuthorId = author.Id,
+                        GitRepositoryId = repo.Id,
                     };
 
                     commit.ExtCommitShortId = commit.ExtCommitId.Substring(0, 7);
-                    commit.AssignToAuthor(author);
-                    commit.AssignToRepository(repo);
 
                     gitCommits.Add(commit);
                 }

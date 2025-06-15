@@ -18,10 +18,10 @@ namespace Hourly.Domain.Entities
         public string Email { get; set; }
 
         [Required]
-        public Guid RoleId { get; set; }
+        public Guid? RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public Role Role { get; private set; }
+        public Role? Role { get; private set; }
 
         public Guid? DepartmentId { get; private set; }
 
@@ -48,35 +48,46 @@ namespace Hourly.Domain.Entities
 
         public void AssignToDepartment(Department department)
         {
-            if (DepartmentId == department.Id)
-            {
-                throw new DomainValidationException("User is already assigned to this department.");
-            }
-
             DepartmentId = department.Id;
             UpdatedAt = DateTime.UtcNow;
         }
 
         public void RemoveFromDepartment()
         {
-            if (DepartmentId == null)
-            {
-                throw new DomainValidationException("User is not assigned to any department.");
-            }
-
             DepartmentId = null;
             UpdatedAt = DateTime.UtcNow;
         }
 
         public void AssignToRole(Role role)
         {
-            if (RoleId == role.Id)
-            {
-                throw new DomainValidationException("User already has this role.");
-            }
 
             RoleId = role.Id;
             UpdatedAt = DateTime.UtcNow;
+        }
+
+
+        public void Update(User updated)
+        {
+            Name = updated.Name;
+            Email = updated.Email;
+            GitEmail = updated.GitEmail;
+            GitUsername = updated.GitUsername;
+            GitAccessToken = updated.GitAccessToken;
+            TVTHourBalance = updated.TVTHourBalance;
+            UpdatedAt = DateTime.UtcNow;
+            Validate();
+        }
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                throw new DomainValidationException("Name is required.");
+            }
+            if (string.IsNullOrWhiteSpace(Email) || !new EmailAddressAttribute().IsValid(Email))
+            {
+                throw new DomainValidationException("A valid email is required.");
+            }
         }
     }
 }
