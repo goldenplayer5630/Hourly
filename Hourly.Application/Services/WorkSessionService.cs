@@ -46,13 +46,19 @@ namespace Hourly.Application.Services
             
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
-            
-            foreach (var commitId in gitCommitIds.Distinct())
-            {
-                var commit = await _gitCommitRepository.GetById(commitId)
-                    ?? throw new EntityNotFoundException($"GitCommit {commitId} not found!");
 
-                workSession.AddGitCommit(commit);
+            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
+            if (commits.Count() != gitCommitIds.Count())
+            {
+                var missing = gitCommitIds.Except(commits.Select(c => c.Id));
+                throw new EntityNotFoundException($"Missing GitCommits: {string.Join(", ", missing)}");
+            }
+            else
+            {
+                foreach (var commit in commits)
+                {
+                    existing.AddGitCommit(commit);
+                }
             }
 
             workSession.AssignToUserContract(userContract);
@@ -78,13 +84,18 @@ namespace Hourly.Application.Services
             // Replace commit links
             existing.GitCommits.Clear();
 
-            foreach (var commitId in gitCommitIds)
+            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
+            if (commits.Count() != gitCommitIds.Count())
             {
-                var commit = await _gitCommitRepository.GetById(commitId);
-                if (commit == null)
-                    throw new EntityNotFoundException($"GitCommit {commitId} not found!");
-
-                existing.AddGitCommit(commit);
+                var missing = gitCommitIds.Except(commits.Select(c => c.Id));
+                throw new EntityNotFoundException($"Missing GitCommits: {string.Join(", ", missing)}");
+            }
+            else
+            {
+                foreach (var commit in commits)
+                {
+                    existing.AddGitCommit(commit);
+                }
             }
 
             return await _repository.Update(existing);

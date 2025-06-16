@@ -33,6 +33,14 @@ namespace Hourly.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<GitCommit>> GetByIds(IEnumerable<Guid> gitCommitIds)
+        {
+            var ids = gitCommitIds.Distinct().ToList();
+            return await _context.GitCommits
+                .Where(c => ids.Contains(c.Id))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate)
         {
             var query = _context.GitCommits
