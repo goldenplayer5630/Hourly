@@ -7,7 +7,7 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class WorkSessionRepositoryTests : IntergrationTestBase
     {
-        private WorkSessionRepository _workSessionRepository;
+        private WorkSessionRepository _workSessionRepository = null!;
 
         public async override Task InitializeAsync()
         {

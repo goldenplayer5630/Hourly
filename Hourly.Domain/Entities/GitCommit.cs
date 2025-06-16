@@ -14,32 +14,32 @@ namespace Hourly.Domain.Entities
 
         [Required]
         [ForeignKey("RepositoryId")]
-        public GitRepository GitRepository { get; set; }
+        public GitRepository GitRepository { get; init; } = null!;
 
         [Required]
-        public string ExtCommitId { get; set; }
+        public string ExtCommitId { get; set; } = string.Empty;
 
         [Required]
-        public string ExtCommitShortId { get; set; }
+        public string ExtCommitShortId { get; set; } = string.Empty;
 
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         public string? Comment { get; set; }
 
         [Required]
-        public Guid? AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
 
         [Required]
         [ForeignKey("AuthorId")]
-        public User? Author { get; set; }
+        public User? Author { get; init; }
 
         public DateTime AuthoredDate { get; set; }
 
         [Required]
-        public string WebUrl { get; set; }
+        public string WebUrl { get; set; } = string.Empty;
 
-        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+        public ICollection<WorkSession> WorkSessions { get; init; } = new List<WorkSession>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

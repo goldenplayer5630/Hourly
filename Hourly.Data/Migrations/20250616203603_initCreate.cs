@@ -43,28 +43,13 @@ namespace Hourly.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "role",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    permissions = table.Column<string>(type: "text", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_role", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "user",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    role = table.Column<int>(type: "integer", nullable: false),
                     department_id = table.Column<Guid>(type: "uuid", nullable: true),
                     git_email = table.Column<string>(type: "text", nullable: true),
                     git_username = table.Column<string>(type: "text", nullable: true),
@@ -81,12 +66,6 @@ namespace Hourly.Data.Migrations
                         column: x => x.department_id,
                         principalTable: "department",
                         principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_user_role_role_id",
-                        column: x => x.role_id,
-                        principalTable: "role",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,11 +209,6 @@ namespace Hourly.Data.Migrations
                 column: "department_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_role_id",
-                table: "user",
-                column: "role_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_user_contract_user_id",
                 table: "user_contract",
                 column: "user_id");
@@ -268,9 +242,6 @@ namespace Hourly.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "department");
-
-            migrationBuilder.DropTable(
-                name: "role");
         }
     }
 }

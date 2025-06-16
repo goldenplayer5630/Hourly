@@ -7,7 +7,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class WorkSessionServiceTests : IntergrationTestBase
     {
-        private IWorkSessionService _workSessionService;
+        private IWorkSessionService _workSessionService = null!;
 
         public async override Task InitializeAsync()
         {

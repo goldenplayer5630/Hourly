@@ -1,11 +1,12 @@
 ﻿using Bogus;
 using Hourly.Domain.Entities;
+using Hourly.Domain.Enums;
 
 namespace Hourly.IntergrationTests.Utilities.Factories
 {
     internal static class UserFactory
     {
-        public static List<User> CreateUsers(int count, List<Department> departments, List<Role> roles)
+        public static List<User> CreateUsers(int count, List<Department> departments)
         {
             var faker = new Faker();
 
@@ -14,7 +15,6 @@ namespace Hourly.IntergrationTests.Utilities.Factories
             for (int i = 0; i < count; i++)
             {
                 var department = faker.PickRandom(departments);
-                var role = faker.PickRandom(roles);
 
                 var user = new User
                 {
@@ -24,12 +24,13 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     GitEmail = faker.Internet.Email(),
                     GitUsername = faker.Internet.UserName(),
                     GitAccessToken = faker.Internet.Password(),
+                    Role = faker.PickRandom<UserRole>(),
+                    TVTHourBalance = faker.Random.Float(0, 20),
                     CreatedAt = faker.Date.Past().ToUniversalTime(),
                     UpdatedAt = faker.Date.Recent().ToUniversalTime(),
                 };
 
                 user.AssignToDepartment(department);
-                user.AssignToRole(role);
 
                 users.Add(user);
             }

@@ -1,4 +1,5 @@
-﻿using Hourly.Domain.Exceptions;
+﻿using Hourly.Domain.Enums;
+using Hourly.Domain.Exceptions;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,16 +13,12 @@ namespace Hourly.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
-        [Required]
-        public Guid? RoleId { get; set; }
-
-        [ForeignKey("RoleId")]
-        public Role? Role { get; private set; }
+        public UserRole Role { get; set; }
 
         public Guid? DepartmentId { get; private set; }
 
@@ -37,7 +34,7 @@ namespace Hourly.Domain.Entities
         [Required]
         public float TVTHourBalance { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+        public ICollection<GitCommit> GitCommits { get; init; } = new List<GitCommit>();
 
         public ICollection<UserContract> Contracts { get; init; } = new List<UserContract>();
 
@@ -57,14 +54,6 @@ namespace Hourly.Domain.Entities
             DepartmentId = null;
             UpdatedAt = DateTime.UtcNow;
         }
-
-        public void AssignToRole(Role role)
-        {
-
-            RoleId = role.Id;
-            UpdatedAt = DateTime.UtcNow;
-        }
-
 
         public void Update(User updated)
         {

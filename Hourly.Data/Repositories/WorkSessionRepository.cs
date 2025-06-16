@@ -21,7 +21,6 @@ namespace Hourly.Data.Repositories
                     .ThenInclude(gc => gc.GitRepository)
                 .Include(ws => ws.GitCommits)
                     .ThenInclude(gc => gc.Author)
-                    .ThenInclude(u => u.Role)
                 .Include(ws => ws.UserContract)
                 .FirstOrDefaultAsync(ws => ws.Id == workSessionId);
         }

@@ -11,13 +11,8 @@ namespace Hourly.Domain.Contracts.Responses.WorkSessionResponses
     {
 
         [ForeignKey("UserContractId")]
-        public UserContractSummaryResponse? UserContract { get; set; }
+        public UserContractSummaryResponse? UserContract { get; init; }
 
-        public ICollection<GitCommitResponse> GitCommits { get; set; } = new List<GitCommitResponse>();
-
-        [Required]
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime? UpdatedAt { get; set; }
+        public ICollection<GitCommitResponse> GitCommits { get; init; } = new List<GitCommitResponse>();
     }
 }

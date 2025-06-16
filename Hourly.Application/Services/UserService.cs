@@ -9,13 +9,11 @@ namespace Hourly.Application.Services
     {
         private readonly IUserRepository _repository;
         private readonly IDepartmentRepository _departmentRepository;
-        private readonly IRoleRepository _roleRepository;
 
-        public UserService(IUserRepository repository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository)
+        public UserService(IUserRepository repository, IDepartmentRepository departmentRepository)
         {
             _repository = repository;
             _departmentRepository = departmentRepository;
-            _roleRepository = roleRepository;
         }
 
         public async Task<User> GetById(Guid userId)
@@ -33,14 +31,6 @@ namespace Hourly.Application.Services
         {
             user.Id = Guid.NewGuid();
             user.CreatedAt = DateTime.UtcNow;
-
-            if (user.RoleId is not null && user.RoleId.HasValue)
-            {
-                var role = await _roleRepository.GetById(user.RoleId.Value)
-                    ?? throw new EntityNotFoundException("Role not found!");
-
-                user.AssignToRole(role);
-            }
 
             var result = await _repository.Create(user);
             return result;
@@ -77,14 +67,6 @@ namespace Hourly.Application.Services
         {
             var existing = await _repository.GetById(user.Id)
                 ?? throw new EntityNotFoundException("User not found!");
-
-            if (user.RoleId is not null && user.RoleId.HasValue)
-            {
-                var role = await _roleRepository.GetById(user.RoleId.Value)
-                    ?? throw new EntityNotFoundException("Role not found!");
-
-                user.AssignToRole(role);
-            }
 
             existing.Update(user);
 

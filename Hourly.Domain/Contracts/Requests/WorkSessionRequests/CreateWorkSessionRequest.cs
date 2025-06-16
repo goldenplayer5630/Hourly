@@ -5,30 +5,30 @@ namespace Hourly.Domain.Contracts.Requests.WorkSessionRequests
     public class CreateWorkSessionRequest
     {
         [Required]
-        public Guid UserContractId { get; set; }
+        public Guid UserContractId { get; init; }
 
         [Required(ErrorMessage = "Task description is required.")]
-        public string TaskDescription { get; set; }
+        public string TaskDescription { get; init; } = string.Empty;
 
         [Required]
-        public DateTime StartTime { get; set; }
+        public DateTime StartTime { get; init; }
 
         [Required]
-        public DateTime EndTime { get; set; }
+        public DateTime EndTime { get; init; }
 
-        public float BreakTime { get; set; }
+        public float BreakTime { get; init; }
 
         [Required]
-        public float Factor { get; set; }
+        public float Factor { get; init; }
 
-        public bool WBSO { get; set; }
+        public bool WBSO { get; init; }
 
-        public string? OtherRemarks { get; set; }
+        public string? OtherRemarks { get; init; }
 
-        public float TVTAccruedHours { get; set; }
+        public float TVTAccruedHours { get; init; }
 
-        public float TVTUsedHours { get; set; }
+        public float TVTUsedHours { get; init; }
 
-        public List<Guid> GitCommitIds { get; set; } = new List<Guid>();
+        public List<Guid> GitCommitIds { get; init; } = new List<Guid>();
     }
 }

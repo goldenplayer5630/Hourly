@@ -154,36 +154,6 @@ namespace Hourly.Data.Migrations
                     b.ToTable("git_repository", (string)null);
                 });
 
-            modelBuilder.Entity("Hourly.Domain.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Permissions")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("permissions");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("role", (string)null);
-                });
-
             modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -221,9 +191,9 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("role_id");
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("role");
 
                     b.Property<float>("TVTHourBalance")
                         .HasColumnType("real")
@@ -236,8 +206,6 @@ namespace Hourly.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("user", (string)null);
                 });
@@ -428,15 +396,7 @@ namespace Hourly.Data.Migrations
                         .WithMany("Users")
                         .HasForeignKey("DepartmentId");
 
-                    b.HasOne("Hourly.Domain.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Department");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Hourly.Domain.Entities.UserContract", b =>
@@ -484,11 +444,6 @@ namespace Hourly.Data.Migrations
             modelBuilder.Entity("Hourly.Domain.Entities.GitRepository", b =>
                 {
                     b.Navigation("GitCommits");
-                });
-
-            modelBuilder.Entity("Hourly.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Hourly.Domain.Entities.User", b =>

@@ -14,7 +14,7 @@ namespace Hourly.IntergrationTests.Data.Repositories
 {
     public class UserContractRepositoryTests : IntergrationTestBase
     {
-        private IUserContractRepository _userContractRepository;
+        private IUserContractRepository _userContractRepository = null!;
 
         public async override Task InitializeAsync()
         {

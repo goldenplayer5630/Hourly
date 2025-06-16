@@ -10,10 +10,8 @@ namespace Hourly.IntergrationTests.Utilities
 
 
             var departments = DepartmentFactory.CreateDepartments(3);
-            var roles = RoleFactory.CreateRoles();
             var departmentIds = departments.Select(d => d.Id).ToList();
-            var roleIds = roles.Select(r => r.Id).ToList();
-            var users = UserFactory.CreateUsers(10, departments, roles);
+            var users = UserFactory.CreateUsers(10, departments);
             var userIds = users.Select(u => u.Id).ToList();
             var userContracts = UserContractFactory.CreateUserContracts(users);
             var gitRepositories = GitRepositoryFactory.CreateGitRepositories(20);
@@ -26,7 +24,6 @@ namespace Hourly.IntergrationTests.Utilities
 
             // Adding data to testdatabase
             context.Users.AddRange(users);
-            context.Roles.AddRange(roles);
             context.Departments.AddRange(departments);
             context.GitRepositories.AddRange(gitRepositories);
             context.GitCommits.AddRange(gitCommits);

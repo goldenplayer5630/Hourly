@@ -8,7 +8,7 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class GitCommitRepositoryTests : IntergrationTestBase
     {
-        private IGitCommitRepository _gitCommitRepository;
+        private IGitCommitRepository _gitCommitRepository = null!;
 
         public async override Task InitializeAsync()
         {

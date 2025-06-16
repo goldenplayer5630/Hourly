@@ -7,7 +7,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class GitRepositoryServiceTests : IntergrationTestBase
     {
-        private IGitRepositoryService _gitRepositoryService;
+        private IGitRepositoryService _gitRepositoryService = null!;
 
         public async override Task InitializeAsync()
         {

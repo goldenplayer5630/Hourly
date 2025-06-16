@@ -12,8 +12,8 @@ namespace Hourly.Domain.Contracts.Responses.GitCommitResponses
         public UserSummaryResponse? Author { get; set; } = new UserSummaryResponse();
 
         [Required]
-        [ForeignKey("RepositoryId")]
-        public GitRepositorySummaryResponse Repository { get; set; } = null!;
+        [ForeignKey("GitRepositoryId")]
+        public GitRepositorySummaryResponse GitRepository { get; set; } = null!;
 
         public ICollection<WorkSessionSummaryResponse> WorkSessions { get; set; } = new List<WorkSessionSummaryResponse>();
     }

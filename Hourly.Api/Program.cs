@@ -16,6 +16,9 @@ var corsOptions = builder.Configuration
     .GetSection("React-CORS")
     .Get<CorsSettings>();
 
+if (corsOptions == null)
+    throw new InvalidOperationException("CORS settings not found in configuration.");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
@@ -37,7 +40,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IGitCommitRepository, GitCommitRepository>();
 builder.Services.AddScoped<IGitRepositoryRepository, GitRepositoryRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWorkSessionRepository, WorkSessionRepository>();
 builder.Services.AddScoped<IUserContractRepository, UserContractRepository>();
@@ -46,7 +48,6 @@ builder.Services.AddScoped<IUserContractRepository, UserContractRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IGitCommitService, GitCommitService>();
 builder.Services.AddScoped<IGitRepositoryService, GitRepositoryService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWorkSessionService, WorkSessionService>();
 builder.Services.AddScoped<IUserContractService, UserContractService>();

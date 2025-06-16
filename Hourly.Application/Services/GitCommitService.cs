@@ -42,13 +42,12 @@ namespace Hourly.Application.Services
             _ = await _gitRepositoryRepository.GetById(gitCommit.GitRepositoryId)
                 ?? throw new EntityNotFoundException("GitRepository not found!");
 
-            if (gitCommit.AuthorId is not null && gitCommit.AuthorId.HasValue)
-            {
-                _ = await _userRepository.GetById(gitCommit.AuthorId.Value)
-                    ?? throw new EntityNotFoundException("User not found!");
-            }
+            _ = await _userRepository.GetById(gitCommit.AuthorId)
+                ?? throw new EntityNotFoundException("User not found!");
 
-            return await _repository.Create(gitCommit);
+            var result = await _repository.Create(gitCommit);
+
+            return result;
         }
 
         public async Task Delete(Guid gitCommitId)

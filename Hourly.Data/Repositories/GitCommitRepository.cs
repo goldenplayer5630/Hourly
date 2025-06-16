@@ -20,7 +20,6 @@ namespace Hourly.Data.Repositories
                 .Include(gc => gc.WorkSessions)
                 .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
-                .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(gc => gc.Id == gitCommitId);
         }
 
@@ -29,7 +28,6 @@ namespace Hourly.Data.Repositories
             return await _context.GitCommits
                 .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
-                .ThenInclude(u => u.Role)
                 .ToListAsync();
         }
 
@@ -38,6 +36,8 @@ namespace Hourly.Data.Repositories
             var ids = gitCommitIds.Distinct().ToList();
             return await _context.GitCommits
                 .Where(c => ids.Contains(c.Id))
+                .Include(c => c.GitRepository)
+                .Include(c => c.Author)
                 .ToListAsync();
         }
 
@@ -46,7 +46,6 @@ namespace Hourly.Data.Repositories
             var query = _context.GitCommits
                 .Include(gc => gc.GitRepository)
                 .Include(gc => gc.Author)
-                .ThenInclude(u => u.Role)
                 .AsQueryable();
 
             if (repositoryId.HasValue)

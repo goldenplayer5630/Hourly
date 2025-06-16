@@ -9,7 +9,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class DepartmentServiceTests : IntergrationTestBase
     {
-        private IDepartmentService _departmentService;
+        private IDepartmentService _departmentService = null!;
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();

@@ -13,7 +13,7 @@ namespace Hourly.Domain.Entities
         [Required]
         public Guid UserId { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         [Required]
         public ContractType ContractType { get; set; }
         public bool IsActive { get; set; }
@@ -56,8 +56,8 @@ namespace Hourly.Domain.Entities
 
         // Navigation properties
         [ForeignKey("UserId")]
-        public User User { get; set; } = null!;
-        public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+        public User User { get; init; } = null!;
+        public ICollection<WorkSession> WorkSessions { get; init; } = new List<WorkSession>();
 
         public void Update(UserContract updated)
         {

@@ -1,4 +1,4 @@
-﻿using Hourly.Domain.Contracts.Responses.RoleResponses;
+﻿using Hourly.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,15 +10,12 @@ namespace Hourly.Domain.Contracts.Responses.UserResponses
         public Guid Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
-        public Guid? RoleId { get; set; }
-
-        [ForeignKey("RoleId")]
-        public RoleSummaryResponse? Role { get; set; }
+        public UserRole Role { get; set; }
 
         public Guid? DepartmentId { get; set; }
 

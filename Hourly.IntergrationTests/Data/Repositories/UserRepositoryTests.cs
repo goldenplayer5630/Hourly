@@ -3,12 +3,13 @@ using Hourly.Data.Repositories;
 using Hourly.IntergrationTests.Utilities;
 using Hourly.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Hourly.Domain.Enums;
 
 namespace Hourly.Tests.Data.Repositories
 {
     public class UserRepositoryTests : IntergrationTestBase
     {
-        private IUserRepository _userRepository;
+        private IUserRepository _userRepository = null!;
 
         public async override Task InitializeAsync()
         {
@@ -61,13 +62,16 @@ namespace Hourly.Tests.Data.Repositories
         {
             // Arrange
 
-            var existingRole = await _dbContext.Roles.FirstAsync();
             var entity = new User
             {
                 Id = Guid.NewGuid(),
                 Name = "John Doe",
                 Email = "john.doe@example.com",
-                RoleId = existingRole.Id,
+                GitUsername = "johndoe",
+                GitAccessToken = "AccesToken01!",
+                GitEmail = "john.doe@example.com",
+                TVTHourBalance = 40.0f,
+                Role = UserRole.Employee,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

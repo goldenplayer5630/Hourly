@@ -9,7 +9,7 @@ namespace Hourly.IntergrationTests.Domain.Services
 {
     public class UserContractServiceTests : IntergrationTestBase
     {
-        private IUserContractService _userContractService;
+        private IUserContractService _userContractService = null!;
 
         public async override Task InitializeAsync()
         {

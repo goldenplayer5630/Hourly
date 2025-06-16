@@ -11,14 +11,14 @@ namespace Hourly.Domain.Mappers
             return new GitCommitResponse
             {
                 Id = entity.Id,
-                RepositoryId = entity.GitRepositoryId,
-                Repository = entity.GitRepository.ToSummaryResponse(),
+                GitRepositoryId = entity.GitRepositoryId,
+                GitRepository = entity.GitRepository.ToSummaryResponse(),
                 ExtCommitId = entity.ExtCommitId,
                 ExtCommitShortId = entity.ExtCommitShortId,
                 Title = entity.Title,
                 Comment = entity.Comment,
                 AuthorId = entity.AuthorId,
-                Author = entity.Author.ToSummaryResponse(),
+                Author = entity.Author?.ToSummaryResponse(),
                 AuthoredDate = entity.AuthoredDate,
                 WebUrl = entity.WebUrl,
                 WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList(),
@@ -32,7 +32,7 @@ namespace Hourly.Domain.Mappers
             return new GitCommitSummaryResponse
             {
                 Id = entity.Id,
-                RepositoryId = entity.GitRepositoryId,
+                GitRepositoryId = entity.GitRepositoryId,
                 ExtCommitId = entity.ExtCommitId,
                 ExtCommitShortId = entity.ExtCommitShortId,
                 Title = entity.Title,
@@ -47,6 +47,7 @@ namespace Hourly.Domain.Mappers
         {
             return new GitCommit
             {
+                GitRepositoryId = response.GitRepositoryId,
                 ExtCommitId = response.ExtCommitId,
                 ExtCommitShortId = response.ExtCommitShortId,
                 Title = response.Title,

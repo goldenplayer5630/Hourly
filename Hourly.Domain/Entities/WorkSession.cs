@@ -16,7 +16,7 @@ namespace Hourly.Domain.Entities
         public UserContract UserContract { get; private set; } = null!;
 
         [Required]
-        public string TaskDescription { get; set; }
+        public string TaskDescription { get; set; } = string.Empty;
 
         [Required]
         public DateTime StartTime { get; set; }
@@ -40,7 +40,7 @@ namespace Hourly.Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<GitCommit> GitCommits { get; set; } = new List<GitCommit>();
+        public ICollection<GitCommit> GitCommits { get; init; } = new List<GitCommit>();
 
         public float RawEffectiveHours
         {

@@ -57,7 +57,7 @@ namespace Hourly.Application.Services
             {
                 foreach (var commit in commits)
                 {
-                    existing.AddGitCommit(commit);
+                    workSession.AddGitCommit(commit);
                 }
             }
 

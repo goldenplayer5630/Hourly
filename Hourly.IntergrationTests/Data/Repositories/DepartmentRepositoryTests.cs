@@ -8,7 +8,7 @@ namespace Hourly.Tests.Data.Repositories
 {
     public class DepartmentRepositoryTests : IntergrationTestBase
     {
-        private IDepartmentRepository _departmentRepository;
+        private IDepartmentRepository _departmentRepository = null!;
 
         public async override Task InitializeAsync()
         {

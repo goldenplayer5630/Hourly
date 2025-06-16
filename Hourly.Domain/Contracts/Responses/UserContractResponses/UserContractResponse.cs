@@ -10,8 +10,8 @@ namespace Hourly.Domain.Contracts.Responses.UserContractResponses
     {
         // Navigation properties
         [ForeignKey("UserId")]
-        public UserSummaryResponse User { get; set; }
+        public UserSummaryResponse User { get; init; } = null!;
 
-        public ICollection<WorkSessionSummaryResponse> WorkSessions { get; set; } = new List<WorkSessionSummaryResponse>();
+        public ICollection<WorkSessionSummaryResponse> WorkSessions { get; init; } = new List<WorkSessionSummaryResponse>();
     }
 }

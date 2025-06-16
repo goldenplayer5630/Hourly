@@ -1,6 +1,5 @@
 ﻿using Hourly.Domain.Contracts.Responses.DepartmentResponses;
 using Hourly.Domain.Contracts.Responses.GitCommitResponses;
-using Hourly.Domain.Contracts.Responses.RoleResponses;
 using Hourly.Domain.Contracts.Responses.UserContractResponses;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,8 +7,6 @@ namespace Hourly.Domain.Contracts.Responses.UserResponses
 {
     public class UserResponse : UserSummaryResponse
     {
-        [ForeignKey("RoleId")]
-        public RoleSummaryResponse? Role { get; set; }
 
         [ForeignKey("DepartmentId")]
         public DepartmentSummaryResponse? Department { get; set; }
