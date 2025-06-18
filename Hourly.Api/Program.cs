@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var corsOptions = builder.Configuration
-    .GetSection("React-CORS")
+    .GetSection("CORS")
     .Get<CorsSettings>();
 
 if (corsOptions == null)
@@ -21,7 +21,7 @@ if (corsOptions == null)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("CORS", policy =>
     {
         policy.WithOrigins(corsOptions.AllowedOrigins)
               .WithMethods(corsOptions.AllowedMethods)
@@ -62,7 +62,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Enable CORS before endpoints ??
-app.UseCors("AllowReactApp");
+app.UseCors("CORS");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
