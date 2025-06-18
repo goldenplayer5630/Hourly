@@ -1,0 +1,43 @@
+name: CICD Dev Pipeline
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_NAMESPACE: ${{ github.repository_owner }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Run unit tests
+        run: |
+          dotnet test Hourly.Api.Tests/Hourly.Api.Tests.csproj --no-restore --verbosity normal
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
+
+      - name: Build and tag Docker images
+        run: |
+          docker build -t ghcr.io/${{ env.IMAGE_NAMESPACE }}/hourly-monolith:pre-release -f Hourly.Api/Dockerfile .
+
+      - name: Push Docker images to GHCR
+        run: |
+          docker push ghcr.io/${{ env.IMAGE_NAMESPACE }}/hourly-monolith:pre-release

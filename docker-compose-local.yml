@@ -29,23 +29,15 @@ services:
     networks:
       - devnet
 
-  hourly-react-app:
-    image: ghcr.io/goldenplayer5630/hourly-microservice-app:pre-release
-    container_name: react-app
-    ports:
-      - "3001:80"
-    networks:
-      - devnet
-    depends_on:
-      - hourly-monolith
-
   hourly-monolith:
     image: hourly-monolith:latest
     container_name: hourly-monolith
+    build:
+      context: .
+      dockerfile: Hourly.Api/Dockerfile
     ports:
       - "5001:8080"
     environment:
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=6432;Database=hourly-timetrackingservice;Username=admin;Password=admin123"
       OCELOT__USER_SERVICE_HOST: userservice
       OCELOT__USER_SERVICE_PORT: 8080
       OCELOT__TIMETRACKING_SERVICE_HOST: timetracking
@@ -53,10 +45,13 @@ services:
       OCELOT__GIT_SERVICE_HOST: gitservice
       OCELOT__GIT_SERVICE_PORT: 8080
       OCELOT__HTTP_TRANSPORT_SCHEME: "http"
+    depends_on:
+      - userservice
+      - timetracking
+      - gitservice
+      - rabbitmq
     networks:
       - devnet
-    depends_on:
-      - postgres
 
 volumes:
   postgres_data:
