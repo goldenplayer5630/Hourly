@@ -29,7 +29,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          dotnet test Hourly.Api/Hourly.Api.csproj --no-restore --verbosity normal
+          dotnet test Hourly.IntergrationTests/Hourly.IntergrationTests.csproj --no-restore --verbosity normal
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
