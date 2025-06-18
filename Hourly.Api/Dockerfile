@@ -33,7 +33,6 @@
     # Final runtime image
     # ---------------------------
     FROM base AS final
-    COPY Hourly.Api/ocelot.generated.json ./ocelot.generated.json
     WORKDIR /app
     COPY --from=publish /app/publish .
     
