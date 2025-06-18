@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  postgres:
+  postgres-mono:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: postgres_db_mono
     restart: always
     environment:
       POSTGRES_USER: admin
@@ -11,27 +11,13 @@ services:
     ports:
       - "6432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_mono:/var/lib/postgresql/data
     networks:
       - devnet
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    ports:
-      - "5051:80"
-    depends_on:
-      - postgres
-    networks:
-      - devnet
-
-  hourly-react-app:
-    image: ghcr.io/goldenplayer5630/hourly-microservice-app:pre-release
-    container_name: react-app
+  hourly-monolith-app:
+    image: ghcr.io/goldenplayer5630/hourly-monolith-app:pre-release
+    container_name: hourly-monolith-app
     ports:
       - "3001:80"
     networks:
@@ -40,26 +26,27 @@ services:
       - hourly-monolith
 
   hourly-monolith:
-    image: hourly-monolith:latest
+    image: ghcr.io/goldenplayer5630/hourly-monolith:pre-release
     container_name: hourly-monolith
     ports:
       - "5001:8080"
     environment:
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=6432;Database=hourly-timetrackingservice;Username=admin;Password=admin123"
-      OCELOT__USER_SERVICE_HOST: userservice
-      OCELOT__USER_SERVICE_PORT: 8080
-      OCELOT__TIMETRACKING_SERVICE_HOST: timetracking
-      OCELOT__TIMETRACKING_SERVICE_PORT: 8080
-      OCELOT__GIT_SERVICE_HOST: gitservice
-      OCELOT__GIT_SERVICE_PORT: 8080
-      OCELOT__HTTP_TRANSPORT_SCHEME: "http"
+      ConnectionStrings__DefaultConnection: "Host=postgres-mono;Port=6432;Database=hourly-timetrackingservice;Username=admin;Password=admin123"
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+      CORS__AllowedOrigins: '["https://hourly-mono.vincentbok.nl"]'
+      CORS__AllowedMethods: '["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]'
+      CORS__AllowedHeaders: '["Content-Type", "Authorization"]'
+      CORS__ExposedHeaders: '["X-Total-Count"]'
+      CORS__AllowCredentials: "true"
+      CORS__MaxAge: "3600"
     networks:
       - devnet
     depends_on:
-      - postgres
+      - postgres-mono
 
 volumes:
-  postgres_data:
+  postgres_data_mono:
 
 networks:
   devnet:

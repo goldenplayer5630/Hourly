@@ -27,7 +27,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Run unit tests
+      - name: Run intergration tests
         run: |
           dotnet test Hourly.IntergrationTests/Hourly.IntergrationTests.csproj --no-restore --verbosity normal
 
