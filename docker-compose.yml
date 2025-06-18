@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  postgres-mono:
-    image: postgres:latest
-    container_name: postgres_db_mono
+  postgres-db-mono:
+    image: postgres:17
+    container_name: postgres-db-mono
     restart: always
     environment:
       POSTGRES_USER: admin
@@ -29,9 +29,9 @@ services:
     image: ghcr.io/goldenplayer5630/hourly-monolith:pre-release
     container_name: hourly-monolith
     ports:
-      - "5001:8080"
+      - "5010:8080"
     environment:
-      ConnectionStrings__DefaultConnection: "Host=postgres-mono;Port=6432;Database=hourly-timetrackingservice;Username=admin;Password=admin123"
+      ConnectionStrings__DefaultConnection: "Host=postgres-db-mono;Port=5432;Database=hourly;Username=admin;Password=admin123"
       Logging__LogLevel__Default: Information
       Logging__LogLevel__Microsoft.AspNetCore: Warning
       CORS__AllowedOrigins: '["https://hourly-mono.vincentbok.nl"]'
@@ -43,7 +43,7 @@ services:
     networks:
       - devnet
     depends_on:
-      - postgres-mono
+      - postgres-db-mono
 
 volumes:
   postgres_data_mono:
