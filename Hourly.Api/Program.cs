@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORS", policy =>
     {
-        policy.WithOrigins(corsOptions.AllowedOrigins)
+        policy.AllowAnyOrigin()              // Allow all origins
             .AllowAnyMethod()              // Allow all HTTP methods
             .AllowAnyHeader()              // Allow all headers
             .AllowCredentials();           // Allow credentials (cookies, auth headers)
