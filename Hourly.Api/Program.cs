@@ -23,15 +23,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORS", policy =>
     {
-        policy.AllowAnyOrigin()              // Allow all origins
-            .AllowAnyMethod()              // Allow all HTTP methods
-            .AllowAnyHeader()              // Allow all headers
-            .AllowCredentials();           // Allow credentials (cookies, auth headers)
-
-        if (corsOptions.AllowCredentials)
-            policy.AllowCredentials();
-        else
-            policy.DisallowCredentials();
+        policy.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin();
     });
 });
 
