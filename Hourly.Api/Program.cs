@@ -24,10 +24,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CORS", policy =>
     {
         policy.WithOrigins(corsOptions.AllowedOrigins)
-              .WithMethods(corsOptions.AllowedMethods)
-              .WithHeaders(corsOptions.AllowedHeaders)
-              .WithExposedHeaders(corsOptions.ExposedHeaders)
-              .SetPreflightMaxAge(TimeSpan.FromSeconds(corsOptions.MaxAge));
+            .AllowAnyMethod()              // Allow all HTTP methods
+            .AllowAnyHeader()              // Allow all headers
+            .AllowCredentials();           // Allow credentials (cookies, auth headers)
 
         if (corsOptions.AllowCredentials)
             policy.AllowCredentials();
