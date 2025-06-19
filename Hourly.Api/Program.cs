@@ -61,7 +61,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Enable CORS before endpoints ??
+
+app.UseRouting();
+
 app.UseCors("CORS");
 
 app.UseHttpsRedirection();
