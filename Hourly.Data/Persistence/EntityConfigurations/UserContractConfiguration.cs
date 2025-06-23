@@ -69,6 +69,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired(false)
                 .HasMaxLength(500);
 
+            builder.Property(x => x.TVTHourBalance)
+                .IsRequired()
+                .HasColumnName("tvt_hour_balance");
+
             builder.Property(uc => uc.Description)
                 .HasColumnName("description")
                 .IsRequired(false)

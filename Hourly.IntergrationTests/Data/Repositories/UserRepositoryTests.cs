@@ -70,7 +70,6 @@ namespace Hourly.Tests.Data.Repositories
                 GitUsername = "johndoe",
                 GitAccessToken = "AccesToken01!",
                 GitEmail = "john.doe@example.com",
-                TVTHourBalance = 40.0f,
                 Role = UserRole.Employee,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hourly.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250618233946_initCreate")]
+    [Migration("20250623124729_initCreate")]
     partial class initCreate
     {
         /// <inheritdoc />
@@ -198,10 +198,6 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("role");
 
-                    b.Property<float>("TVTHourBalance")
-                        .HasColumnType("real")
-                        .HasColumnName("tvt_hour_balance");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -275,6 +271,10 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
+
+                    b.Property<float>("TVTHourBalance")
+                        .HasColumnType("real")
+                        .HasColumnName("tvt_hour_balance");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")

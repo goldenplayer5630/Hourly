@@ -31,6 +31,8 @@ namespace Hourly.Domain.Mappers
                 Name = entity.Name,
                 Namespace = entity.Namespace,
                 WebUrl = entity.WebUrl,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
             };
         }
 

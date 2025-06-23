@@ -54,7 +54,6 @@ namespace Hourly.Data.Migrations
                     git_email = table.Column<string>(type: "text", nullable: true),
                     git_username = table.Column<string>(type: "text", nullable: true),
                     git_access_token = table.Column<string>(type: "text", nullable: true),
-                    tvt_hour_balance = table.Column<float>(type: "real", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -116,6 +115,7 @@ namespace Hourly.Data.Migrations
                     gross_hourly_rate = table.Column<double>(type: "double precision", nullable: true),
                     holiday_hours_percentage = table.Column<int>(type: "integer", nullable: true),
                     monthly_paid_holiday_hours = table.Column<bool>(type: "boolean", nullable: false),
+                    tvt_hour_balance = table.Column<float>(type: "real", nullable: false),
                     start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     contract_file_path = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),

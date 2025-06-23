@@ -20,7 +20,5 @@ namespace Hourly.Domain.Contracts.Requests.UserRequests
 
         public string? GitAccessToken { get; init; }
 
-        [Required]
-        public float TVTHourBalance { get; init; }
     }
 }

@@ -195,10 +195,6 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("role");
 
-                    b.Property<float>("TVTHourBalance")
-                        .HasColumnType("real")
-                        .HasColumnName("tvt_hour_balance");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -272,6 +268,10 @@ namespace Hourly.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
+
+                    b.Property<float>("TVTHourBalance")
+                        .HasColumnType("real")
+                        .HasColumnName("tvt_hour_balance");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")

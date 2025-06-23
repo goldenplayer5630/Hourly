@@ -40,6 +40,8 @@ namespace Hourly.Domain.Mappers
                 AuthorId = entity.AuthorId,
                 AuthoredDate = entity.AuthoredDate,
                 WebUrl = entity.WebUrl,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
             };
         }
 

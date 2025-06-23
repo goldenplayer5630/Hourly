@@ -24,4 +24,4 @@ Write-Host "Database reset and initialized successfully!"
 
 # Step 6: Run the seeder
 Write-Host "Seeding the database..."
-dotnet run --project ../Hourly.DatabaseSeeder/Hourly.DatabaseSeeder.csproj  # Adjust the path if needed
+# dotnet run --project ../Hourly.DatabaseSeeder/Hourly.DatabaseSeeder.csproj  # Adjust the path if needed

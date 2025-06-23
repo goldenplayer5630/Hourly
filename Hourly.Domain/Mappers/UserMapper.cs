@@ -19,7 +19,6 @@ namespace Hourly.Domain.Mappers
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,
                 GitAccessToken = entity.GitAccessToken,
-                TVTHourBalance = entity.TVTHourBalance,
                 GitCommits = entity.GitCommits.Select(gc => gc.ToSummaryResponse()).ToList(),
                 Contracts = entity.Contracts.Select(uc => uc.ToSummaryResponse()).ToList(),
                 CreatedAt = entity.CreatedAt,
@@ -39,7 +38,8 @@ namespace Hourly.Domain.Mappers
                 GitEmail = entity.GitEmail,
                 GitUsername = entity.GitUsername,
                 GitAccessToken = entity.GitAccessToken,
-                TVTHourBalance = entity.TVTHourBalance,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt
             };
         }
 
@@ -52,7 +52,6 @@ namespace Hourly.Domain.Mappers
                 GitEmail = request.GitEmail,
                 GitUsername = request.GitUsername,
                 GitAccessToken = request.GitAccessToken,
-                TVTHourBalance = request.TVTHourBalance,
                 Role = request.Role,
             };
         }
@@ -67,7 +66,6 @@ namespace Hourly.Domain.Mappers
                 GitEmail = request.GitEmail,
                 GitUsername = request.GitUsername,
                 GitAccessToken = request.GitAccessToken,
-                TVTHourBalance = request.TVTHourBalance,
                 Role = request.Role,
             };
         }

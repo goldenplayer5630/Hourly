@@ -39,6 +39,9 @@ namespace Hourly.Domain.Contracts.Responses.UserContractResponses
         public string? Description { get; init; }
 
         [Required]
+        public float TVTHourBalance { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; init; }
 
         public DateTime? UpdatedAt { get; init; }

@@ -34,10 +34,6 @@ namespace Hourly.Data.Persistence.EntityConfigurations
                 .IsRequired(false)
                 .HasColumnName("git_access_token");
 
-            builder.Property(x => x.TVTHourBalance)
-                .IsRequired()
-                .HasColumnName("tvt_hour_balance");
-
             builder.Property(x => x.Role)
                 .HasColumnName("role");
 

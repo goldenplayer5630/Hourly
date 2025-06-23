@@ -31,9 +31,6 @@ namespace Hourly.Domain.Entities
 
         public string? GitAccessToken { get; set; }
 
-        [Required]
-        public float TVTHourBalance { get; set; }
-
         public ICollection<GitCommit> GitCommits { get; init; } = new List<GitCommit>();
 
         public ICollection<UserContract> Contracts { get; init; } = new List<UserContract>();
@@ -62,7 +59,6 @@ namespace Hourly.Domain.Entities
             GitEmail = updated.GitEmail;
             GitUsername = updated.GitUsername;
             GitAccessToken = updated.GitAccessToken;
-            TVTHourBalance = updated.TVTHourBalance;
             UpdatedAt = DateTime.UtcNow;
             Validate();
         }

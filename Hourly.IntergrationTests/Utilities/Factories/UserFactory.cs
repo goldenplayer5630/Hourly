@@ -25,7 +25,6 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     GitUsername = faker.Internet.UserName(),
                     GitAccessToken = faker.Internet.Password(),
                     Role = faker.PickRandom<UserRole>(),
-                    TVTHourBalance = faker.Random.Float(0, 20),
                     CreatedAt = faker.Date.Past().ToUniversalTime(),
                     UpdatedAt = faker.Date.Recent().ToUniversalTime(),
                 };

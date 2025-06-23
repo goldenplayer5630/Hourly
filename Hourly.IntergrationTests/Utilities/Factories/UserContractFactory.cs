@@ -37,6 +37,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                         MonthlyPaidHolidayHours = faker.Random.Bool(),
                         StartDate = startDate,
                         EndDate = endDate,
+                        TVTHourBalance = faker.Random.Float(0, 20),
                         ContractFilePath = faker.System.FilePath(),
                         Description = faker.Lorem.Sentence(),
                         CreatedAt = faker.Date.Past(3, startDate),

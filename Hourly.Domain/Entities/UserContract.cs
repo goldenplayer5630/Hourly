@@ -43,6 +43,8 @@ namespace Hourly.Domain.Entities
         public int? HolidayHoursPercentage { get; set; }
         public bool MonthlyPaidHolidayHours { get; set; }
 
+        public float TVTHourBalance { get; set; } = 0;
+
         [Required]
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -76,6 +78,30 @@ namespace Hourly.Domain.Entities
             Description = updated.Description;
             UpdatedAt = DateTime.UtcNow;
             Validate();
+        }
+
+        public void AccrueTVTHours(float hours)
+        {
+            if (hours < 0)
+            {
+                throw new DomainValidationException("Cannot accrue negative TVT hours.");
+            }
+            TVTHourBalance += hours;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UseTVTHours(float hours)
+        {
+            if (hours < 0)
+            {
+                throw new DomainValidationException("Cannot use negative TVT hours.");
+            }
+            if (TVTHourBalance < hours)
+            {
+                throw new DomainValidationException("Insufficient TVT hour balance.");
+            }
+            TVTHourBalance -= hours;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void AssignToUser(User user)
