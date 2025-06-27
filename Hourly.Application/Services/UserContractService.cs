@@ -84,6 +84,29 @@ namespace Hourly.Application.Services
             return await _repository.Update(existing);
         }
 
+        public async Task<UserContract> UpdateTVTHourBalance(UserContract userContract, float tvtHoursAccrued, float tvtHoursUsed)
+        {
+            if (userContract == null)
+                throw new ArgumentNullException(nameof(userContract));
+
+            var existing = await _repository.GetById(userContract.Id)
+                ?? throw new EntityNotFoundException("UserContract not found!");
+
+            if (tvtHoursUsed < 0)
+                throw new ArgumentOutOfRangeException(nameof(tvtHoursUsed), "TVT hours used cannot be negative.");
+
+            if (tvtHoursAccrued < 0)
+                throw new ArgumentOutOfRangeException(nameof(tvtHoursAccrued), "TVT hours accrued cannot be negative.");
+
+            if (tvtHoursUsed > 0)
+                existing.UseTVTHours(tvtHoursUsed);
+
+            if (tvtHoursAccrued > 0)
+                existing.AccrueTVTHours(tvtHoursAccrued);
+
+            return await _repository.Update(existing);
+        }
+
         public async Task Delete(Guid userContractId)
         {
             await _repository.Delete(userContractId);

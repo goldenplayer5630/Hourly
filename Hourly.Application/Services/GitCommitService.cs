@@ -24,6 +24,17 @@ namespace Hourly.Application.Services
                 ?? throw new EntityNotFoundException("GitCommit not found!");
         }
 
+        public async Task<IEnumerable<GitCommit>> GetByIds(IEnumerable<Guid> gitCommitIds)
+        {
+            var commits = await _repository.GetByIds(gitCommitIds);
+            if (commits.Count() != gitCommitIds.Count())
+            {
+                var missing = gitCommitIds.Except(commits.Select(c => c.Id));
+                throw new EntityNotFoundException($"Missing GitCommits: {string.Join(", ", missing)}");
+            }
+            return commits;
+        }
+
         public async Task<IEnumerable<GitCommit>> GetAll()
         {
             return await _repository.GetAll();

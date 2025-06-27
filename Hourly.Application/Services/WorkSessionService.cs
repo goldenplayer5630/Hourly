@@ -8,14 +8,14 @@ namespace Hourly.Application.Services
     public class WorkSessionService : IWorkSessionService
     {
         private readonly IWorkSessionRepository _repository;
-        private readonly IGitCommitRepository _gitCommitRepository;
-        private readonly IUserContractRepository _userContractRepository;
+        private readonly IGitCommitService _gitCommitService;
+        private readonly IUserContractService _userContractService;
 
-        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository, IUserContractRepository userContractRepository)
+        public WorkSessionService(IWorkSessionRepository repository, IGitCommitService gitCommitService, IUserContractService userContractService)
         {
             _repository = repository;
-            _gitCommitRepository = gitCommitRepository;
-            _userContractRepository = userContractRepository;
+            _gitCommitService = gitCommitService;
+            _userContractService = userContractService;
         }
 
         public async Task<WorkSession> GetById(Guid workSessionId)
@@ -41,13 +41,18 @@ namespace Hourly.Application.Services
 
             workSession.Validate();
 
-            var userContract = await _userContractRepository.GetById(workSession.UserContractId)
+            var userContract = await _userContractService.GetById(workSession.UserContractId)
                 ?? throw new EntityNotFoundException("User contract not found!");
-            
+
+            if (!userContract.IsActive)
+                throw new DomainValidationException("User contract must be active to create a WorkSession.");
+
+            await _userContractService.UpdateTVTHourBalance(userContract, workSession.TVTAccruedHours, workSession.TVTUsedHours);
+
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
 
-            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
+            var commits = await _gitCommitService.GetByIds(gitCommitIds);
             if (commits.Count() != gitCommitIds.Count())
             {
                 var missing = gitCommitIds.Except(commits.Select(c => c.Id));
@@ -71,8 +76,11 @@ namespace Hourly.Application.Services
             var existing = await _repository.GetById(updated.Id)
                 ?? throw new EntityNotFoundException("WorkSession not found!");
 
-            var userContract = await _userContractRepository.GetById(updated.UserContractId)
-                ?? throw new EntityNotFoundException("UserContract not found!");
+            var userContract = await _userContractService.GetById(updated.UserContractId)
+                ?? throw new EntityNotFoundException("User contract not found!");
+
+            if (!userContract.IsActive)
+                throw new DomainValidationException("User contract must be active to update a WorkSession.");
 
             existing.Update(updated);
 
@@ -81,10 +89,12 @@ namespace Hourly.Application.Services
 
             existing.AssignToUserContract(userContract);
 
+            await _userContractService.UpdateTVTHourBalance(userContract, updated.TVTAccruedHours, updated.TVTUsedHours);
+
             // Replace commit links
             existing.GitCommits.Clear();
 
-            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
+            var commits = await _gitCommitService.GetByIds(gitCommitIds);
             if (commits.Count() != gitCommitIds.Count())
             {
                 var missing = gitCommitIds.Except(commits.Select(c => c.Id));
@@ -122,7 +132,7 @@ namespace Hourly.Application.Services
 
         private async Task<WorkSession> AddGitCommit(WorkSession workSession, Guid gitCommitId)
         {
-            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
+            var gitCommit = await _gitCommitService.GetById(gitCommitId)
                 ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
 
             workSession.AddGitCommit(gitCommit);
@@ -142,7 +152,7 @@ namespace Hourly.Application.Services
 
         private async Task<WorkSession> RemoveGitCommit(WorkSession workSession, Guid gitCommitId)
         {
-            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
+            var gitCommit = await _gitCommitService.GetById(gitCommitId)
                 ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
 
             workSession.RemoveGitCommit(gitCommit);

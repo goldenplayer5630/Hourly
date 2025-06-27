@@ -60,16 +60,19 @@ namespace Hourly.Data.Repositories
 
         public async Task<WorkSession> Update(WorkSession workSession)
         {
-            var existingWorkSession = await _context.WorkSessions.FindAsync(workSession.Id);
-            if (existingWorkSession == null)
-            {
-                throw new EntityNotFoundException("Work session not found!");
-            }
+            var existingWorkSession = await _context.WorkSessions
+                .Include(ws => ws.GitCommits) // ensure related entities are loaded
+                .FirstOrDefaultAsync(ws => ws.Id == workSession.Id);
 
-            _context.Entry(existingWorkSession).CurrentValues.SetValues(workSession);
+            if (existingWorkSession == null)
+                throw new EntityNotFoundException("Work session not found!");
+
+            existingWorkSession.Update(workSession);
+
             var result = await _context.SaveChangesAsync();
-            return (result > 0 ? workSession : null) ?? throw new InvalidOperationException();
+            return result > 0 ? existingWorkSession : throw new InvalidOperationException();
         }
+
 
         public async Task Delete(Guid workSessionId)
         {

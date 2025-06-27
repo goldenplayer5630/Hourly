@@ -43,7 +43,7 @@ namespace Hourly.Domain.Entities
         public int? HolidayHoursPercentage { get; set; }
         public bool MonthlyPaidHolidayHours { get; set; }
 
-        public float TVTHourBalance { get; set; } = 0;
+        public float TVTHourBalance { get; private set; } = 0;
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -80,6 +80,7 @@ namespace Hourly.Domain.Entities
             Validate();
         }
 
+        // This needs fixing, it is not subtracting/adding the TVT hours correctly
         public void AccrueTVTHours(float hours)
         {
             if (hours < 0)

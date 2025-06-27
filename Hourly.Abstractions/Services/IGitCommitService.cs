@@ -7,6 +7,7 @@ namespace Hourly.Abstractions.Services
         Task<IEnumerable<GitCommit>> GetAll();
         Task<IEnumerable<GitCommit>> Filter(Guid? repositoryId, Guid? authorId, DateTime? authoredDate);
         Task<GitCommit> GetById(Guid gitCommitid);
+        Task<IEnumerable<GitCommit>> GetByIds(IEnumerable<Guid> gitCommitIds);
         Task<GitCommit> Create(GitCommit gitCommit);
         Task Delete(Guid gitCommitid);
     }

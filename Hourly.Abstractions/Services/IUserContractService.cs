@@ -9,6 +9,7 @@ namespace Hourly.Abstractions.Services
         Task<UserContract> GetById(Guid userContractId);
         Task<UserContract> Create(UserContract userContract);
         Task<UserContract> Update(UserContract userContract);
+        Task<UserContract> UpdateTVTHourBalance(UserContract userContract, float tvtHoursAccrued, float tvtHoursUsed);
         Task Delete(Guid userContractId);
     }
 }
