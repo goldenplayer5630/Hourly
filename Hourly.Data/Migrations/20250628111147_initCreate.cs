@@ -81,8 +81,7 @@ namespace Hourly.Data.Migrations
                     authored_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     web_url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    RepositoryId = table.Column<Guid>(type: "uuid", nullable: false)
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -130,6 +129,26 @@ namespace Hourly.Data.Migrations
                         name: "FK_user_contract_user_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "locked_month",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_contract_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    year = table.Column<int>(type: "integer", nullable: false),
+                    month = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_locked_month", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_locked_month_user_contract_user_contract_id",
+                        column: x => x.user_contract_id,
+                        principalTable: "user_contract",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -204,6 +223,11 @@ namespace Hourly.Data.Migrations
                 column: "git_repository_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_locked_month_user_contract_id",
+                table: "locked_month",
+                column: "user_contract_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_user_department_id",
                 table: "user",
                 column: "department_id");
@@ -224,6 +248,9 @@ namespace Hourly.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "git_commit_work_sessions");
+
+            migrationBuilder.DropTable(
+                name: "locked_month");
 
             migrationBuilder.DropTable(
                 name: "git_commits");

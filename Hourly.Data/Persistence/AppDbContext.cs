@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<GitRepository> GitRepositories { get; set; }
     public DbSet<GitCommit> GitCommits { get; set; }
     public DbSet<UserContract> UserContracts { get; set; }
+    public DbSet<LockedMonth> LockedMonths { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -60,6 +60,7 @@ namespace Hourly.Domain.Entities
         [ForeignKey("UserId")]
         public User User { get; init; } = null!;
         public ICollection<WorkSession> WorkSessions { get; init; } = new List<WorkSession>();
+        public ICollection<LockedMonth> LockedMonths { get; init; } = new List<LockedMonth>();
 
         public void Update(UserContract updated)
         {

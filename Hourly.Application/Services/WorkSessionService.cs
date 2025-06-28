@@ -89,7 +89,7 @@ namespace Hourly.Application.Services
 
             existing.AssignToUserContract(userContract);
 
-            await _userContractService.UpdateTVTHourBalance(userContract, updated.TVTAccruedHours, updated.TVTUsedHours);
+            await _userContractService.UpdateTVTHourBalance(userContract, (existing.TVTAccruedHours - updated.TVTAccruedHours), (existing.TVTUsedHours - updated.TVTUsedHours));
 
             // Replace commit links
             existing.GitCommits.Clear();

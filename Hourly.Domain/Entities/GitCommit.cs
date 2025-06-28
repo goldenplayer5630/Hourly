@@ -13,7 +13,7 @@ namespace Hourly.Domain.Entities
         public Guid GitRepositoryId { get; set; }
 
         [Required]
-        [ForeignKey("RepositoryId")]
+        [ForeignKey(nameof(GitRepositoryId))]
         public GitRepository GitRepository { get; init; } = null!;
 
         [Required]

@@ -84,9 +84,6 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("git_repository_id");
 
-                    b.Property<Guid>("RepositoryId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -152,6 +149,32 @@ namespace Hourly.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("git_repository", (string)null);
+                });
+
+            modelBuilder.Entity("Hourly.Domain.Entities.LockedMonth", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer")
+                        .HasColumnName("month");
+
+                    b.Property<Guid>("UserContractId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_contract_id");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserContractId");
+
+                    b.ToTable("locked_month", (string)null);
                 });
 
             modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
@@ -390,6 +413,17 @@ namespace Hourly.Data.Migrations
                     b.Navigation("GitRepository");
                 });
 
+            modelBuilder.Entity("Hourly.Domain.Entities.LockedMonth", b =>
+                {
+                    b.HasOne("Hourly.Domain.Entities.UserContract", "UserContract")
+                        .WithMany("LockedMonths")
+                        .HasForeignKey("UserContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserContract");
+                });
+
             modelBuilder.Entity("Hourly.Domain.Entities.User", b =>
                 {
                     b.HasOne("Hourly.Domain.Entities.Department", "Department")
@@ -455,6 +489,8 @@ namespace Hourly.Data.Migrations
 
             modelBuilder.Entity("Hourly.Domain.Entities.UserContract", b =>
                 {
+                    b.Navigation("LockedMonths");
+
                     b.Navigation("WorkSessions");
                 });
 #pragma warning restore 612, 618

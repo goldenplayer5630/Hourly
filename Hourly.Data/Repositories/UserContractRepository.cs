@@ -23,6 +23,7 @@ namespace Hourly.Data.Repositories
         {
             return await _context.UserContracts
                 .Include(uc => uc.WorkSessions)
+                .Include(uc => uc.LockedMonths)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.Id == userContractId);
         }

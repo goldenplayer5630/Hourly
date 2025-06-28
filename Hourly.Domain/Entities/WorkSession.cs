@@ -12,7 +12,7 @@ namespace Hourly.Domain.Entities
 
         [Required]
         public Guid UserContractId { get; init; }
-        [ForeignKey("UserContractId")]
+        [ForeignKey(nameof(UserContractId))]
         public UserContract UserContract { get; private set; } = null!;
 
         [Required]

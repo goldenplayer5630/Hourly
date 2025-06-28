@@ -16,7 +16,8 @@ namespace Hourly.IntergrationTests.Domain.Services
             await base.InitializeAsync();
             var userContractRepository = new UserContractRepository(_dbContext);
             var userRepository = new UserRepository(_dbContext);
-            _userContractService = new UserContractService(userContractRepository, userRepository);
+            var lockedMonthRepository = new LockedMonthRepository(_dbContext);
+            _userContractService = new UserContractService(userContractRepository, userRepository, lockedMonthRepository);
         }
     }
 }

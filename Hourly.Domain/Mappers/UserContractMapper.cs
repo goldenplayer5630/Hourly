@@ -72,7 +72,8 @@ namespace Hourly.Domain.Mappers
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 User = entity.User.ToSummaryResponse(),
-                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList()
+                WorkSessions = entity.WorkSessions.Select(ws => ws.ToSummaryResponse()).ToList(),
+                LockedMonths = entity.LockedMonths.Select(lm => lm.ToSummaryResponse()).ToList()
             };
         }
 

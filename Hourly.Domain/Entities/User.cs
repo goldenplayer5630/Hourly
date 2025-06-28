@@ -22,7 +22,7 @@ namespace Hourly.Domain.Entities
 
         public Guid? DepartmentId { get; private set; }
 
-        [ForeignKey("DepartmentId")]
+        [ForeignKey(nameof(DepartmentId))]
         public Department? Department { get; private set; }
 
         public string? GitEmail { get; set; }

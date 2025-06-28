@@ -12,10 +12,18 @@ namespace Hourly.IntergrationTests.Domain.Services
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();
+
             var workSessionRepository = new WorkSessionRepository(_dbContext);
             var gitCommitRepository = new GitCommitRepository(_dbContext);
             var userContractRepository = new UserContractRepository(_dbContext);
-            _workSessionService = new WorkSessionService(workSessionRepository, gitCommitRepository, userContractRepository);
+            var userRepository = new UserRepository(_dbContext);
+            var lockedMonthRepository = new LockedMonthRepository(_dbContext);
+            var gitRepositoryRepository = new GitRepositoryRepository(_dbContext);
+
+            var gitCommitService = new GitCommitService(gitCommitRepository, gitRepositoryRepository, userRepository);
+            var userContractService = new UserContractService(userContractRepository, userRepository, lockedMonthRepository);
+            var workSessionService = new WorkSessionService(workSessionRepository, gitCommitService, userContractService);
+            _workSessionService = workSessionService;
         }
     }
 }

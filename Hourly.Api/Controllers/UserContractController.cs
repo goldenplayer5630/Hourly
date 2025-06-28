@@ -164,6 +164,60 @@ namespace Hourly.Api.Controllers
             }
         }
 
+        [HttpPatch("{userContractId}")]
+        public async Task<IActionResult> LockMonth(Guid userContractId, [FromQuery] int year, [FromQuery] int month)
+        {
+            try
+            {
+                var result = await _userContractService.AddLockedMonth(userContractId, year, month);
+                return Ok(result.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while locking a month for a user contract.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpPatch("UnlockMonth/{userContractId}")]
+        public async Task<IActionResult> UnlockMonth(Guid userContractId, [FromQuery] int year, [FromQuery] int month)
+        {
+            try
+            {
+                var result = await _userContractService.RemoveLockedMonth(userContractId, year, month);
+                return Ok(result.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while unlocking a month for a user contract.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
         [HttpDelete("{userContractId}")]
         public async Task<IActionResult> DeleteUserContract(Guid userContractId)
         {
