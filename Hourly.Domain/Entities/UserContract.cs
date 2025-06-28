@@ -82,28 +82,13 @@ namespace Hourly.Domain.Entities
         }
 
         // This needs fixing, it is not subtracting/adding the TVT hours correctly
-        public void AccrueTVTHours(float hours)
+        public void UpdateTVTHours(float hours)
         {
-            if (hours < 0)
-            {
-                throw new DomainValidationException("Cannot accrue negative TVT hours.");
-            }
-            TVTHourBalance += hours;
-            UpdatedAt = DateTime.UtcNow;
-        }
+            var newBalance = TVTHourBalance + hours;
+            if (newBalance < 0)
+                throw new DomainValidationException("TVT hour balance cannot be negative.");
 
-        public void UseTVTHours(float hours)
-        {
-            if (hours < 0)
-            {
-                throw new DomainValidationException("Cannot use negative TVT hours.");
-            }
-            if (TVTHourBalance < hours)
-            {
-                throw new DomainValidationException("Insufficient TVT hour balance.");
-            }
-            TVTHourBalance -= hours;
-            UpdatedAt = DateTime.UtcNow;
+            TVTHourBalance = newBalance;
         }
 
         public void AssignToUser(User user)

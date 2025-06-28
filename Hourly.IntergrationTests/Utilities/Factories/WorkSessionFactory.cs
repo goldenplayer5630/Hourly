@@ -43,34 +43,34 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                     };
 
                     workSession.AssignToUserContract(userContract);
-                    var maxTVT = ((float)Math.Floor(workSession.RawEffectiveHours * 4) / 4f);
+                    //var maxTVT = ((float)Math.Floor(workSession.RawEffectiveHours * 4) / 4f);
 
-                    var availableTVTSteps = new List<float>();
+                    //var availableTVTSteps = new List<float>();
 
-                    if (maxTVT > 0)
-                    {
-                        // Generate TVT steps in increments of 0.25 up to maxTVT
-                        for (float step = 0.25f; step <= maxTVT; step += 0.25f)
-                        {
-                            availableTVTSteps.Add(step);
-                        }
-                    }
+                    //if (maxTVT > 0)
+                    //{
+                    //    // Generate TVT steps in increments of 0.25 up to maxTVT
+                    //    for (float step = 0.25f; step <= maxTVT; step += 0.25f)
+                    //    {
+                    //        availableTVTSteps.Add(step);
+                    //    }
+                    //}
 
-                    if (availableTVTSteps.Any() && faker.Random.Bool())
-                    {
-                        workSession.TVTAccruedHours = faker.PickRandom(availableTVTSteps);
-                        workSession.TVTUsedHours = 0;
-                    }
-                    else if (availableTVTSteps.Any())
-                    {
-                        workSession.TVTUsedHours = faker.PickRandom(availableTVTSteps);
-                        workSession.TVTAccruedHours = 0;
-                    }
-                    else
-                    {
-                        workSession.TVTAccruedHours = 0;
-                        workSession.TVTUsedHours = 0;
-                    }
+                    //if (availableTVTSteps.Any() && faker.Random.Bool())
+                    //{
+                    //    workSession.TVTAccruedHours = faker.PickRandom(availableTVTSteps);
+                    //    workSession.TVTUsedHours = 0;
+                    //}
+                    //else if (availableTVTSteps.Any())
+                    //{
+                    //    workSession.TVTUsedHours = faker.PickRandom(availableTVTSteps);
+                    //    workSession.TVTAccruedHours = 0;
+                    //}
+                    //else
+                    //{
+                    //    workSession.TVTAccruedHours = 0;
+                    //    workSession.TVTUsedHours = 0;
+                    //}
 
                     // Instead of a while loop, set BreakTime once using a filtered PickRandom
                     var possibleBreakTimes = new List<float> { 0f, 0.25f, 0.5f, 0.75f, 1f }

@@ -9,7 +9,6 @@ namespace Hourly.Abstractions.Services
         Task<UserContract> GetById(Guid userContractId);
         Task<UserContract> Create(UserContract userContract);
         Task<UserContract> Update(UserContract userContract);
-        Task<UserContract> UpdateTVTHourBalance(UserContract userContract, float tvtHoursAccrued, float tvtHoursUsed);
         Task<UserContract> AddLockedMonth(Guid userContractId, int year, int month);
         Task<UserContract> RemoveLockedMonth(Guid userContractId, int year, int month);
         Task Delete(Guid userContractId);

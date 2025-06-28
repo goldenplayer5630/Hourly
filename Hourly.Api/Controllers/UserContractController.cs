@@ -164,7 +164,7 @@ namespace Hourly.Api.Controllers
             }
         }
 
-        [HttpPatch("{userContractId}")]
+        [HttpPatch("{userContractId}/LockMonth/")]
         public async Task<IActionResult> LockMonth(Guid userContractId, [FromQuery] int year, [FromQuery] int month)
         {
             try
@@ -191,7 +191,7 @@ namespace Hourly.Api.Controllers
             }
         }
 
-        [HttpPatch("UnlockMonth/{userContractId}")]
+        [HttpPatch("{userContractId}/UnlockMonth/")]
         public async Task<IActionResult> UnlockMonth(Guid userContractId, [FromQuery] int year, [FromQuery] int month)
         {
             try

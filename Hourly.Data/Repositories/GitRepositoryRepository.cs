@@ -37,13 +37,7 @@ namespace Hourly.Data.Repositories
 
         public async Task<GitRepository> Update(GitRepository gitRepository)
         {
-            var existingGitRepository = await _context.GitRepositories.FindAsync(gitRepository.Id);
-            if (existingGitRepository == null)
-            {
-                throw new EntityNotFoundException("Git repository not found!");
-            }
-
-            _context.Entry(existingGitRepository).CurrentValues.SetValues(gitRepository);
+            _context.GitRepositories.Update(gitRepository);
             var result = await _context.SaveChangesAsync();
             return (result > 0 ? gitRepository : null) ?? throw new InvalidOperationException();
         }

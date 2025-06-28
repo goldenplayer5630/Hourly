@@ -64,13 +64,8 @@ namespace Hourly.Data.Repositories
 
         public async Task<UserContract> Update(UserContract userContract)
         {
-            var existingUserContract = await _context.UserContracts.FindAsync(userContract.Id);
-            if (existingUserContract == null)
-            {
-                throw new EntityNotFoundException("UserContract not found!");
-            }
+            _context.Update(userContract);
 
-            _context.Entry(existingUserContract).CurrentValues.SetValues(userContract);
             var result = await _context.SaveChangesAsync();
 
             return (result > 0 ? userContract : null) ?? throw new InvalidOperationException();

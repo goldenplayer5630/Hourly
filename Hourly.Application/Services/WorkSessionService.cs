@@ -8,14 +8,16 @@ namespace Hourly.Application.Services
     public class WorkSessionService : IWorkSessionService
     {
         private readonly IWorkSessionRepository _repository;
-        private readonly IGitCommitService _gitCommitService;
-        private readonly IUserContractService _userContractService;
+        private readonly IGitCommitRepository _gitCommitRepository;
+        private readonly IUserContractRepository _userContractRepository;
+        private readonly ITVTHoursService _tvtHoursService;
 
-        public WorkSessionService(IWorkSessionRepository repository, IGitCommitService gitCommitService, IUserContractService userContractService)
+        public WorkSessionService(IWorkSessionRepository repository, IGitCommitRepository gitCommitRepository, IUserContractRepository userContractRepository, ITVTHoursService tvtHoursService)
         {
             _repository = repository;
-            _gitCommitService = gitCommitService;
-            _userContractService = userContractService;
+            _gitCommitRepository = gitCommitRepository;
+            _userContractRepository = userContractRepository;
+            _tvtHoursService = tvtHoursService;
         }
 
         public async Task<WorkSession> GetById(Guid workSessionId)
@@ -41,18 +43,20 @@ namespace Hourly.Application.Services
 
             workSession.Validate();
 
-            var userContract = await _userContractService.GetById(workSession.UserContractId)
-                ?? throw new EntityNotFoundException("User contract not found!");
+            var userContract = await GetAndValidateUserContract(workSession);
 
-            if (!userContract.IsActive)
-                throw new DomainValidationException("User contract must be active to create a WorkSession.");
-
-            await _userContractService.UpdateTVTHourBalance(userContract, workSession.TVTAccruedHours, workSession.TVTUsedHours);
+            if (workSession.TVTAccruedHours > 0)
+            {
+                await _tvtHoursService.UpdateTVTHourBalance(userContract, (0 + workSession.TVTAccruedHours));
+            } else if (workSession.TVTUsedHours > 0)
+            {
+                await _tvtHoursService.UpdateTVTHourBalance(userContract, (0 - workSession.TVTUsedHours));
+            }
 
             if (workSession.WBSO && !gitCommitIds.Any())
                 throw new DomainValidationException("At least one GitCommit is required for WBSO sessions.");
 
-            var commits = await _gitCommitService.GetByIds(gitCommitIds);
+            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
             if (commits.Count() != gitCommitIds.Count())
             {
                 var missing = gitCommitIds.Except(commits.Select(c => c.Id));
@@ -76,11 +80,10 @@ namespace Hourly.Application.Services
             var existing = await _repository.GetById(updated.Id)
                 ?? throw new EntityNotFoundException("WorkSession not found!");
 
-            var userContract = await _userContractService.GetById(updated.UserContractId)
-                ?? throw new EntityNotFoundException("User contract not found!");
+            var userContract = await GetAndValidateUserContract(existing);
 
-            if (!userContract.IsActive)
-                throw new DomainValidationException("User contract must be active to update a WorkSession.");
+            var originalAccrued= existing.TVTAccruedHours;
+            var originalUsed = existing.TVTUsedHours;
 
             existing.Update(updated);
 
@@ -89,12 +92,19 @@ namespace Hourly.Application.Services
 
             existing.AssignToUserContract(userContract);
 
-            await _userContractService.UpdateTVTHourBalance(userContract, (existing.TVTAccruedHours - updated.TVTAccruedHours), (existing.TVTUsedHours - updated.TVTUsedHours));
+            if (existing.TVTAccruedHours > 0)
+            {
+                await _tvtHoursService.UpdateTVTHourBalance(userContract, (0 + (existing.TVTAccruedHours - originalAccrued)));
+            }
+            else if (existing.TVTUsedHours > 0)
+            {
+                await _tvtHoursService.UpdateTVTHourBalance(userContract, (0 - (existing.TVTUsedHours - originalUsed)));
+            }            
 
             // Replace commit links
             existing.GitCommits.Clear();
 
-            var commits = await _gitCommitService.GetByIds(gitCommitIds);
+            var commits = await _gitCommitRepository.GetByIds(gitCommitIds);
             if (commits.Count() != gitCommitIds.Count())
             {
                 var missing = gitCommitIds.Except(commits.Select(c => c.Id));
@@ -132,7 +142,7 @@ namespace Hourly.Application.Services
 
         private async Task<WorkSession> AddGitCommit(WorkSession workSession, Guid gitCommitId)
         {
-            var gitCommit = await _gitCommitService.GetById(gitCommitId)
+            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
                 ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
 
             workSession.AddGitCommit(gitCommit);
@@ -152,7 +162,7 @@ namespace Hourly.Application.Services
 
         private async Task<WorkSession> RemoveGitCommit(WorkSession workSession, Guid gitCommitId)
         {
-            var gitCommit = await _gitCommitService.GetById(gitCommitId)
+            var gitCommit = await _gitCommitRepository.GetById(gitCommitId)
                 ?? throw new EntityNotFoundException("GitCommit not found in WorkSession!");
 
             workSession.RemoveGitCommit(gitCommit);
@@ -173,6 +183,23 @@ namespace Hourly.Application.Services
             existing.Validate();
 
             await _repository.Delete(workSessionId);
+        }
+
+        private async Task<UserContract> GetAndValidateUserContract(WorkSession workSession)
+        {
+            var userContract = await _userContractRepository.GetById(workSession.UserContractId)
+                ?? throw new EntityNotFoundException("User contract not found!");
+
+            if (!userContract.IsActive)
+                throw new DomainValidationException("User contract must be active to create or update a WorkSession.");
+
+            var lockedMonth = userContract.LockedMonths.Where(x => x.Year == workSession.StartTime.Year && x.Month == workSession.StartTime.Month);
+            if (lockedMonth != null && lockedMonth.Any())
+            {
+                throw new ValidationException($"WorkSession cannot be created or updated for a locked month: {workSession.StartTime.Year}-{workSession.StartTime.Month}.");
+            }
+
+            return userContract;
         }
     }
 }

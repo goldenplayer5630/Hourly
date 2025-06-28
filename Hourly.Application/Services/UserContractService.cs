@@ -15,12 +15,14 @@ namespace Hourly.Application.Services
         private readonly IUserContractRepository _repository;
         private readonly IUserRepository _userRepository;
         private readonly ILockedMonthRepository _lockedMonthRepository;
+        private readonly IWorkSessionRepository _workSessionRepository;
 
-        public UserContractService(IUserContractRepository repository, IUserRepository userRepository, ILockedMonthRepository lockedMonthRepository)
+        public UserContractService(IUserContractRepository repository, IUserRepository userRepository, ILockedMonthRepository lockedMonthRepository, IWorkSessionRepository workSessionRepository)
         {
             _repository = repository;
             _userRepository = userRepository;
             _lockedMonthRepository = lockedMonthRepository;
+            _workSessionRepository = workSessionRepository;
         }
 
         public async Task<UserContract> GetById(Guid userContractId)
@@ -86,28 +88,6 @@ namespace Hourly.Application.Services
             return await _repository.Update(existing);
         }
 
-        public async Task<UserContract> UpdateTVTHourBalance(UserContract userContract, float tvtHoursAccrued, float tvtHoursUsed)
-        {
-            if (userContract == null)
-                throw new ArgumentNullException(nameof(userContract));
-
-            var existing = await _repository.GetById(userContract.Id)
-                ?? throw new EntityNotFoundException("UserContract not found!");
-
-            if (tvtHoursUsed < 0)
-                throw new ArgumentOutOfRangeException(nameof(tvtHoursUsed), "TVT hours used cannot be negative.");
-
-            if (tvtHoursAccrued < 0)
-                throw new ArgumentOutOfRangeException(nameof(tvtHoursAccrued), "TVT hours accrued cannot be negative.");
-
-            if (tvtHoursUsed > 0)
-                existing.UseTVTHours(tvtHoursUsed);
-
-            if (tvtHoursAccrued > 0)
-                existing.AccrueTVTHours(tvtHoursAccrued);
-
-            return await _repository.Update(existing);
-        }
         public async Task<UserContract> AddLockedMonth(Guid userContractId, int year, int month)
         {
             var userContract = await _repository.GetById(userContractId)
@@ -116,15 +96,14 @@ namespace Hourly.Application.Services
             if (userContract.LockedMonths.Any(lm => lm.Year == year && lm.Month == month))
                 throw new DomainValidationException($"Locked month {year}-{month} already exists for this user contract.");
 
-            var workSessions = userContract.WorkSessions
-                .Where(ws => ws.StartTime.Year == year && ws.StartTime.Month == month)
-                .ToList();
+            var workSessions = await _workSessionRepository.Filter(userContractId, year, month, null);
 
             if (workSessions.Any())
             {
                 foreach (var session in workSessions)
                 {
                     session.Locked = true;
+                    var lockedSession = await _workSessionRepository.Update(session);
                 }
             }
 
@@ -151,15 +130,14 @@ namespace Hourly.Application.Services
             var lockedMonth = userContract.LockedMonths.FirstOrDefault(lm => lm.Year == year && lm.Month == month)
                 ?? throw new DomainValidationException($"Locked month {year}-{month} does not exist for this user contract.");
 
-            var workSessions = userContract.WorkSessions
-                .Where(ws => ws.StartTime.Year == year && ws.StartTime.Month == month)
-                .ToList();
+            var workSessions = await _workSessionRepository.Filter(userContractId, year, month, null);
 
             if (workSessions.Any())
             {
                 foreach (var session in workSessions)
                 {
                     session.Locked = false;
+                    await _workSessionRepository.Update(session);
                 }
             }
 

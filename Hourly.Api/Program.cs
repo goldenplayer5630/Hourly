@@ -33,11 +33,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IGitCommitRepository, GitCommitRepository>();
 builder.Services.AddScoped<IGitRepositoryRepository, GitRepositoryRepository>();
+builder.Services.AddScoped<ILockedMonthRepository, LockedMonthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWorkSessionRepository, WorkSessionRepository>();
 builder.Services.AddScoped<IUserContractRepository, UserContractRepository>();
 
-// Register services
+// Register application services
+builder.Services.AddScoped<ITVTHoursService, TVTHoursService>();
+
+// Register entity services
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IGitCommitService, GitCommitService>();
 builder.Services.AddScoped<IGitRepositoryService, GitRepositoryService>();

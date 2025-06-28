@@ -60,17 +60,10 @@ namespace Hourly.Data.Repositories
 
         public async Task<WorkSession> Update(WorkSession workSession)
         {
-            var existingWorkSession = await _context.WorkSessions
-                .Include(ws => ws.GitCommits) // ensure related entities are loaded
-                .FirstOrDefaultAsync(ws => ws.Id == workSession.Id);
-
-            if (existingWorkSession == null)
-                throw new EntityNotFoundException("Work session not found!");
-
-            existingWorkSession.Update(workSession);
+            _context.Update(workSession);
 
             var result = await _context.SaveChangesAsync();
-            return result > 0 ? existingWorkSession : throw new InvalidOperationException();
+            return result > 0 ? workSession : throw new InvalidOperationException();
         }
 
 

@@ -36,13 +36,7 @@ namespace Hourly.Data.Repositories
 
         public async Task<Department> Update(Department department)
         {
-            var existingDepartment = await _context.Departments.FindAsync(department.Id);
-            if (existingDepartment == null)
-            {
-                throw new EntityNotFoundException("Department not found!");
-            }
-
-            _context.Entry(existingDepartment).CurrentValues.SetValues(department);
+            _context.Departments.Update(department);
             var result = await _context.SaveChangesAsync();
 
             return (result > 0 ? department : null) ?? throw new InvalidOperationException();

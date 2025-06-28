@@ -38,13 +38,7 @@ namespace Hourly.Data.Repositories
 
         public async Task<User> Update(User user)
         {
-            var existingUser = await _context.Users.FindAsync(user.Id);
-            if (existingUser == null)
-            {
-                throw new EntityNotFoundException("User not found!");
-            }
-
-            _context.Entry(existingUser).CurrentValues.SetValues(user);
+            _context.Update(user);
             var result = await _context.SaveChangesAsync();
 
             return (result > 0 ? user : null) ?? throw new InvalidOperationException();

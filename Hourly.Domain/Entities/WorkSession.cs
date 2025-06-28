@@ -108,7 +108,7 @@ namespace Hourly.Domain.Entities
             if (BreakTime < 0)
                 throw new DomainValidationException("Break time cannot be negative.");
 
-            if (BreakTime >= RawEffectiveHours)
+            if (BreakTime > RawEffectiveHours)
                 throw new DomainValidationException("Break time cannot exceed net effective hours.");
 
             if (!IsValid15MinuteInterval(StartTime.Minute) || !IsValid15MinuteInterval(EndTime.Minute))

@@ -23,7 +23,7 @@ namespace Hourly.Data.Repositories
             return await _context.LockedMonths
                 .Include(lm => lm.UserContract)
                 .ToListAsync()
-                .ConfigureAwait(false);
+                ;
         }
 
         public async Task<LockedMonth?> GetById(Guid lockedMonthId)
@@ -31,7 +31,7 @@ namespace Hourly.Data.Repositories
             return await _context.LockedMonths
                 .Include(lm => lm.UserContract)
                 .FirstOrDefaultAsync(lm => lm.Id == lockedMonthId)
-                .ConfigureAwait(false);
+                ;
         }
 
         public async Task<IEnumerable<LockedMonth>> Filter(Guid? userContractId, int? year, int? month)
@@ -47,30 +47,30 @@ namespace Hourly.Data.Repositories
             if (month.HasValue)
                 query = query.Where(lm => lm.Month == month.Value);
 
-            return await query.ToListAsync().ConfigureAwait(false);
+            return await query.ToListAsync();
         }
 
         public async Task<LockedMonth> Create(LockedMonth lockedMonth)
         {
             _context.LockedMonths.Add(lockedMonth);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
             return lockedMonth;
         }
 
         public async Task<LockedMonth> Update(LockedMonth lockedMonth)
         {
             _context.LockedMonths.Update(lockedMonth);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
             return lockedMonth;
         }
 
         public async Task Delete(Guid lockedMonthId)
         {
-            var entity = await _context.LockedMonths.FindAsync(lockedMonthId).ConfigureAwait(false);
+            var entity = await _context.LockedMonths.FindAsync(lockedMonthId);
             if (entity != null)
             {
                 _context.LockedMonths.Remove(entity);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await _context.SaveChangesAsync();
             }
         }
 

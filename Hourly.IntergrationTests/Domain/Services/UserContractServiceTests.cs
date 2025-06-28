@@ -17,7 +17,8 @@ namespace Hourly.IntergrationTests.Domain.Services
             var userContractRepository = new UserContractRepository(_dbContext);
             var userRepository = new UserRepository(_dbContext);
             var lockedMonthRepository = new LockedMonthRepository(_dbContext);
-            _userContractService = new UserContractService(userContractRepository, userRepository, lockedMonthRepository);
+            var workSessionRepository = new WorkSessionRepository(_dbContext);
+            _userContractService = new UserContractService(userContractRepository, userRepository, lockedMonthRepository, workSessionRepository);
         }
     }
 }

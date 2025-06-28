@@ -16,13 +16,9 @@ namespace Hourly.IntergrationTests.Domain.Services
             var workSessionRepository = new WorkSessionRepository(_dbContext);
             var gitCommitRepository = new GitCommitRepository(_dbContext);
             var userContractRepository = new UserContractRepository(_dbContext);
-            var userRepository = new UserRepository(_dbContext);
-            var lockedMonthRepository = new LockedMonthRepository(_dbContext);
-            var gitRepositoryRepository = new GitRepositoryRepository(_dbContext);
 
-            var gitCommitService = new GitCommitService(gitCommitRepository, gitRepositoryRepository, userRepository);
-            var userContractService = new UserContractService(userContractRepository, userRepository, lockedMonthRepository);
-            var workSessionService = new WorkSessionService(workSessionRepository, gitCommitService, userContractService);
+            var tvtHoursService = new TVTHoursService(userContractRepository);
+            var workSessionService = new WorkSessionService(workSessionRepository, gitCommitRepository, userContractRepository, tvtHoursService);
             _workSessionService = workSessionService;
         }
     }
