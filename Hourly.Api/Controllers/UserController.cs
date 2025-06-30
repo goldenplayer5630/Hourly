@@ -76,6 +76,18 @@ namespace Hourly.Api.Controllers
             }
         }
 
+        [HttpGet("{userId}/MonthlySummary")]
+        public async Task<IActionResult> GetUserMonthlySummary(Guid userId, [FromQuery] int month)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet("{userId}/YearlySummary")]
+        public async Task<IActionResult> GetUserYearlySummary(Guid userId, [FromQuery] int year)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
