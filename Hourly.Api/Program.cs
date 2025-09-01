@@ -48,6 +48,7 @@ builder.Services.AddScoped<IGitRepositoryService, GitRepositoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWorkSessionService, WorkSessionService>();
 builder.Services.AddScoped<IUserContractService, UserContractService>();
+builder.Services.AddScoped<ISummaryService, SummaryService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

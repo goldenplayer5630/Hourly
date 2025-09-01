@@ -1,4 +1,5 @@
 ﻿using Hourly.Abstractions.Services;
+using Hourly.Application.Services;
 using Hourly.Domain.Contracts.Requests.UserRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
@@ -13,11 +14,13 @@ namespace Hourly.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ISummaryService _summaryService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, ISummaryService summaryService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _summaryService = summaryService;
             _logger = logger;
         }
 
@@ -77,15 +80,57 @@ namespace Hourly.Api.Controllers
         }
 
         [HttpGet("{userId}/MonthlySummary")]
-        public async Task<IActionResult> GetUserMonthlySummary(Guid userId, [FromQuery] int month)
+        public async Task<IActionResult> GetUserMonthlySummary(Guid userId, [FromQuery] int year, [FromQuery] int month)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var summary = await _summaryService.GenerateMonthlySummary(userId, year, month);
+                return Ok(summary.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating monthly summary for UserId: {UserId}, Year: {Year}, Month: {Month}", userId, year, month);
+                return StatusCode(500, "An error occurred while generating the monthly summary.");
+            }
         }
 
         [HttpGet("{userId}/YearlySummary")]
         public async Task<IActionResult> GetUserYearlySummary(Guid userId, [FromQuery] int year)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var summary = await _summaryService.GenerateYearlySummary(userId, year);
+                return Ok(summary.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating yearly summary for UserId: {UserId}, Year: {Year}", userId, year);
+                return StatusCode(500, "An error occurred while generating the yearly summary.");
+            }
         }
 
         [HttpPost]
