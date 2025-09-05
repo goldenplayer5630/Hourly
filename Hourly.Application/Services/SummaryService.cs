@@ -18,9 +18,9 @@ namespace Hourly.Application.Services
             _workSessionService = workSessionService;
         }
 
-        public async Task<MonthlySummary> GenerateMonthlySummary(Guid userId, int year, int month)
+        public async Task<MonthlySummary> GenerateMonthlySummary(Guid userContractId, int year, int month)
         {
-            var workSessions = await _workSessionService.Filter(userId, year, month, null);
+            var workSessions = await _workSessionService.Filter(userContractId, year, month, null);
 
             var rawEffectiveHours = workSessions.Sum(ws => ws.RawEffectiveHours);
             var netEffectiveHOurs = workSessions.Sum(ws => ws.NetEffectiveHours);
@@ -35,13 +35,13 @@ namespace Hourly.Application.Services
                 TotalNetEffectiveHours = netEffectiveHOurs,
                 TotalTVTHoursAccrued = tvtAccruedHours,
                 TotalTVTHoursUsed = tvtUsedHours,
-                UserId = userId
+                UserContractId = userContractId
             };
         }
 
-        public async Task<YearlySummary> GenerateYearlySummary(Guid userId, int year)
+        public async Task<YearlySummary> GenerateYearlySummary(Guid userContractId, int year)
         {
-            var workSessions = await _workSessionService.Filter(userId, year, null, null);
+            var workSessions = await _workSessionService.Filter(userContractId, year, null, null);
 
             var rawEffectiveHours = workSessions.Sum(ws => ws.RawEffectiveHours);
             var netEffectiveHOurs = workSessions.Sum(ws => ws.NetEffectiveHours);
@@ -51,7 +51,7 @@ namespace Hourly.Application.Services
             var monthlySummaries = new List<MonthlySummary>();
             for (int month = 1; month <= 12; month++)
             {
-                var monthlySummary = await GenerateMonthlySummary(userId, year, month);
+                var monthlySummary = await GenerateMonthlySummary(userContractId, year, month);
                 monthlySummaries.Add(monthlySummary);
             }
 
@@ -62,7 +62,7 @@ namespace Hourly.Application.Services
                 TotalNetEffectiveHours = netEffectiveHOurs,
                 TotalTVTHoursAccrued = tvtAccruedHours,
                 TotalTVTHoursUsed = tvtUsedHours,
-                UserId = userId,
+                UserContractId = userContractId,
                 MonthlySummaries = monthlySummaries
             };
         }

@@ -14,7 +14,7 @@ namespace Hourly.Domain.Mappers
         {
             return new MonthlySummaryResponse
             {
-                UserId = summary.UserId,
+                UserId = summary.UserContractId,
                 Year = summary.Year,
                 Month = summary.Month,
                 TotalRawEffectiveHours = summary.TotalRawEffectiveHours,

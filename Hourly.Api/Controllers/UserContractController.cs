@@ -1,4 +1,5 @@
 ﻿using Hourly.Abstractions.Services;
+using Hourly.Application.Services;
 using Hourly.Domain.Contracts.Requests.UserContractRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
@@ -11,11 +12,13 @@ namespace Hourly.Api.Controllers
     public class UserContractController : Controller
     {
         private readonly IUserContractService _userContractService;
+        private readonly ISummaryService _summaryService;
         private readonly ILogger<UserContractController> _logger;
 
-        public UserContractController(IUserContractService userContractService, ILogger<UserContractController> logger)
+        public UserContractController(IUserContractService userContractService, ISummaryService summaryService, ILogger<UserContractController> logger)
         {
             _userContractService = userContractService;
+            _summaryService = summaryService;
             _logger = logger;
         }
 
@@ -98,6 +101,60 @@ namespace Hourly.Api.Controllers
             {
                 _logger.LogError(ex, "An unexpected error occurred while retrieving a userContract.");
                 return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        [HttpGet("{userContractId}/MonthlySummary")]
+        public async Task<IActionResult> GetUserMonthlySummary(Guid userContractId, [FromQuery] int year, [FromQuery] int month)
+        {
+            try
+            {
+                var summary = await _summaryService.GenerateMonthlySummary(userContractId, year, month);
+                return Ok(summary.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating monthly summary for UserId: {UserId}, Year: {Year}, Month: {Month}", userContractId, year, month);
+                return StatusCode(500, "An error occurred while generating the monthly summary.");
+            }
+        }
+
+        [HttpGet("{userContractId}/YearlySummary")]
+        public async Task<IActionResult> GetUserYearlySummary(Guid userContractId, [FromQuery] int year)
+        {
+            try
+            {
+                var summary = await _summaryService.GenerateYearlySummary(userContractId, year);
+                return Ok(summary.ToResponse());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DomainValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating yearly summary for UserId: {UserId}, Year: {Year}", userContractId, year);
+                return StatusCode(500, "An error occurred while generating the yearly summary.");
             }
         }
 

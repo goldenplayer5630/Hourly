@@ -8,7 +8,7 @@ namespace Hourly.Domain.Entities
 {
     public class YearlySummary
     {
-        public Guid UserId { get; set; }
+        public Guid UserContractId { get; set; }
         public int Year { get; set; }
         public double TotalRawEffectiveHours { get; set; }
         public double TotalNetEffectiveHours { get; set; }

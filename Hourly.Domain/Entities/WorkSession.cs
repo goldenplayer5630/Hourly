@@ -60,7 +60,8 @@ namespace Hourly.Domain.Entities
                 if (TVTUsedHours > 0 && TVTAccruedHours > 0)
                     throw new DomainValidationException("Cannot both accrue and use TVT hours in the same work session.");
 
-                var net = (TVTAccruedHours > 0 ? RawEffectiveHours - TVTAccruedHours : RawEffectiveHours + TVTUsedHours) * Factor;
+                var factoredHours = RawEffectiveHours * Factor;
+                var net = (TVTAccruedHours > 0 ? factoredHours - TVTAccruedHours : factoredHours + TVTUsedHours) ;
 
                 if (net < 0)
                     throw new DomainValidationException("Net effective hours cannot be negative.");
