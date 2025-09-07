@@ -11,6 +11,7 @@ namespace Hourly.Domain.Mappers
             return new UserResponse
             {
                 Id = entity.Id,
+                ExternalOid = entity.ExternalOid,
                 Name = entity.Name,
                 Email = entity.Email,
                 Role = entity.Role,
@@ -31,6 +32,7 @@ namespace Hourly.Domain.Mappers
             return new UserSummaryResponse
             {
                 Id = entity.Id,
+                ExternalOid = entity.ExternalOid,
                 Name = entity.Name,
                 Email = entity.Email,
                 Role = entity.Role,
@@ -61,6 +63,7 @@ namespace Hourly.Domain.Mappers
             return new User
             {
                 Id = id,
+
                 Name = request.Name,
                 Email = request.Email,
                 GitEmail = request.GitEmail,

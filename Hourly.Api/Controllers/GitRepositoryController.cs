@@ -2,12 +2,14 @@
 using Hourly.Domain.Contracts.Requests.GitRepositoryRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "ApiScope")]
     public class GitRepositoryController : Controller
     {
         private readonly IGitRepositoryService _gitRepositoryService;

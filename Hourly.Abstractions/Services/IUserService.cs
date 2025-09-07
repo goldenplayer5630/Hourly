@@ -11,5 +11,7 @@ namespace Hourly.Abstractions.Services
         Task<User> RemoveDepartment(Guid userId);
         Task<User> Update(User user);
         Task Delete(Guid userId);
+        Task<User?> GetByExternalOid(Guid externalOid);
+        Task<User> BootstrapOrUpdate(Guid externalOid, string? email, string? name);
     }
 }

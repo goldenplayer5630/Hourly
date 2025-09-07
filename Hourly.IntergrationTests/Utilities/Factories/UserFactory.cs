@@ -19,6 +19,7 @@ namespace Hourly.IntergrationTests.Utilities.Factories
                 var user = new User
                 {
                     Id = Guid.NewGuid(),
+                    ExternalOid = Guid.NewGuid(),
                     Name = faker.Name.FullName(),
                     Email = faker.Internet.Email(),
                     GitEmail = faker.Internet.Email(),

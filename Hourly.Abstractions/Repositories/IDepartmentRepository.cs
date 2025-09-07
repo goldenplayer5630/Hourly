@@ -9,6 +9,5 @@ namespace Hourly.Abstractions.Repositories
         Task<Department> Create(Department department);
         Task<Department> Update(Department department);
         Task Delete(Guid departmentId);
-        Task SaveChanges();
     }
 }

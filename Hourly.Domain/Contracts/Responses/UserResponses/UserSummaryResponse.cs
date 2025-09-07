@@ -8,6 +8,7 @@ namespace Hourly.Domain.Contracts.Responses.UserResponses
     {
         [Key]
         public Guid Id { get; set; }
+        public Guid ExternalOid { get; set; }
 
         [Required]
         public string Name { get; set; } = string.Empty;

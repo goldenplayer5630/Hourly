@@ -78,10 +78,5 @@ namespace Hourly.Data.Repositories
             _context.WorkSessions.Remove(workSession);
             await _context.SaveChangesAsync();
         }
-
-        public async Task SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

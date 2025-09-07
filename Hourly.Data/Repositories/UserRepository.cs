@@ -56,9 +56,10 @@ namespace Hourly.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task SaveChanges()
+        public async Task<User?> GetByExternalOid(Guid externalOid)
         {
-            await _context.SaveChangesAsync();
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.ExternalOid == externalOid);
         }
     }
 }

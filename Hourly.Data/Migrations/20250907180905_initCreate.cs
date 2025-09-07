@@ -47,6 +47,7 @@ namespace Hourly.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExternalOid = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
                     role = table.Column<int>(type: "integer", nullable: false),
@@ -231,6 +232,12 @@ namespace Hourly.Data.Migrations
                 name: "IX_user_department_id",
                 table: "user",
                 column: "department_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_ExternalOid",
+                table: "user",
+                column: "ExternalOid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_contract_user_id",

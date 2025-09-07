@@ -3,14 +3,16 @@ using Hourly.Application.Services;
 using Hourly.Domain.Contracts.Requests.UserRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Security.Claims;
 
 namespace Hourly.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // Secure all endpoints in this controller. If you need some to be public, move [Authorize] down to specific actions.
+    [Authorize(Policy = "ApiScope")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,6 +23,74 @@ namespace Hourly.Api.Controllers
             _userService = userService;
             _logger = logger;
         }
+
+        // ===== Helpers to read identity from AAD token =====
+        private static string? Claim(ClaimsPrincipal user, string type)
+            => user.Claims.FirstOrDefault(c => c.Type == type)?.Value;
+
+        /// <summary>
+        /// Returns (ExternalOid, email, name) from the bearer token.
+        /// </summary>
+        private (Guid externalOid, string? email, string? name) ReadIdentity()
+        {
+            var oid = Claim(User, "oid") ?? Claim(User, ClaimTypes.NameIdentifier)
+                      ?? throw new UnauthorizedAccessException("Missing 'oid' claim.");
+            var email = Claim(User, "preferred_username") ?? Claim(User, ClaimTypes.Email);
+            var name = Claim(User, "name") ?? Claim(User, ClaimTypes.Name);
+
+            return (Guid.Parse(oid), email, name);
+        }
+
+        // ===== New auth-coupled endpoints =====
+
+        /// <summary>
+        /// Creates the current user if not present, or refreshes profile fields if it exists.
+        /// </summary>
+        [HttpPost("me/bootstrap")]
+        public async Task<IActionResult> BootstrapMe()
+        {
+            try
+            {
+                var (externalOid, email, name) = ReadIdentity();
+                var user = await _userService.BootstrapOrUpdate(externalOid, email, name);
+                return Ok(user.ToResponse());
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while bootstrapping current user.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        /// <summary>
+        /// Returns the current (bootstrapped) user.
+        /// </summary>
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMe()
+        {
+            try
+            {
+                var (externalOid, _, _) = ReadIdentity();
+                var user = await _userService.GetByExternalOid(externalOid);
+                if (user is null) return NotFound("User not bootstrapped.");
+                return Ok(user.ToResponse());
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while retrieving current user.");
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
+        // ===== Existing endpoints (now protected by [Authorize]) =====
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
@@ -45,7 +115,7 @@ namespace Hourly.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred while retrieving a gitRepository.");
+                _logger.LogError(ex, "An unexpected error occurred while retrieving users.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
@@ -80,12 +150,9 @@ namespace Hourly.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var user = request.ToUser();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            var user = request.ToUser();
             try
             {
                 var created = await _userService.Create(user);
@@ -101,8 +168,7 @@ namespace Hourly.Api.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception details for diagnostics
-                _logger.LogError(ex, "An unexpected error occurred while updating a user.");
+                _logger.LogError(ex, "An unexpected error occurred while creating a user.");
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
@@ -164,12 +230,9 @@ namespace Hourly.Api.Controllers
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUser(Guid userId, [FromBody] UpdateUserRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var user = request.ToUser(userId);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            var user = request.ToUser(userId);
             try
             {
                 var updated = await _userService.Update(user);

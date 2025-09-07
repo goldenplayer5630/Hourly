@@ -81,10 +81,5 @@ namespace Hourly.Data.Repositories
             _context.UserContracts.Remove(existingUserContract);
             await _context.SaveChangesAsync();
         }
-
-        public async Task SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

@@ -12,6 +12,8 @@ namespace Hourly.Domain.Entities
         [Key]
         public Guid Id { get; set; }
 
+        public Guid ExternalOid { get; set; }
+
         [Required]
         public string Name { get; set; } = string.Empty;
 

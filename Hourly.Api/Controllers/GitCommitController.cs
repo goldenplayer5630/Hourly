@@ -3,11 +3,13 @@ using Hourly.Application.Services;
 using Hourly.Domain.Contracts.Requests.GitCommitRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "ApiScope")]
     [Route("api/[controller]")]
     public class GitCommitController : Controller
     {

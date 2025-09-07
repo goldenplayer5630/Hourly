@@ -9,6 +9,6 @@ namespace Hourly.Abstractions.Repositories
         Task<User> Create(User user);
         Task<User> Update(User user);
         Task Delete(Guid userId);
-        Task SaveChanges();
+        Task<User?> GetByExternalOid(Guid externalOid);
     }
 }

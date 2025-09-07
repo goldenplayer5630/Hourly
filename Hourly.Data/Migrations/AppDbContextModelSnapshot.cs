@@ -197,6 +197,9 @@ namespace Hourly.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
+                    b.Property<Guid>("ExternalOid")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("GitAccessToken")
                         .HasColumnType("text")
                         .HasColumnName("git_access_token");
@@ -225,6 +228,9 @@ namespace Hourly.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("ExternalOid")
+                        .IsUnique();
 
                     b.ToTable("user", (string)null);
                 });

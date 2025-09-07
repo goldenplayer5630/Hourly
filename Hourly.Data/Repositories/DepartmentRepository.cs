@@ -54,10 +54,5 @@ namespace Hourly.Data.Repositories
             _context.Departments.Remove(existingDepartment);
             await _context.SaveChangesAsync();
         }
-
-        public async Task SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

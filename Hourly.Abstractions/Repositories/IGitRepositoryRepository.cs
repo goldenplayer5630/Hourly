@@ -9,6 +9,5 @@ namespace Hourly.Abstractions.Repositories
         Task<GitRepository> Create(GitRepository gitRepository);
         Task<GitRepository> Update(GitRepository gitRepository);
         Task Delete(Guid gitRepositoryId);
-        Task SaveChanges();
     }
 }

@@ -79,10 +79,5 @@ namespace Hourly.Data.Repositories
             _context.GitCommits.Remove(existingGitCommit);
             await _context.SaveChangesAsync();
         }
-
-        public async Task SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

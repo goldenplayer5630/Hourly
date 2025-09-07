@@ -22,18 +22,39 @@ namespace Hourly.Application.Services
                 ?? throw new EntityNotFoundException("User not found!");
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll() => await _repository.GetAll();
+
+        public async Task<User?> GetByExternalOid(Guid externalOid)
+            => await _repository.GetByExternalOid(externalOid);
+
+        public async Task<User> BootstrapOrUpdate(Guid externalOid, string? email, string? name)
         {
-            return await _repository.GetAll();
+            var user = await _repository.GetByExternalOid(externalOid);
+            if (user is null)
+            {
+                user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    ExternalOid = externalOid,
+                    Email = email,
+                    Name = name,
+                    CreatedAt = DateTime.UtcNow,
+                };
+                return await _repository.Create(user);
+            }
+
+            // Refresh profile info on every login
+            if (!string.IsNullOrWhiteSpace(email)) user.Email = email;
+            if (!string.IsNullOrWhiteSpace(name)) user.Name = name;
+
+            return await _repository.Update(user);
         }
 
         public async Task<User> Create(User user)
         {
-            user.Id = Guid.NewGuid();
+            user.Id = Guid.NewGuid();               // leave as-is for manual creates
             user.CreatedAt = DateTime.UtcNow;
-
-            var result = await _repository.Create(user);
-            return result;
+            return await _repository.Create(user);
         }
 
         public async Task<User> AddDepartment(Guid userId, Guid departmentId)
@@ -45,9 +66,7 @@ namespace Hourly.Application.Services
                 ?? throw new Exception("Department not found!");
 
             user.AssignToDepartment(department);
-
             await _repository.Update(user);
-
             return user;
         }
 
@@ -57,9 +76,7 @@ namespace Hourly.Application.Services
                 ?? throw new EntityNotFoundException("User not found!");
 
             user.RemoveFromDepartment();
-
             await _repository.Update(user);
-
             return user;
         }
 
@@ -69,14 +86,9 @@ namespace Hourly.Application.Services
                 ?? throw new EntityNotFoundException("User not found!");
 
             existing.Update(user);
-
-            var result = await _repository.Update(existing);
-            return result;
+            return await _repository.Update(existing);
         }
 
-        public async Task Delete(Guid userId)
-        {
-            await _repository.Delete(userId);
-        }
+        public async Task Delete(Guid userId) => await _repository.Delete(userId);
     }
 }

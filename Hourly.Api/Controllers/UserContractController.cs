@@ -3,12 +3,14 @@ using Hourly.Application.Services;
 using Hourly.Domain.Contracts.Requests.UserContractRequests;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "ApiScope")]
     public class UserContractController : Controller
     {
         private readonly IUserContractService _userContractService;

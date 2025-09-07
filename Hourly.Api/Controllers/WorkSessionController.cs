@@ -3,12 +3,14 @@ using Hourly.Domain.Contracts.Requests.WorkSessionRequests;
 using Hourly.Domain.Entities;
 using Hourly.Domain.Exceptions;
 using Hourly.Domain.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hourly.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "ApiScope")]
     public class WorkSessionController : Controller
     {
         private readonly IWorkSessionService _workSessionService;

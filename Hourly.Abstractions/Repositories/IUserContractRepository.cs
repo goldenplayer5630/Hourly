@@ -10,6 +10,5 @@ namespace Hourly.Abstractions.Repositories
         Task<UserContract> Create(UserContract userContract);
         Task<UserContract> Update(UserContract userContract);
         Task Delete(Guid userContractId);
-        Task SaveChanges();
     }
 }

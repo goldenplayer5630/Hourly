@@ -5,6 +5,8 @@ using Hourly.Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Hourly.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,23 @@ var corsOptions = builder.Configuration
 
 if (corsOptions == null)
     throw new InvalidOperationException("CORS settings not found in configuration.");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.TokenValidationParameters.ValidAudience =
+        builder.Configuration["AzureAd:Audience"];
+});
+
+// 3.2 Authorization: require scope on protected endpoints
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiScope", policy =>
+        policy.RequireClaim("scp", builder.Configuration["AzureAd:Scopes"]!));
+});
 
 builder.Services.AddCors(options =>
 {
@@ -65,7 +84,10 @@ app.UseRouting();
 app.UseCors("CORS");
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

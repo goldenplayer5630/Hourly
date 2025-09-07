@@ -10,6 +10,5 @@ namespace Hourly.Abstractions.Repositories
         Task<IEnumerable<GitCommit>> GetByIds(IEnumerable<Guid> gitCommitIds);  
         Task<GitCommit> Create(GitCommit gitCommit);
         Task Delete(Guid gitCommitId);
-        Task SaveChanges();
     }
 }

@@ -10,6 +10,5 @@ namespace Hourly.Abstractions.Repositories
         Task<WorkSession> Create(WorkSession workSession);
         Task<WorkSession> Update(WorkSession workSession);
         Task Delete(Guid workSessionId);
-        Task SaveChanges();
     }
 }

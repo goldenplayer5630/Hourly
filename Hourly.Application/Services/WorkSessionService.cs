@@ -147,7 +147,7 @@ namespace Hourly.Application.Services
 
             workSession.AddGitCommit(gitCommit);
 
-            await _repository.SaveChanges();
+            await _repository.Update(workSession);
 
             return workSession;
         }
@@ -167,7 +167,7 @@ namespace Hourly.Application.Services
 
             workSession.RemoveGitCommit(gitCommit);
 
-            await _repository.SaveChanges();
+            await _repository.Update(workSession);
 
             return workSession;
         }

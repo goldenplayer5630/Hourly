@@ -14,6 +14,10 @@ namespace Hourly.Data.Persistence.EntityConfigurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("id");
 
+            builder.HasIndex(u => u.ExternalOid)
+                .HasDatabaseName("IX_user_external_oid")
+                .IsUnique();
+
             builder.Property(x => x.Email)
                 .IsRequired()
                 .HasColumnName("email");
